@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+
+body {
+	font-size: 10px;
+	background: #F2F4F5;
+}
+
+
+
+.panel-heading h1, 
+.jumbotron h1  {
+	font-size: 14px;
+}
+
+thead, tbody {
+	font-size: 10px;
+}
+
+.btn-info, .btn-danger {
+	font-size: 10px;
+}
