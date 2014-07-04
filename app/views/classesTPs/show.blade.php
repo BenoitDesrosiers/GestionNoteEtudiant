@@ -5,17 +5,18 @@
 	<div class="container">
 		<div class="header-text">
 			<h1>Affichage</h1>
-			<p>Affichage d'une classe</p>
+			<p>Affichage d'un TP</p>
 		</div>
 	</div>
 </section>
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Classe: {{ $classe->code ."   ". $classe->session }}</h1>
-			<p>Nom: {{ $classe->nom }} </p>
-			<p>Groupe: {{ $classe->groupe }} </p>
-			<p>Local: {{ $classe->local }} </p>
+			<h1>Classe: {{ $classe->code ."   ". $classe->session." TP #".$tp->numero}}</h1>
+			
+			<p>Nom: {{ $tp->nom }} </p>
+			<p>Sur: {{ $tp->sur }} </p>
+			<p>Poids: {{ $tp->poids }} </p>
 			
 		</div>
 	</section>

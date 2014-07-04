@@ -2,79 +2,85 @@
 
 class ClassesTPsController extends BaseController
 {
-	public function index($classesId)
+	public function index($classeId)
 	{	
-		$classe = Classe::find($classesId);
+		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
 		$tps = $classe->tps; 
 		return View::make('classesTPs.index', compact('classe','tps')); 
 	}
 	
-	public function create()
+	public function create($classeId)
 	{
-		return View::make('classesTPs.create');
+		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
+		return View::make('classesTPs.create', compact('classe'));
 	}
 	
-	public function edit($id)
+	public function edit($classeId, $tpId)
 	{
-		$classe = Classe::findOrFail($id);
-		return View::make('classesTPs.edit', compact('classe'));
+		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
+		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException, et y a-t-il une facon de demander à la classe de retourner son tp avec cet id?
+		return View::make('classesTPs.edit', compact('classe', 'tp'));
 	}
 	
 	
-	public function show($id)
+	public function show($classeId, $tpId) 
 	{
-		$classe = Classe::find($id);
-		return View::make('classesTPs.show', compact('classe'));
+		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
+		$tp = TP::findOrFail($tpId);
+		return View::make('classesTPs.show', compact('classe', 'tp'));
 	}	
 	
-	public function store()
+	public function store($classeId)
 	{
+		
+		$classe = Classe::findOrFail($classeId); //juste pour s'assurer que l'id de classe passé en paramêtre est valide, sinon: 404. 
+		//TODO: catcher ModelNotFoundException
 		$input = Input::all();
 		
-		if (Classe::isValid($input)) { //parce que j'ai pas le champ $id dans isValid, le champ 'code' devra être unique dans la BD
-			$classe = new Classe;
-			$classe->code = $input['code'];
-			$classe->nom = $input['nom'];
-			$classe->session = $input['session'];
-			$classe->groupe = $input['groupe'];
-			$classe->local = $input['local'];
+		if (TP::isValid($input)) {
+			$tp = new TP;
+			$tp->numero = $input['numero'];
+			$tp->classe_id = $classeId;
+			$tp->nom = $input['nom'];
+			$tp->sur = $input['sur'];
+			$tp->poids = $input['poids'];
 			
-			$classe->save();
+			$tp->save();
 			
-			return Redirect::action('ClassesTPsController@index');
-			//ou Redirect::to('classes');
+			return Redirect::action('ClassesTPsController@index', $classeId);
 		}
-		
-		return Redirect::back()->withInput()->withErrors(Classe::$validationMessages);
+	
+		return Redirect::back()->withInput()->withErrors(TP::$validationMessages);
 				
 	}
 	
 	
-	public function update($id)
+	public function update($classeId, $tpId)
 	{
+		$classe = Classe::findOrFail($classeId); //juste pour s'assurer que l'id de classe passé en paramêtre est valide, sinon: 404.
+		//TODO: catcher ModelNotFoundException
 		$input = Input::all();
 				
-		if (Classe::isValid($input,$id)) { // parce que j'ai passé $id, la validation va exclure cet id pour la clause unique du champs 'code'
-			$classe = Classe::findOrFail($id);
-			$classe->code = $input['code'];
-			$classe->nom = $input['nom'];
-			$classe->session = $input['session'];
-			$classe->groupe = $input['groupe'];
-			$classe->local = $input['local'];
+		if (TP::isValid($input,$tpId)) { 
+			$tp = TP::findOrFail($tpId);
+			$tp->numero = $input['numero']; //TODO: si je mets une validation pour que le numero soit unique, je devrais changer mon validateur pour qu'il valide si le numero a changé.
+			$tp->nom = $input['nom'];
+			$tp->sur = $input['sur'];
+			$tp->poids = $input['poids'];
+			//Je n'assigne pas la classeId puisqu'on ne peut la changer. 
+			$tp->save(); 
 		
-			$classe->save(); 
-		
-			return Redirect::action('ClassesTPsController@index');
+			return Redirect::action('ClassesTPsController@index', $classeId);
 		} else {
-			return Redirect::back()->withInput()->withErrors(Classe::$validationMessages);
+			return Redirect::back()->withInput()->withErrors(TP::$validationMessages);
 		}
 	}
 	
-	public function destroy($id)
+	public function destroy($classeId, $tpId)
 	{
-		$classe = Classe::findOrFail($id);
-		$classe->delete();
+		$tp = TP::findOrFail($tpId);
+		$tp->delete();
 		
-		return Redirect::action('ClassesTPsController@index');		
+		return Redirect::action('ClassesTPsController@index', $classeId);		
 	}
 }

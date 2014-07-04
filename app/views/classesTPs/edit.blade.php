@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="header-text">
 			<h1>Édition</h1>
-			<p>Page d'édition d'une classe</p>
+			<p>Page d'édition d'un travail pratique</p>
 		</div>
 	</div>
 </section>
@@ -13,32 +13,32 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Édition d'une classe</h1>
-			{{ Form::open(['action'=> array('ClassesController@update', $classe->id), 'method' => 'PUT', 'class' => 'form']) }}
+			<h1>Édition d'un TP</h1>
+			{{ Form::open(['action'=> array('ClassesTPsController@update', $classe->id, $tp->id), 'method' => 'PUT', 'class' => 'form']) }}
 			
 			<div class="form-group">
-				{{ Form::label('code', 'Code:') }} 
-				{{ Form::text('code',$classe->code, ['class' => 'form-control']) }}
-				{{ $errors->first('code') }}
+				{{ Form::label('numero', 'Numero:') }} 
+				{{ Form::text('numero',$tp->numero, ['class' => 'form-control']) }}
+				{{ $errors->first('numero') }}
+			</div>
+			<div class="form-group">
+				{{ Form::label('classe_id', 'Id de la classe associée:') }} 
+				{{ Form::label('classe_id',$tp->classe_id) }}
 			</div>
 			<div class="form-group">
 				{{ Form::label('nom', 'Nom:') }} 
-				{{ Form::text('nom', $classe->nom, ['class' => 'form-control']) }}
+				{{ Form::text('nom', $tp->nom, ['class' => 'form-control']) }}
 				{{ $errors->first('nom') }}
 			</div>
 			<div class="form-group">
-				{{ Form::label('session', 'Session:') }} 
-				{{ Form::text('session', $classe->session, ['class' => 'form-control']) }}
-				{{ $errors->first('session') }}
+				{{ Form::label('sur', 'Sur:') }} 
+				{{ Form::text('sur', $tp->sur, ['class' => 'form-control']) }}
+				{{ $errors->first('sur') }}
 			</div>
 			<div class="form-group">
-				{{ Form::label('groupe', 'Groupe:') }} 
-				{{ Form::text('groupe',$classe->groupe, ['class' => 'form-control']) }}
+				{{ Form::label('poids', 'Poids:') }} 
+				{{ Form::text('poids',$tp->poids, ['class' => 'form-control']) }}
 			</div>
-			<div class="form-group">
-				{{ Form::label('local', 'Local:') }} 
-				{{ Form::text('local',$classe->local, ['class' => 'form-control']) }}
-			</div>	
 			<div class="form-group">
 				{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}
 			</div>

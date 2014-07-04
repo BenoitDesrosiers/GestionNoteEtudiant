@@ -37,10 +37,18 @@ class Classe extends Eloquent
 			'session'=>'required'
 	];	
 	}
-	#TODO: ajouter une validation pour la session en regex
+	//TODO: ajouter une validation pour la session en regex
+	
+	//TODO: mettre cette fonction dans une superclasse
 	
 	public static function isValid($data, $id=0) {
-		
+		/*
+		 * le paramêtre $id sert à faire la différence entre un update et un insert. 
+		 * Si il est vide, alors c'est un create et il faut s'assurer que l'enregistrement est unique
+		 * S'il est fournit, alors c'est un update, et on ne doit pas avoir un rejet parce que
+		 * l'enregistrement existe déjà. La règle avec le 'unique" dans la validationRules est 
+		 * concaténé avec cet id. Il sera donc exclue de la validation s'il existe. 
+		 */
 		$validation = Validator::make($data, static::validationRules($id));
 		static::$validationMessages = $validation->messages();
 		
