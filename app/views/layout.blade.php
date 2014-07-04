@@ -25,8 +25,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="menu-principal">
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ action('ClassesController@index') }}">Home</a></li>
-				<li><a href="./gestion">Gestion</a></li>
+				<li><a href="{{ action('HomeController@index') }}">Écran principal</a></li>
 			</ul>
 		</div>
 	</nav>

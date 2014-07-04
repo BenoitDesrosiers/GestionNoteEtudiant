@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/', 'HomeController@index');
+
 
 Route::resource('classes', 'ClassesController');
 
