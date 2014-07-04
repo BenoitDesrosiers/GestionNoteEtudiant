@@ -18,6 +18,8 @@
 			<p>Local: {{ $classe->local }} </p>
 			
 		</div>
+		<a href="{{ action('ClassesController@index') }}" class="btn btn-info">Retour à la page principale</a>
+		
 	</section>
 </div>
 @stop

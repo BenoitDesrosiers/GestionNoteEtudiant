@@ -19,6 +19,8 @@
 			<p>Poids: {{ $tp->poids }} </p>
 			
 		</div>
+		
+		<a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">Retour à la classe {{ $classe->code ."   ". $classe->session }}</a>
 	</section>
 </div>
 @stop

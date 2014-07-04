@@ -8,7 +8,7 @@
 			<div class="jumbotron text-left">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h1> Liste des Travaux pratiques pour la classe {{ $classe->code . ' ' . $classe->session }}</h1>
+						<h1> Liste des travaux pratiques pour la classe {{ $classe->code . ' ' . $classe->session }}</h1>
 						<a href="{{ action('ClassesTPsController@create', $classe->id) }}" class="btn btn-info">Créer un TP</a>						
 						<?php //TODO: ajouter un bouton pour copier les TPs d'une autres classes?> 
 					</div>
@@ -28,7 +28,9 @@
 								</tr>
 							</thead>
 							<tbody>
+								<?php $total = 0 ?> 
 								@foreach($tps as $tp)
+									<?php $total = $total + $tp->poids ?> 
 									<tr>
 										<td><a href="{{ action('ClassesTPsController@show', [$classe->id, $tp->id]) }}">{{ $tp->id }}</a> </td>
 										<td>{{ $tp->numero }} </td>
@@ -44,6 +46,13 @@
 										<td><a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">Questions</a></td>
 									</tr>
 								@endforeach
+								<tr>
+									<td> </td>
+									<td> </td>
+									<td> </td>
+									<td>total:</td>
+									<td> {{ $total }} </td>
+									
 							</tbody>
 								
 						</table>
