@@ -13,9 +13,9 @@ class TP extends Eloquent
  * database relationships
  */
 	
-	// Un TP est pour une Classe
-	public function classe() {
-		return $this->belongsTo('Classe');
+	// Un TP est associé à plusieurs classes
+	public function classes() {
+		return $this->belongsToMany('Classe', 'classes_tps');
 	}
 	
 	

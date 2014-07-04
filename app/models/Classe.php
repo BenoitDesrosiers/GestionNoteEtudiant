@@ -13,7 +13,7 @@ class Classe extends Eloquent
 	
 	// Une classe a plusieurs Travaux Pratiques (TP)
 	public function tps() {
-		return $this->hasMany('TP');
+		return $this->belongsToMany('TP', 'classes_tps');
 	}
 	
 	
