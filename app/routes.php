@@ -13,7 +13,11 @@
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/classes/{classe}/tps/{tps}/disconnectTP', 'ClassesTPsController@disconnectTP');
+Route::get('/classes/{classe}/connectTP', 'ClassesTPsController@connectTP');
+Route::post('/classes/{classe}/doConnectTP', 'ClassesTPsController@doConnectTP');
 
 Route::resource('classes', 'ClassesController');
+Route::resource('tps', 'TPsController');
 
-Route::resource('classes.TPs', 'ClassesTPsController');
+Route::resource('classes.tps', 'ClassesTPsController');

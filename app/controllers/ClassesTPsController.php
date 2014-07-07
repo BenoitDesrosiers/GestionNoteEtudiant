@@ -40,12 +40,14 @@ class ClassesTPsController extends BaseController
 		if (TP::isValid($input)) {
 			$tp = new TP;
 			$tp->numero = $input['numero'];
-			$tp->classe_id = $classeId;
 			$tp->nom = $input['nom'];
 			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
 			
 			$tp->save();
+			
+			//associe la classe au TP (many to many)
+			$tp->classes()->attach($classeId);
 			
 			return Redirect::action('ClassesTPsController@index', $classeId);
 		}
@@ -67,7 +69,6 @@ class ClassesTPsController extends BaseController
 			$tp->nom = $input['nom'];
 			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
-			//Je n'assigne pas la classeId puisqu'on ne peut la changer. 
 			$tp->save(); 
 		
 			return Redirect::action('ClassesTPsController@index', $classeId);
@@ -79,8 +80,39 @@ class ClassesTPsController extends BaseController
 	public function destroy($classeId, $tpId)
 	{
 		$tp = TP::findOrFail($tpId);
+		$tp->classes()->detach();
 		$tp->delete();
 		
 		return Redirect::action('ClassesTPsController@index', $classeId);		
+	}
+	
+	
+	public function connectTP($classeId)
+	{
+		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
+		$tps = TP::all();
+		return View::make('classesTPs.connectTP', compact('classe', 'tps'));
+	}
+	
+	public function doConnectTP($classeId)
+	{
+		$input= Input::all();
+		
+		if (isset($input['selectionClasse'])) {
+			$lesClasses = implode(',', $input['selectionClasse']);
+			Classe::find($classeId)->tps()->sync($input['selectionClasse']);
+		}
+		return Redirect::action('ClassesTPsController@index', $classeId);
+		
+	}
+	
+	
+	public function disconnectTP($classeId, $tpId)
+	{
+		// Déconnecte un TP d'une classe sans effacer le TP
+		$tp = TP::findOrFail($tpId);
+		$tp->classes()->detach($classeId);
+		
+		return Redirect::action('ClassesTPsController@index', $classeId);
 	}
 }

@@ -15,7 +15,7 @@
 		<div class="jumbotron text-left">
 			<h1>Création d'un travail pratique</h1>
 			
-			{{ Form::open(['url'=> 'classes/'.$classe->id.'/tps', 'class' => 'form']) }}
+			{{ Form::open(['url'=> 'tps', 'class' => 'form']) }}
 				@include('tps.createTPform')
 			{{ Form::close() }}
 		</div>

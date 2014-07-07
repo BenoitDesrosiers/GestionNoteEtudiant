@@ -22,14 +22,8 @@
 				{{ $errors->first('numero') }}
 			</div>
 			<div class="form-group">
-				{{ Form::label('classe_id', 'Classe(s) associée(s):') }} 
-				<?php  $id_classes = ""; //TODO: gérer le cas ou il n'y a pas de classes associées, ca affiche le mot "classe id"??? ?>
-				@foreach($tp->classes as $classe)
-					<?php  
-						
-						$id_classes = $id_classes . $classe->id ; ?>
-				@endforeach
-				{{ Form::label('classe_id',$id_classes) }}
+				{{ Form::label('classe_id', 'Id de la classe associée:') }} 
+				{{ Form::label('classe_id',$tp->classe_id) }}
 			</div>
 			<div class="form-group">
 				{{ Form::label('nom', 'Nom:') }} 
