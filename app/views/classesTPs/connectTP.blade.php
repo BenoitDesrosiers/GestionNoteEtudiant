@@ -24,7 +24,6 @@
 								<tr>
 									<th>#</th>
 									<th>Associé</th>
-									<th>Numéro</th>
 									<th>Nom</th>
 									<th>Sur</th>
 									<th>Poids</th>
@@ -42,7 +41,6 @@
 											@endif
 											{{ Form::checkbox('selectionClasse[]', $tp->id, $trouve ) }}
 										</td>
-										<td>{{ $tp->numero }} </td>
 										<td>{{ $tp->nom }} </td>
 										<td>{{ $tp->sur }} </td>
 										<td>{{ $tp->poids }} </td>

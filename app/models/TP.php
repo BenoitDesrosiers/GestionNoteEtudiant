@@ -15,7 +15,7 @@ class TP extends Eloquent
 	
 	// Un TP est associé à plusieurs classes
 	public function classes() {
-		return $this->belongsToMany('Classe', 'classes_tps', 'tp_id', 'classe_id'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????);
+		return $this->belongsToMany('Classe', 'classes_tps', 'tp_id', 'classe_id')->withPivot('poids_local'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????);
 	}
 	
 	
@@ -24,7 +24,6 @@ class TP extends Eloquent
  * Validation
  * 
  * un TP doit avoir: 
- * 	numero: obligatoire, et unique pour une classe dans toute la table
  *  nom : obligatoire
  *  sur : obligatoire
  *  poids : obligatoire
@@ -35,9 +34,7 @@ class TP extends Eloquent
 	public static $validationMessages;
 	
 	public static function validationRules($id=0) {
-		return [
-			'numero' => 'required',
-			//TODO: mettre le numero unique pour une classe...		|unique:classes,code'.($id ? ",$id" : ''),  	 
+		return [	 
 			'nom'=>'required',
 			'sur'=>'required',
 			'poids'=>'required'

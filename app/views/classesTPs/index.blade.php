@@ -22,23 +22,24 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Numéro</th>
 									<th>Nom</th>
 									<th>Sur</th>
 									<th>Poids</th>
+									<th>Poids local</th>
 									<th> </th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php $total = 0 ?> 
+								<?php $total = 0; $total_local = 0; ?> 
 								@foreach($tps as $tp)
-									<?php $total = $total + $tp->poids ?> 
+									<?php $total += $tp->poids;
+										  $total_local += $tp->pivot->poids_local?> 
 									<tr>
 										<td><a href="{{ action('ClassesTPsController@show', [$classe->id, $tp->id]) }}">{{ $tp->id }}</a> </td>
-										<td>{{ $tp->numero }} </td>
 										<td>{{ $tp->nom }} </td>
-										<td>{{ $tp->sur }} </td>
-										<td>{{ $tp->poids }} </td>
+										<td>{{ $tp->sur }} </td>										
+										<td>{{ $tp->poids}} </td>
+										<td>{{ $tp->pivot->poids_local }} </td>
 										<td><a href="{{ action('ClassesTPsController@edit', [$classe->id, $tp->id]) }}" class="btn btn-info">Éditer</a></td>
 	                                    <td><a href="{{ action('ClassesTPsController@disconnectTP', [$classe->id, $tp->id]) }}" class="btn btn-info">Déconnecter</a></td>
 										<td><a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">Questions</a></td>
@@ -52,9 +53,10 @@
 								<tr>
 									<td> </td>
 									<td> </td>
-									<td> </td>
 									<td>total:</td>
 									<td> {{ $total }} </td>
+									<td> {{ $total_local }} </td>
+									
 								</tr>	
 							</tbody>
 								

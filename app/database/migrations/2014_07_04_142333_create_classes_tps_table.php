@@ -17,6 +17,7 @@ class CreateClassesTpsTable extends Migration {
 			$table->increments('id');
 			$table->integer('classe_id');
 			$table->integer('tp_id');
+			$table->integer('poids_local');
 			$table->timestamps();
 		});
 	}

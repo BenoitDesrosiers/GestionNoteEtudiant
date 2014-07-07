@@ -18,7 +18,7 @@ class ClassesTPsController extends BaseController
 	public function edit($classeId, $tpId)
 	{
 		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
-		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException, et y a-t-il une facon de demander à la classe de retourner son tp avec cet id?
+		$tp = $classe->tps()->where('tp_id', '=', $tpId)->first();
 		return View::make('classesTPs.edit', compact('classe', 'tp'));
 	}
 	
@@ -39,7 +39,6 @@ class ClassesTPsController extends BaseController
 		
 		if (TP::isValid($input)) {
 			$tp = new TP;
-			$tp->numero = $input['numero'];
 			$tp->nom = $input['nom'];
 			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
@@ -47,7 +46,7 @@ class ClassesTPsController extends BaseController
 			$tp->save();
 			
 			//associe la classe au TP (many to many)
-			$tp->classes()->attach($classeId);
+			$tp->classes()->attach($classeId, ['poids_local'=>$tp->poids]); // pour la création, je prends le poids du tp pour le poids local
 			
 			return Redirect::action('ClassesTPsController@index', $classeId);
 		}
@@ -64,12 +63,14 @@ class ClassesTPsController extends BaseController
 		$input = Input::all();
 				
 		if (TP::isValid($input,$tpId)) { 
-			$tp = TP::findOrFail($tpId);
-			$tp->numero = $input['numero']; //TODO: si je mets une validation pour que le numero soit unique, je devrais changer mon validateur pour qu'il valide si le numero a changé.
+			$tp = $classe->tps()->where('tp_id', '=', $tpId)->first();
 			$tp->nom = $input['nom'];
 			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
 			$tp->save(); 
+			
+			$tp->pivot->poids_local = $input['poids_local'];
+			$tp->pivot->save();
 		
 			return Redirect::action('ClassesTPsController@index', $classeId);
 		} else {

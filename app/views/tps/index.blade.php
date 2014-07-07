@@ -19,7 +19,6 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Numéro</th>
 									<th>Nom</th>
 									<th>Sur</th>
 									<th>Poids</th>
@@ -32,7 +31,6 @@
 									<?php $total = $total + $tp->poids ?> 
 									<tr>
 										<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->id }}</a> </td>
-										<td>{{ $tp->numero }} </td>
 										<td>{{ $tp->nom }} </td>
 										<td>{{ $tp->sur }} </td>
 										<td>{{ $tp->poids }} </td>

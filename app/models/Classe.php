@@ -13,7 +13,7 @@ class Classe extends Eloquent
 	
 	// Une classe a plusieurs Travaux Pratiques (TP)
 	public function tps() {
-		return $this->belongsToMany('TP', 'classes_tps', 'classe_id', 'tp_id'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????
+		return $this->belongsToMany('TP', 'classes_tps', 'classe_id', 'tp_id')->withPivot('poids_local'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????
 	}
 	
 	

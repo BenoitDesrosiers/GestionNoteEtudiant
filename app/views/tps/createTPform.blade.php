@@ -1,10 +1,5 @@
 
 <div class="form-group">
-	{{ Form::label('numero', 'Numero:') }} 
-	{{ Form::text('numero',null, ['class' => 'form-control']) }}
-	{{ $errors->first('numero') }}
-</div>
-<div class="form-group">
 	{{ Form::label('nom', 'Nom:') }} 
 	{{ Form::text('nom',null, ['class' => 'form-control']) }}
 	{{ $errors->first('nom') }}

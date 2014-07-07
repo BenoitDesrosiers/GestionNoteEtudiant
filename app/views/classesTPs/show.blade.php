@@ -12,8 +12,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Classe: {{ $classe->code ."   ". $classe->session." TP #".$tp->numero}}</h1>
-			
+			<h1>Classe: {{ $classe->code ."   ". $classe->session." TP #"}}</h1>
 			<p>Nom: {{ $tp->nom }} </p>
 			<p>Sur: {{ $tp->sur }} </p>
 			<p>Poids: {{ $tp->poids }} </p>

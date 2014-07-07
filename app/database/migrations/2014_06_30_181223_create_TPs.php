@@ -15,7 +15,6 @@ class CreateTPs extends Migration {
 		Schema::create('tps', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('numero'); //le numéro du tp pour une classe
 			$table->string('nom');
 			$table->integer('sur'); // ce TP est sur combien
 			$table->integer('poids'); // ce TP compte pour combien sur la note finale

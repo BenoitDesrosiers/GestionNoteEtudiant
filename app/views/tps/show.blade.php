@@ -12,7 +12,6 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Classe: {{ $classe->code ."   ". $classe->session." TP #".$tp->numero}}</h1>
 			
 			<p>Nom: {{ $tp->nom }} </p>
 			<p>Sur: {{ $tp->sur }} </p>
@@ -20,7 +19,7 @@
 			
 		</div>
 		
-		<a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">Retour à la classe {{ $classe->code ."   ". $classe->session }}</a>
+		<a href="{{ action('TPsController@index') }}" class="btn btn-info">Retour aux TPs</a>
 	</section>
 </div>
 @stop

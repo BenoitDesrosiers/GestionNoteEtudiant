@@ -33,7 +33,6 @@ class TPsController extends BaseController
 		
 		if (TP::isValid($input)) {
 			$tp = new TP;
-			$tp->numero = $input['numero'];
 			$tp->nom = $input['nom'];
 			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
@@ -54,7 +53,6 @@ class TPsController extends BaseController
 				
 		if (TP::isValid($input,$tpId)) { 
 			$tp = TP::findOrFail($tpId);
-			$tp->numero = $input['numero']; //TODO: si je mets une validation pour que le numero soit unique, je devrais changer mon validateur pour qu'il valide si le numero a changé.
 			$tp->nom = $input['nom'];
 			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
