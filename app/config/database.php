@@ -43,7 +43,7 @@ return array(
 	| choice installed on your machine before you begin development.
 	|
 	*/
-
+ 
 	'connections' => array(
 
 		'sqlite' => array(
