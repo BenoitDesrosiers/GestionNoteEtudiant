@@ -67,6 +67,7 @@ class TPsController extends BaseController
 	public function destroy($tpId)
 	{
 		$tp = TP::findOrFail($tpId);
+		$tp->classes()->detach();
 		$tp->delete();
 		
 		return Redirect::action('TPsController@index');		

@@ -12,11 +12,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			
-			<p>Nom: {{ $tp->nom }} </p>
-			<p>Sur: {{ $tp->sur }} </p>
-			<p>Poids: {{ $tp->poids }} </p>
-			
+			@include('tps.editTPForm')
 		</div>
 		
 		<a href="{{ action('TPsController@index') }}" class="btn btn-info">Retour aux TPs</a>

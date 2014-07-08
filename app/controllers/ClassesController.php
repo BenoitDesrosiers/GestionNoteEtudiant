@@ -44,8 +44,7 @@ class ClassesController extends BaseController
 			//ou Redirect::to('classes');
 		}
 		
-		return Redirect::back()->withInput()->withErrors(Classe::$validationMessages);
-				
+		return Redirect::back()->withInput()->withErrors(Classe::$validationMessages);			
 	}
 	
 	
@@ -72,6 +71,8 @@ class ClassesController extends BaseController
 	public function destroy($id)
 	{
 		$classe = Classe::findOrFail($id);
+		$classe->tps()->detach();
+		
 		$classe->delete();
 		
 		return Redirect::action('ClassesController@index');		

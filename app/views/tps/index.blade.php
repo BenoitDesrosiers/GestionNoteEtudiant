@@ -26,9 +26,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php $total = 0 ?> 
 								@foreach($tps as $tp)
-									<?php $total = $total + $tp->poids ?> 
 									<tr>
 										<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->id }}</a> </td>
 										<td>{{ $tp->nom }} </td>
@@ -43,12 +41,6 @@
 										<td><a href="{{ action('TPsController@index') }}" class="btn btn-info">Questions</a></td>
 									</tr>
 								@endforeach
-								<tr>
-									<td> </td>
-									<td> </td>
-									<td> </td>
-									<td>total:</td>
-									<td> {{ $total }} </td>
 									
 							</tbody>
 								

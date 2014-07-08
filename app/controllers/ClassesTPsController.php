@@ -26,7 +26,7 @@ class ClassesTPsController extends BaseController
 	public function show($classeId, $tpId) 
 	{
 		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
-		$tp = TP::findOrFail($tpId);
+		$tp = $classe->tps()->where('tp_id', '=', $tpId)->first();
 		return View::make('classesTPs.show', compact('classe', 'tp'));
 	}	
 	
@@ -101,7 +101,7 @@ class ClassesTPsController extends BaseController
 		
 		if (isset($input['selectionClasse'])) {
 			$lesClasses = implode(',', $input['selectionClasse']);
-			Classe::find($classeId)->tps()->sync($input['selectionClasse']);
+			//TODO: pour l'instant, le poid local est à 0, faudrait passer le poids local si il existe déjà, ou le poid du tp sinon... un peu complex.
 		}
 		return Redirect::action('ClassesTPsController@index', $classeId);
 		
