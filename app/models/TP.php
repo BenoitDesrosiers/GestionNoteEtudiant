@@ -18,7 +18,10 @@ class TP extends Eloquent
 		return $this->belongsToMany('Classe', 'classes_tps', 'tp_id', 'classe_id')->withPivot('poids_local'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????);
 	}
 	
-	
+	// Un TP est associé à plusieurs questions
+	public function questions() {
+		return $this->belongsToMany('Question', 'tps_questions', 'tp_id', 'question_id')->withPivot('ordre','sur_local');
+	}
 	
 /*
  * Validation
@@ -28,7 +31,6 @@ class TP extends Eloquent
  *  sur : obligatoire
  *  poids : obligatoire
  *  
- *  TODO: un numero de TP devrait être unique pour une classe 
  */	
 	
 	public static $validationMessages;

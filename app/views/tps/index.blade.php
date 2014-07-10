@@ -38,7 +38,7 @@
 	                                        	<button type="submit" href="{{ URL::route('tps.destroy', $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>
 	                                        {{ Form::close() }}   
 	                                    </td>
-										<td><a href="{{ action('TPsController@index') }}" class="btn btn-info">Questions</a></td>
+										<td><a href="{{ action('TPsQuestionsController@index', [$tp->id]) }}" class="btn btn-info">Questions</a></td>
 									</tr>
 								@endforeach
 									

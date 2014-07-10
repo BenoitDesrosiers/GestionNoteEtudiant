@@ -102,6 +102,8 @@ class ClassesTPsController extends BaseController
 		if (isset($input['selectionClasse'])) {
 			$lesClasses = implode(',', $input['selectionClasse']);
 			//TODO: pour l'instant, le poid local est à 0, faudrait passer le poids local si il existe déjà, ou le poid du tp sinon... un peu complex.
+			$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
+					
 		}
 		return Redirect::action('ClassesTPsController@index', $classeId);
 		

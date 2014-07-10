@@ -21,3 +21,11 @@ Route::resource('classes', 'ClassesController');
 Route::resource('tps', 'TPsController');
 
 Route::resource('classes.tps', 'ClassesTPsController');
+
+
+Route::get('/tps/{tp}/questions/{questions}/disconnectQuestion', 'TPsQuestionsController@disconnectQuestion');
+Route::get('/tps/{tp}/connectQuestion', 'TPsQuestionsController@connectQuestion');
+Route::post('/tps/{tp}/doConnectQuestion', 'TPsQuestionsController@doConnectQuestion');
+
+Route::resource('questions', 'QuestionsController');
+Route::resource('tps.questions', 'TPsQuestionsController');
