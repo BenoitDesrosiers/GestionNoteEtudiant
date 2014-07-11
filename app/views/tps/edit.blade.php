@@ -16,7 +16,7 @@
 			<h1>Édition d'un TP</h1>
 			{{ Form::open(['action'=> array('TPsController@update', $tp->id), 'method' => 'PUT', 'class' => 'form']) }}
 			
-				@include('tps.editTPForm')
+				@include('tps.editForm')
 				<div class="form-group">
 					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}
 				</div>

@@ -2,12 +2,12 @@
 <div class="form-group">
 	{{ Form::label('tps_id_entete', 'Travaux pratiques associées:') }}
 		<?php  $id_tps = "";  ?>
-		@foreach($question->tps as $question)
+		@foreach($question->tps as $tp_local)
 			<?php  
 				if(!$id_tps == "") {
 					$id_tps = $id_tps . ', ';
 				}	
-				$id_tps = $id_tps . $question->id ; ?>
+				$id_tps = $id_tps . $tp_local->id ; ?>
 		@endforeach
 	{{ Form::label('tps_id',$id_tps) }}
 </div>

@@ -25,6 +25,7 @@
 									<th>Énoncé</th>
 									<th>Sur</th>
 									<th>Sur local</th>
+									<th>Ordre</th>
 									<th> </th>
 								</tr>
 							</thead>
@@ -39,6 +40,7 @@
 										<td>{{ $question->enonce }} </td>
 										<td>{{ $question->sur }} </td>										
 										<td>{{ $question->pivot->sur_local }} </td>
+										<td>{{ $question->pivot->ordre }} </td>
 										<td><a href="{{ action('TPsQuestionsController@edit', [$tp->id, $question->id]) }}" class="btn btn-info">Éditer</a></td>
 	                                    <td><a href="{{ action('TPsQuestionsController@disconnectQuestion', [$tp->id, $question->id]) }}" class="btn btn-info">Déconnecter</a></td>
 										<td><a href="{{ action('TPsQuestionsController@index',$tp->id) }}" class="btn btn-info">balist to do</a></td>
@@ -55,7 +57,7 @@
 									<td>total:</td>
 									<td> {{ $total }} </td>
 									<td> {{ $total_local }} </td>
-									
+									<td> </td>
 								</tr>	
 							</tbody>
 								

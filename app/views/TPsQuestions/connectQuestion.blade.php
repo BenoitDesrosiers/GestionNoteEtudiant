@@ -11,7 +11,7 @@
 					<div class="panel-heading">
 						<h1> Liste des questions disponibles</h1>
 					</div>
-					@if ($tps->isEmpty())
+					@if ($questions->isEmpty())
 						<p>Aucune question disponible!</p>
 					@else
 						{{ Form::open(['action'=>array('TPsQuestionsController@doConnectQuestion', $tp->id), 'method' => 'POST', 'class' => 'form']) }}

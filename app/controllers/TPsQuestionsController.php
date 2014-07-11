@@ -5,7 +5,7 @@ class TPsQuestionsController extends BaseController
 	public function index($tpId)
 	{	
 		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException
-		$questions = $tp->questions; 
+		$questions = $tp->questions()->orderBy('pivot_ordre')->get(); 
 		return View::make('TPsQuestions.index', compact('tp','questions')); 
 	}
 	
@@ -18,7 +18,7 @@ class TPsQuestionsController extends BaseController
 	public function edit($tpId, $questionId)
 	{
 		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException
-		$question = $tp->Questions()->where('question_id', '=', $questionId)->first();
+		$question = $tp->questions()->where('question_id', '=', $questionId)->first();
 		return View::make('TPsQuestions.edit', compact('tp', 'question'));
 	}
 	
@@ -66,11 +66,12 @@ class TPsQuestionsController extends BaseController
 		if (Question::isValid($input,$questionId)) { 
 			$question = $tp->Questions()->where('Question_id', '=', $questionId)->first();
 			$question->nom = $input['nom'];
+			$question->enonce = $input['enonce'];
 			$question->sur = $input['sur'];
-			$question->poids = $input['poids'];
 			$question->save(); 
 			
-			$question->pivot->poids_local = $input['poids_local'];
+			$question->pivot->sur_local = $input['sur_local'];
+			$question->pivot->ordre = $input['ordre'];
 			$question->pivot->save();
 		
 			return Redirect::action('TPsQuestionsController@index', $tpId);
@@ -82,7 +83,7 @@ class TPsQuestionsController extends BaseController
 	public function destroy($tpId, $questionId)
 	{
 		$question = Question::findOrFail($questionId);
-		$question->TPs()->detach();
+		$question->tps()->detach();
 		$question->delete();
 		
 		return Redirect::action('TPsQuestionsController@index', $tpId);		
@@ -93,7 +94,7 @@ class TPsQuestionsController extends BaseController
 	{
 		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException
 		$questions = Question::all();
-		return View::make('TPsQuestions.connectQuestion', compact('tp', 'question'));
+		return View::make('TPsQuestions.connectQuestion', compact('tp', 'questions'));
 	}
 	
 	public function doConnectQuestion($tpId)
@@ -101,7 +102,7 @@ class TPsQuestionsController extends BaseController
 		$input= Input::all();
 		
 		if (isset($input['selectionTP'])) {
-			$lesTPs = implode(',', $input['selectionTP']);
+			TP::find($tpId)->questions()->sync($input['selectionTP']);
 		}
 		return Redirect::action('TPsQuestionsController@index', $tpId);
 		

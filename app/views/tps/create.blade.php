@@ -16,7 +16,7 @@
 			<h1>Création d'un travail pratique</h1>
 			
 			{{ Form::open(['url'=> 'tps', 'class' => 'form']) }}
-				@include('tps.createTPform')
+				@include('tps.createForm')
 			{{ Form::close() }}
 		</div>
 	</section>

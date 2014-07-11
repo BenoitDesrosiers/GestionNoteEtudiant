@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="header-text">
 			<h1>Édition</h1>
-			<p>Page d'édition d'un travail pratique</p>
+			<p>Page d'édition d'une question</p>
 		</div>
 	</div>
 </section>
@@ -13,12 +13,18 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Édition d'un TP</h1>
-			{{ Form::open(['action'=> array('ClassesTPsController@update', $classe->id, $tp->id), 'method' => 'PUT', 'class' => 'form']) }}
-				@include('tps.editTPForm')
+			<h1>Édition d'une question</h1>
+			{{ Form::open(['action'=> array('TPsQuestionsController@update', $tp->id, $question->id), 'method' => 'PUT', 'class' => 'form']) }}
+				@include('questions.editForm')
 				<div class="form-group">
-					{{ Form::label('poids_local', 'Poids local:') }} 
-					{{ Form::text('poids_local',$tp->pivot->poids_local, ['class' => 'form-control']) }}
+					{{ Form::label('sur_local', 'Sur (pour ce test):') }} 
+					{{ Form::text('sur_local', $question->pivot->sur_local, ['class' => 'form-control']) }}
+					{{ $errors->first('sur_local') }}
+				</div>
+				<div class="form-group">
+					{{ Form::label('ordre', 'Ordre (pour ce test):') }} 
+					{{ Form::text('ordre', $question->pivot->ordre, ['class' => 'form-control']) }}
+					{{ $errors->first('ordre') }}
 				</div>
 				<div class="form-group">
 					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}
