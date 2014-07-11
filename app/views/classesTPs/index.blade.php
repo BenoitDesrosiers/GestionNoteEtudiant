@@ -42,7 +42,7 @@
 										<td>{{ $tp->pivot->poids_local }} </td>
 										<td><a href="{{ action('ClassesTPsController@edit', [$classe->id, $tp->id]) }}" class="btn btn-info">Éditer</a></td>
 	                                    <td><a href="{{ action('ClassesTPsController@disconnectTP', [$classe->id, $tp->id]) }}" class="btn btn-info">Déconnecter</a></td>
-										<td><a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">Questions</a></td>
+										<td><a href="{{ action('TPsQuestionsController@index',$tp->id) }}" class="btn btn-info">Questions</a></td>
 										<td>
 											{{ Form::open(array('action' => array('ClassesTPsController@destroy',$classe->id, $tp->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain? Il sera détaché de toutes les classes auquel il est associée')) }}
 	                                        	<button type="submit" href="{{ URL::route('classes.tps.destroy', $classe->id, $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>

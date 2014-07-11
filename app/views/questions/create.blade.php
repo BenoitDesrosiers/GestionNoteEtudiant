@@ -16,7 +16,7 @@
 			<h1>Création d'une question</h1>
 			
 			{{ Form::open(['url'=> 'questions', 'class' => 'form']) }}
-				@include('questions.createTPform')
+				@include('questions.createForm')
 			{{ Form::close() }}
 		</div>
 	</section>

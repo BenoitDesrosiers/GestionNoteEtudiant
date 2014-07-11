@@ -16,7 +16,7 @@
 			<h1>Édition d'une question</h1>
 			{{ Form::open(['action'=> array('QuestionsController@update', $question->id), 'method' => 'PUT', 'class' => 'form']) }}
 			
-				@include('questions.editTPForm')
+				@include('questions.editForm')
 				<div class="form-group">
 					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}
 				</div>

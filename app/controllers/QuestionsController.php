@@ -59,7 +59,8 @@ class QuestionsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$question = Question::findOrFail($id); //TODO: catcher ModelNotFoundException
+		return View::make('questions.show', compact( 'question'));
 	}
 
 

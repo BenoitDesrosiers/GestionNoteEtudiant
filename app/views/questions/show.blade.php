@@ -5,17 +5,17 @@
 	<div class="container">
 		<div class="header-text">
 			<h1>Affichage</h1>
-			<p>Affichage d'un TP</p>
+			<p>Affichage d'une question</p>
 		</div>
 	</div>
 </section>
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			@include('tps.editTPForm')
+			@include('questions.editForm')
 		</div>
 		
-		<a href="{{ action('TPsController@index') }}" class="btn btn-info">Retour aux TPs</a>
+		<a href="{{ action('QuestionsController@index') }}" class="btn btn-info">Retour aux Questions</a>
 	</section>
 </div>
 @stop
