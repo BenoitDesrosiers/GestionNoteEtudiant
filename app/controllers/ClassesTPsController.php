@@ -88,14 +88,14 @@ class ClassesTPsController extends BaseController
 	}
 	
 	
-	public function connectTP($classeId)
+	public function connect($classeId)
 	{
 		$classe = Classe::findOrFail($classeId); //TODO: catcher ModelNotFoundException
 		$tps = TP::all();
-		return View::make('classesTPs.connectTP', compact('classe', 'tps'));
+		return View::make('classesTPs.connect', compact('classe', 'tps'));
 	}
 	
-	public function doConnectTP($classeId)
+	public function doConnect($classeId)
 	{
 		$input= Input::all();
 		
@@ -108,7 +108,7 @@ class ClassesTPsController extends BaseController
 	}
 	
 	
-	public function disconnectTP($classeId, $tpId)
+	public function disconnect($classeId, $tpId)
 	{
 		// Déconnecte un TP d'une classe sans effacer le TP
 		$tp = TP::findOrFail($tpId);

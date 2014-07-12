@@ -14,7 +14,7 @@
 					@if ($questions->isEmpty())
 						<p>Aucune question disponible!</p>
 					@else
-						{{ Form::open(['action'=>array('TPsQuestionsController@doConnectQuestion', $tp->id), 'method' => 'POST', 'class' => 'form']) }}
+						{{ Form::open(['action'=>array('TPsQuestionsController@doConnect', $tp->id), 'method' => 'POST', 'class' => 'form']) }}
 					
 						<div class="form-group">
 							{{ Form::submit('Appliquer', ['class' => 'btn btn-primary']) }}

@@ -10,7 +10,7 @@
 					<div class="panel-heading">
 						<h1> Liste des questions pour le TP {{ $tp->id . ' ' . $tp->nom }}</h1>
 						<a href="{{ action('TPsQuestionsController@create', $tp->id) }}" class="btn btn-info">Créer une question</a>	
-						<a href="{{ action('TPsQuestionsController@connectQuestion', $tp->id) }}" class="btn btn-info">Associer un question</a>						
+						<a href="{{ action('TPsQuestionsController@connect', $tp->id) }}" class="btn btn-info">Associer un question</a>						
 											
 					</div>
 					
@@ -42,7 +42,7 @@
 										<td>{{ $question->pivot->sur_local }} </td>
 										<td>{{ $question->pivot->ordre }} </td>
 										<td><a href="{{ action('TPsQuestionsController@edit', [$tp->id, $question->id]) }}" class="btn btn-info">Éditer</a></td>
-	                                    <td><a href="{{ action('TPsQuestionsController@disconnectQuestion', [$tp->id, $question->id]) }}" class="btn btn-info">Déconnecter</a></td>
+	                                    <td><a href="{{ action('TPsQuestionsController@disconnect', [$tp->id, $question->id]) }}" class="btn btn-info">Déconnecter</a></td>
 										<td><a href="{{ action('TPsQuestionsController@index',$tp->id) }}" class="btn btn-info">balist to do</a></td>
 										<td>
 											{{ Form::open(array('action' => array('TPsQuestionsController@destroy',$tp->id, $question->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain? Elle sera détachée de tous les TPs auquel elle est associée')) }}

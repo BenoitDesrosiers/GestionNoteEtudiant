@@ -13,7 +13,7 @@
 	<section class="section-padding">
 		<div class="jumbotron text-left">
 			<h1>Classe: {{ $classe->code ."   ". $classe->session." TP #".$tp->id}}</h1>
-			@include('tps.editTpForm')
+			@include('tps.editForm')
 			<div class="form-group">
 				{{ Form::label('poids_local', 'Poids local:') }} 
 				{{ Form::text('poids_local',$tp->pivot->poids_local, ['class' => 'form-control']) }}

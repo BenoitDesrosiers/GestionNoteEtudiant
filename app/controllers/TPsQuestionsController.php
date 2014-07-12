@@ -90,14 +90,14 @@ class TPsQuestionsController extends BaseController
 	}
 	
 	
-	public function connectQuestion($tpId)
+	public function connect($tpId)
 	{
 		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException
 		$questions = Question::all();
-		return View::make('TPsQuestions.connectQuestion', compact('tp', 'questions'));
+		return View::make('TPsQuestions.connect', compact('tp', 'questions'));
 	}
 	
-	public function doConnectQuestion($tpId)
+	public function doConnect($tpId)
 	{
 		$input= Input::all();
 		
@@ -109,7 +109,7 @@ class TPsQuestionsController extends BaseController
 	}
 	
 	
-	public function disconnectQuestion($tpId, $questionId)
+	public function disconnect($tpId, $questionId)
 	{
 		// Déconnecte un Question d'une TP sans effacer le Question
 		$question = Question::findOrFail($questionId);

@@ -14,7 +14,7 @@
 					@if ($tps->isEmpty())
 						<p>Aucun travail pratique disponible!</p>
 					@else
-						{{ Form::open(['action'=>array('ClassesTPsController@doConnectTP', $classe->id), 'method' => 'POST', 'class' => 'form']) }}
+						{{ Form::open(['action'=>array('ClassesTPsController@doConnect', $classe->id), 'method' => 'POST', 'class' => 'form']) }}
 					
 						<div class="form-group">
 							{{ Form::submit('Appliquer', ['class' => 'btn btn-primary']) }}
