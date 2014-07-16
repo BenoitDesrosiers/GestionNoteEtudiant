@@ -41,7 +41,8 @@ class TPsQuestionsController extends BaseController
 			$question = new Question;
 			$question->nom = $input['nom'];
 			$question->enonce = $input['enonce'];
-			$question->tag = $input['tag'];
+			$question->baliseCorrection = $input['baliseCorrection'];
+			$question->reponse = $input['reponse'];
 			$question->sur = $input['sur'];
 			
 			$question->save();
@@ -68,6 +69,8 @@ class TPsQuestionsController extends BaseController
 			$question->nom = $input['nom'];
 			$question->enonce = $input['enonce'];
 			$question->sur = $input['sur'];
+			$question->baliseCorrection = $input['baliseCorrection'];
+			$question->reponse = $input['reponse'];
 			$question->save(); 
 			
 			$question->pivot->sur_local = $input['sur_local'];

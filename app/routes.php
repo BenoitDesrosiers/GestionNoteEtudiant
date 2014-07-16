@@ -44,3 +44,8 @@ Route::resource('tps.questions', 'TPsQuestionsController');
 /* Etudiants */
 Route::resource('etudiants', 'EtudiantsController');
 Route::resource('classes.etudiants', 'ClassesEtudiantsController');
+
+/* Correction / Notes */
+Route::get('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@index');
+Route::put('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@edit');
+Route::put('/notes/update', 'TPsNotesController@update');

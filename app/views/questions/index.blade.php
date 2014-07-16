@@ -19,7 +19,6 @@
 									<th>#</th>
 									<th>Nom</th>
 									<th>Enoncé</th>
-									<th>Tag</th>
 									<th>Sur</th>
 									<th> </th>
 								</tr>
@@ -30,7 +29,6 @@
 										<td><a href="{{ action('QuestionsController@show', [$question->id]) }}">{{ $question->id }}</a> </td>
 										<td>{{ $question->nom }} </td>
 										<td>{{ $question->enonce }} </td>
-										<td>{{ $question->tag }} </td>
 										<td>{{ $question->sur }} </td>
 										<td><a href="{{ action('QuestionsController@edit', [$question->id]) }}" class="btn btn-info">Éditer</a></td>
 										<td>
@@ -38,7 +36,6 @@
 	                                        	<button type="submit" href="{{ URL::route('questions.destroy', $question->id) }}" class="btn btn-danger btn-mini">Effacer</button>
 	                                        {{ Form::close() }}   
 	                                    </td>
-										<td><a href="{{ action('QuestionsController@index') }}" class="btn btn-info">Balises TODO</a></td>
 									</tr>
 								@endforeach
 							</tbody>

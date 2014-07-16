@@ -6,12 +6,17 @@
 </div>
 <div class="form-group">
 	{{ Form::label('enonce', 'Énoncé:') }} 
-	{{ Form::text('enonce',null, ['class' => 'form-control']) }}
+	{{ Form::textarea('enonce',null, ['class' => 'form-control']) }}
 	{{ $errors->first('enonce') }}
 </div><div class="form-group">
-	{{ Form::label('tag', 'Tag:') }} 
-	{{ Form::text('tag',null, ['class' => 'form-control']) }}
-	{{ $errors->first('tag') }}
+	{{ Form::label('baliseCorrection', 'Balises:') }} 
+	{{ Form::textarea('baliseCorrection',null, ['class' => 'form-control']) }}
+	{{ $errors->first('baliseCorrection') }}
+</div>
+</div><div class="form-group">
+	{{ Form::label('reponse', 'Réponse:') }} 
+	{{ Form::textarea('reponse',null, ['class' => 'form-control']) }}
+	{{ $errors->first('reponse') }}
 </div>
 <div class="form-group">
 	{{ Form::label('sur', 'Sur:') }} 

@@ -43,7 +43,6 @@
 										<td>{{ $question->pivot->ordre }} </td>
 										<td><a href="{{ action('TPsQuestionsController@edit', [$tp->id, $question->id]) }}" class="btn btn-info">Éditer</a></td>
 	                                    <td><a href="{{ action('TPsQuestionsController@disconnect', [$tp->id, $question->id]) }}" class="btn btn-info">Déconnecter</a></td>
-										<td><a href="{{ action('TPsQuestionsController@index',$tp->id) }}" class="btn btn-info">balist to do</a></td>
 										<td>
 											{{ Form::open(array('action' => array('TPsQuestionsController@destroy',$tp->id, $question->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain? Elle sera détachée de tous les TPs auquel elle est associée')) }}
 	                                        	<button type="submit" href="{{ URL::route('tps.questions.destroy', $tp->id, $question->id) }}" class="btn btn-danger btn-mini">Effacer</button>

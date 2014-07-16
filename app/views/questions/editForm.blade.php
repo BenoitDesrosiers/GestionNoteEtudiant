@@ -18,13 +18,18 @@
 </div>
 <div class="form-group">
 	{{ Form::label('enonce', 'Énoncé:') }} 
-	{{ Form::text('enonce', $question->enonce, ['class' => 'form-control']) }}
+	{{ Form::textarea('enonce', $question->enonce, ['class' => 'form-control']) }}
 	{{ $errors->first('enonce') }}
 </div>
 <div class="form-group">
-	{{ Form::label('tag', 'Tag:') }} 
-	{{ Form::text('tag', $question->tag, ['class' => 'form-control']) }}
-	{{ $errors->first('tag') }}
+	{{ Form::label('baliseCorrection', 'Balises de correction:') }} 
+	{{ Form::textarea('baliseCorrection', $question->baliseCorrection, ['class' => 'form-control']) }}
+	{{ $errors->first('baliseCorrection') }}
+</div>
+<div class="form-group">
+	{{ Form::label('reponse', 'Réponse:') }} 
+	{{ Form::textarea('reponse', $question->reponse, ['class' => 'form-control']) }}
+	{{ $errors->first('reponse') }}
 </div>
 <div class="form-group">
 	{{ Form::label('sur', 'Sur:') }} 

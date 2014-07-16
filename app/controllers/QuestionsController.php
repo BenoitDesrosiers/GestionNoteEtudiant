@@ -39,7 +39,8 @@ class QuestionsController extends \BaseController {
 			$question = new Question;
 			$question->nom = $input['nom'];			
 			$question->enonce = $input['enonce'];
-			$question->tag = $input['tag'];
+			$question->baliseCorrection = $input['baliseCorrection'];
+			$question->reponse = $input['reponse'];
 			$question->sur = $input['sur'];
 			
 			$question->save();
@@ -90,7 +91,8 @@ class QuestionsController extends \BaseController {
 			$question = Question::findOrFail($id);
 			$question->nom = $input['nom'];
 			$question->enonce = $input['enonce'];
-			$question->tag = $input['tag'];
+			$question->baliseCorrection = $input['baliseCorrection'];
+			$question->reponse = $input['reponse'];
 			$question->sur = $input['sur'];
 			$question->save(); 
 		
