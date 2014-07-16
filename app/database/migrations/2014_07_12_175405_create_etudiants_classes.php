@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTPs extends Migration {
+class CreateEtudiantsClasses extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,13 @@ class CreateTPs extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tps', function(Blueprint $table)
+	Schema::create('etudiants_classes', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('nom');
-			$table->integer('sur'); // ce TP est sur combien
-			$table->integer('poids'); // ce TP compte pour combien sur la note finale
+			$table->integer('classe_id');
+			$table->integer('etudiant_id');
 			$table->timestamps();
-		});
+		});	
 	}
 
 	/**
@@ -29,7 +28,7 @@ class CreateTPs extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tps');
+		Schema::drop('etudiants_classes');
 	}
 
 }

@@ -13,10 +13,10 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Création d'un travail pratique</h1>
+			<h1>Création d'un travail pratique </h1>
 			
 			{{ Form::open(['url'=> 'classes/'.$classe->id.'/tps', 'class' => 'form']) }}
-				@include('tps.createTPform')
+				@include('tps.createForm')
 			{{ Form::close() }}
 		</div>
 	</section>

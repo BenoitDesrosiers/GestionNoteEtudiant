@@ -27,6 +27,8 @@
 									<th> </th>
 									<th> </th>
 									<th> </th>
+									<th> </th>
+									<th> </th>
 									
 								</tr>
 							</thead>
@@ -47,6 +49,7 @@
 	                                        						   un script js est appelé pour tous les form qui ont un "data-confirm" (voir assets/js/script.js) --}}
 										</td>
 										<td><a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">TPs</a></td>
+										<td><a href="{{ action('ClassesEtudiantsController@index',$classe->id) }}" class="btn btn-info">Étudiants</a></td>
 										
 									</tr>
 								@endforeach

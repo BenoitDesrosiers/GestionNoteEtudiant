@@ -16,6 +16,11 @@ class Classe extends Eloquent
 		return $this->belongsToMany('TP', 'classes_tps', 'classe_id', 'tp_id')->withPivot('poids_local'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????
 	}
 	
+	// Une classe a plusieurs étudiants d'inscrit
+	
+	public function etudiants() {
+		return $this->belongsToMany('Etudiant', 'etudiants_classes', 'classe_id', 'etudiant_id');
+	}
 	
 	
 /*

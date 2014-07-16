@@ -13,11 +13,39 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/classes/{classe}/tps/{tps}/disconnectTP', 'ClassesTPsController@disconnectTP');
-Route::get('/classes/{classe}/connectTP', 'ClassesTPsController@connectTP');
-Route::post('/classes/{classe}/doConnectTP', 'ClassesTPsController@doConnectTP');
+/* Classes TPs */
+Route::get('/classes/{classe}/tps/{tps}/disconnectTP', 'ClassesTPsController@disconnect');
+Route::get('/classes/{classe}/connectTP', 'ClassesTPsController@connect');
+Route::post('/classes/{classe}/doConnectTP', 'ClassesTPsController@doConnect');
 
+/* Classes Etudiants */
+Route::get('/classes/{classe}/etudiants/{etudiant}/disconnectEtudiant', 'ClassesEtudiantsController@disconnect');
+Route::get('/classes/{classe}/connectEtudiant', 'ClassesEtudiantsController@connect');
+Route::post('/classes/{classe}/doConnectEtudiant', 'ClassesEtudiantsController@doConnect');
+
+
+/* Classes */
 Route::resource('classes', 'ClassesController');
-Route::resource('tps', 'TPsController');
 
+
+/* Travaux pratiques (TP) */
+Route::resource('tps', 'TPsController');
 Route::resource('classes.tps', 'ClassesTPsController');
+
+
+Route::get('/tps/{tp}/questions/{questions}/disconnectQuestion', 'TPsQuestionsController@disconnect');
+Route::get('/tps/{tp}/connectQuestion', 'TPsQuestionsController@connect');
+Route::post('/tps/{tp}/doConnectQuestion', 'TPsQuestionsController@doConnect');
+
+/* Questions */
+Route::resource('questions', 'QuestionsController');
+Route::resource('tps.questions', 'TPsQuestionsController');
+
+/* Etudiants */
+Route::resource('etudiants', 'EtudiantsController');
+Route::resource('classes.etudiants', 'ClassesEtudiantsController');
+
+/* Correction / Notes */
+Route::get('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@index');
+Route::put('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@edit');
+Route::put('/notes/update', 'TPsNotesController@update');

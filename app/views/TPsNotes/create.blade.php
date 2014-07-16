@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="header-text">
 			<h1>Création</h1>
-			<p>Page de création d'un travail pratique</p>
+			<p>Page de création d'une question</p>
 		</div>
 	</div>
 </section>
@@ -13,10 +13,10 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Création d'un travail pratique</h1>
+			<h1>Création d'une question</h1>
 			
-			{{ Form::open(['url'=> 'tps', 'class' => 'form']) }}
-				@include('tps.createForm')
+			{{ Form::open(['url'=> 'tps/'.$tp->id.'/questions', 'class' => 'form']) }}
+				@include('questions.createTPform')
 			{{ Form::close() }}
 		</div>
 	</section>
