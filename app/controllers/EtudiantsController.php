@@ -109,6 +109,12 @@ class EtudiantsController extends \BaseController {
 		$etudiant->classes()->detach();
 		$etudiant->delete();
 		
+		// Détruit les notes associées à ce etudiant
+		$notes = Note::where('etudiant_id', '=', $id)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
+		
 		return Redirect::action('EtudiantsController@index');			
 	}
 

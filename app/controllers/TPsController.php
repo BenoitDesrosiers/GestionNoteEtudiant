@@ -34,7 +34,6 @@ class TPsController extends BaseController
 		if (TP::isValid($input)) {
 			$tp = new TP;
 			$tp->nom = $input['nom'];
-			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
 			
 			$tp->save();
@@ -54,7 +53,6 @@ class TPsController extends BaseController
 		if (TP::isValid($input,$tpId)) { 
 			$tp = TP::findOrFail($tpId);
 			$tp->nom = $input['nom'];
-			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
 			$tp->save(); 
 		
@@ -69,6 +67,11 @@ class TPsController extends BaseController
 		$tp = TP::findOrFail($tpId);
 		$tp->classes()->detach();
 		$tp->delete();
+		// Détruit les notes associées à ce tp
+		$notes = Note::where('tp_id', '=', $tpId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
 		
 		return Redirect::action('TPsController@index');		
 	}

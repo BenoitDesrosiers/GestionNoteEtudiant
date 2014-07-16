@@ -25,7 +25,7 @@
 									<th>#</th>
 									<th>Associé</th>
 									<th>Nom</th>
-									<th>Sur</th>
+									<th>Sur (calculé)</th>
 									<th>Poids</th>
 									<th> </th>
 								</tr>
@@ -42,9 +42,9 @@
 											{{ Form::checkbox('selectionClasse[]', $tp->id, $trouve ) }}
 										</td>
 										<td>{{ $tp->nom }} </td>
-										<td>{{ $tp->sur }} </td>
+										<td>{{ $tp->questions()->sum('sur_local') }} </td>
 										<td>{{ $tp->poids }} </td>
-										
+									
 									</tr>
 								@endforeach
 								

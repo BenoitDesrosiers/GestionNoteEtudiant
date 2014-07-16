@@ -48,7 +48,7 @@ class TPsQuestionsController extends BaseController
 			$question->save();
 			
 			//associe la TP au Question (many to many)
-			$question->TPs()->attach($tpId, ['sur_local'=>$question->sur]); // TODO: calculer l'ordre de la question
+			$question->TPs()->attach($tpId, ['sur_local'=>$question->sur, 'ordre'=>$input['ordre'] ]); // TODO: calculer l'ordre de la question
 			
 			return Redirect::action('TPsQuestionsController@index', $tpId);
 		}
@@ -89,6 +89,12 @@ class TPsQuestionsController extends BaseController
 		$question->tps()->detach();
 		$question->delete();
 		
+		// Détruit les notes associées à cette question
+		$notes = Note::where('question_id', '=', $questionId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
+		
 		return Redirect::action('TPsQuestionsController@index', $tpId);		
 	}
 	
@@ -102,6 +108,11 @@ class TPsQuestionsController extends BaseController
 	
 	public function doConnect($tpId)
 	{
+		/*TODO: les connect et déconnect devrait envoyer un event. 
+		 * 		Par exemple, je ne devrais pas avoir a effacer les notes lié a cette question/tp 
+		 * 		ca devrait être la note qui s'enregistre à l'event et qui réagit en conséquence. 
+		 */
+		
 		$input= Input::all();
 		
 		if (isset($input['selectionTP'])) {
@@ -114,9 +125,16 @@ class TPsQuestionsController extends BaseController
 	
 	public function disconnect($tpId, $questionId)
 	{
-		// Déconnecte un Question d'une TP sans effacer le Question
+		// Déconnecte un Question d'une TP sans effacer la question
 		$question = Question::findOrFail($questionId);
-		$question->TPs()->detach($tpId);
+		$question->tps()->detach($tpId);
+		
+		// Détruit les notes associées à ce tuple tp/question
+		$notes = Note::where('tp_id', '=', $tpId)
+					->where('question_id', '=', $questionId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
 		
 		return Redirect::action('TPsQuestionsController@index', $tpId);
 	}

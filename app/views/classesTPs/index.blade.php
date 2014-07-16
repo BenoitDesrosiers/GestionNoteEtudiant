@@ -21,21 +21,24 @@
 								<tr>
 									<th>#</th>
 									<th>Nom</th>
-									<th>Sur</th>
+									<th>Sur (calculé)</th>
 									<th>Poids</th>
 									<th>Poids local</th>
 									<th> </th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php $total = 0; $total_local = 0; ?> 
+								<?php $total_sur = 0; $poids = 0; $poids_local = 0; ?> 
 								@foreach($tps as $tp)
-									<?php $total += $tp->poids;
-										  $total_local += $tp->pivot->poids_local?> 
+									<?php $poids += $tp->poids;
+										  $poids_local += $tp->pivot->poids_local;
+										  $unTotalSur = $tp->questions()->sum('sur_local');
+										  $total_sur += $unTotalSur;
+									?> 
 									<tr>
 										<td><a href="{{ action('ClassesTPsController@show', [$classe->id, $tp->id]) }}">{{ $tp->id }}</a> </td>
 										<td>{{ $tp->nom }} </td>
-										<td>{{ $tp->sur }} </td>										
+										<td>{{ $unTotalSur }} </td>										
 										<td>{{ $tp->poids}} </td>
 										<td>{{ $tp->pivot->poids_local }} </td>
 										<td><a href="{{ action('ClassesTPsController@edit', [$classe->id, $tp->id]) }}" class="btn btn-info">Éditer</a></td>
@@ -52,10 +55,10 @@
 								@endforeach
 								<tr>
 									<td> </td>
-									<td> </td>
 									<td>total:</td>
-									<td> {{ $total }} </td>
-									<td> {{ $total_local }} </td>
+									<td> {{ $total_sur }}</td>					
+									<td> {{ $poids }} </td>
+									<td> {{ $poids_local }} </td>
 									
 								</tr>	
 							</tbody>

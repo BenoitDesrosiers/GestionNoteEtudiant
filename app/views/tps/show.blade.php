@@ -12,7 +12,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			@include('tps.editTPForm')
+			@include('tps.editForm')
 		</div>
 		
 		<a href="{{ action('TPsController@index') }}" class="btn btn-info">Retour aux TPs</a>

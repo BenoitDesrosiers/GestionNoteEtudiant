@@ -20,7 +20,7 @@
 								<tr>
 									<th>#</th>
 									<th>Nom</th>
-									<th>Sur</th>
+									<th>Sur (calculé)</th>
 									<th>Poids</th>
 									<th> </th>
 								</tr>
@@ -30,7 +30,7 @@
 									<tr>
 										<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->id }}</a> </td>
 										<td>{{ $tp->nom }} </td>
-										<td>{{ $tp->sur }} </td>
+										<td>{{ $tp->questions()->sum('sur_local')}} </td>
 										<td>{{ $tp->poids }} </td>
 										<td><a href="{{ action('TPsController@edit', [$tp->id]) }}" class="btn btn-info">Éditer</a></td>
 										<td>

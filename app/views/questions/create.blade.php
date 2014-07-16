@@ -17,6 +17,9 @@
 			
 			{{ Form::open(['url'=> 'questions', 'class' => 'form']) }}
 				@include('questions.createForm')
+				<div class="form-group">
+					{{ Form::submit('Créer', ['class' => 'btn btn-primary'])}}
+				</div>
 			{{ Form::close() }}
 		</div>
 	</section>

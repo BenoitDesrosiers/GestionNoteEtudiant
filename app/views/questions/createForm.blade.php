@@ -1,4 +1,3 @@
-
 <div class="form-group">
 	{{ Form::label('nom', 'Nom:') }} 
 	{{ Form::text('nom',null, ['class' => 'form-control']) }}
@@ -13,7 +12,7 @@
 	{{ Form::textarea('baliseCorrection',null, ['class' => 'form-control']) }}
 	{{ $errors->first('baliseCorrection') }}
 </div>
-</div><div class="form-group">
+<div class="form-group">
 	{{ Form::label('reponse', 'Réponse:') }} 
 	{{ Form::textarea('reponse',null, ['class' => 'form-control']) }}
 	{{ $errors->first('reponse') }}
@@ -21,10 +20,5 @@
 <div class="form-group">
 	{{ Form::label('sur', 'Sur:') }} 
 	{{ Form::text('sur',null, ['class' => 'form-control']) }}
-	{{ $errors->first('sur') }}
-	
-</div>
-
-<div class="form-group">
-	{{ Form::submit('Créer', ['class' => 'btn btn-primary'])}}
+	{{ $errors->first('sur') }}	
 </div>

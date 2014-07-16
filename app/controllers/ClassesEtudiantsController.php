@@ -77,6 +77,12 @@ class ClassesEtudiantsController extends BaseController
 		$etudiant->classes()->detach();
 		$etudiant->delete();
 		
+		// Détruit les notes associées à cette etudiant
+		$notes = Note::where('etudiant_id', '=', $etudiantId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
+		
 		return Redirect::action('ClassesEtudiantsController@index', $classeId);		
 	}
 	
@@ -105,6 +111,13 @@ class ClassesEtudiantsController extends BaseController
 		// Déconnecte un Etudiant d'une classe sans effacer le Etudiant
 		$etudiant = Etudiant::findOrFail($etudiantId);
 		$etudiant->classes()->detach($classeId);
+		
+		// Détruit les notes associées à ce tuple classe/etudiant
+		$notes = Note::where('etudiant_id', '=', $classeId)
+		->where('classe_id', '=', $etudiantId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
 		
 		return Redirect::action('ClassesEtudiantsController@index', $classeId);
 	}

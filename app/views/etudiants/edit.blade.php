@@ -1,13 +1,13 @@
 @extends('layout')
 @section('content')
 
-<section class="header section-padding">
-	<div class="container">
+<section class="header section-padding"> 
+	<div class="container"> 
 		<div class="header-text">
 			<h1>Édition</h1>
 			<p>Page d'édition d'un étudiant</p>
-		</div
-	</div>
+		</div>
+	</div>	
 </section>
 
 <div class="container">

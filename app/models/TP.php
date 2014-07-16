@@ -28,7 +28,6 @@ class TP extends Eloquent
  * 
  * un TP doit avoir: 
  *  nom : obligatoire
- *  sur : obligatoire
  *  poids : obligatoire
  *  
  */	
@@ -38,7 +37,6 @@ class TP extends Eloquent
 	public static function validationRules($id=0) {
 		return [	 
 			'nom'=>'required',
-			'sur'=>'required',
 			'poids'=>'required'
 	];	
 	}

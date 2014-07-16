@@ -40,7 +40,6 @@ class ClassesTPsController extends BaseController
 		if (TP::isValid($input)) {
 			$tp = new TP;
 			$tp->nom = $input['nom'];
-			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
 			
 			$tp->save();
@@ -65,7 +64,6 @@ class ClassesTPsController extends BaseController
 		if (TP::isValid($input,$tpId)) { 
 			$tp = $classe->tps()->where('tp_id', '=', $tpId)->first();
 			$tp->nom = $input['nom'];
-			$tp->sur = $input['sur'];
 			$tp->poids = $input['poids'];
 			$tp->save(); 
 			
@@ -83,6 +81,12 @@ class ClassesTPsController extends BaseController
 		$tp = TP::findOrFail($tpId);
 		$tp->classes()->detach();
 		$tp->delete();
+		
+		// Détruit les notes associées à ce tp
+		$notes = Note::where('tp_id', '=', $tpId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
 		
 		return Redirect::action('ClassesTPsController@index', $classeId);		
 	}
@@ -113,6 +117,12 @@ class ClassesTPsController extends BaseController
 		// Déconnecte un TP d'une classe sans effacer le TP
 		$tp = TP::findOrFail($tpId);
 		$tp->classes()->detach($classeId);
+		// Détruit les notes associées à ce tuple classe/tp
+		$notes = Note::where('tp_id', '=', $tpId)
+					->where('classe_id', '=', $classeId)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
 		
 		return Redirect::action('ClassesTPsController@index', $classeId);
 	}

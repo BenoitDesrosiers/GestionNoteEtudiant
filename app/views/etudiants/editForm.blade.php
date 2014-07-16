@@ -9,6 +9,7 @@
 				}	
 				$id_classes = $id_classes . $tp_local->id ; ?>
 		@endforeach
+		<?php if($id_classes == '') {$id_classes ="aucune";}?>
 	{{ Form::label('classes_id',$id_classes) }}
 </div>
 <div class="form-group">

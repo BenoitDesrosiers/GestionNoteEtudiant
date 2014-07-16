@@ -9,6 +9,7 @@
 				}	
 				$id_tps = $id_tps . $tp_local->id ; ?>
 		@endforeach
+		<?php if($id_tps == '') {$id_tps='aucun';}?>
 	{{ Form::label('tps_id',$id_tps) }}
 </div>
 <div class="form-group">

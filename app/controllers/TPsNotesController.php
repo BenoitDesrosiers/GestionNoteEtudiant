@@ -40,7 +40,8 @@ class TPsNotesController extends BaseController
 			}
 		}
 		
-		//TODO: ajouter la logique pour les notes qui doivent être deleted
+		
+		
 			
 		return View::make('TPsNotes.index', compact('classe', 'tp', 'etudiants', 'questions')); 
 	}

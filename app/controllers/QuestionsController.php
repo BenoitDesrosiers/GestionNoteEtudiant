@@ -115,6 +115,12 @@ class QuestionsController extends \BaseController {
 		$question->tps()->detach();
 		$question->delete();
 		
+		// Détruit les notes associées à cette question
+		$notes = Note::where('question_id', '=', $id)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
+		
 		return Redirect::action('QuestionsController@index');			
 	}
 

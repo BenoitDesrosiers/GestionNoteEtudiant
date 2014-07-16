@@ -75,6 +75,12 @@ class ClassesController extends BaseController
 		
 		$classe->delete();
 		
+		// Détruit les notes associées à cette classes
+		$notes = Note::where('classe_id', '=', $id)->get();
+		foreach($notes as $note) {
+			$note->delete();
+		}
+		
 		return Redirect::action('ClassesController@index');		
 	}
 }

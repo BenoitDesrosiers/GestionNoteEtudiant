@@ -10,6 +10,3 @@
 	{{ $errors->first('da') }}
 
 
-<div class="form-group">
-	{{ Form::submit('Créer', ['class' => 'btn btn-primary'])}}
-</div>
