@@ -4,6 +4,7 @@ class ClassesController extends BaseController
 {
 	public function index()
 	{	
+	
 		$classes = Classe::all();
 		return View::make('classes.index', compact('classes'));
 	}

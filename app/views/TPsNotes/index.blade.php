@@ -17,7 +17,14 @@
 								<p>Étudiants</p>
 								
 								
-								<?php $liste_etudiants = [];
+								<?php 
+									
+									if($etudiants->isEmpty() or $questions->isEmpty()) {
+										$button_enabler = 'disabled';
+									} else {
+										$button_enabler = 'enabled';
+									}
+								$liste_etudiants = [];
 									foreach ($etudiants as $etudiant) {
 										$liste_etudiants[$etudiant->id] = $etudiant->nom . ', '. $etudiant->da;
 									}
@@ -36,9 +43,9 @@
 							
 						</div>
 						<div class="form-group" style="clear:both">
-							{{ Form::submit('Corriger cet étudiant', ['name' => 'corrigerEtudiant','class' => 'btn btn-primary']) }}
-							{{ Form::submit('Corriger cette question', ['name' => 'corrigerQuestion', 'class' => 'btn btn-primary']) }}
-							{{ Form::submit('Corriger cette question/étudiant', ['name' => 'corrigerQuestionEtudiant','class' => 'btn btn-primary']) }}
+							{{ Form::submit('Corriger cet étudiant', ['name' => 'corrigerEtudiant','class' => 'btn btn-info', $button_enabler => $button_enabler]) }}
+							{{ Form::submit('Corriger cette question', ['name' => 'corrigerQuestion', 'class' => 'btn btn-info', $button_enabler => $button_enabler]) }}
+							{{ Form::submit('Corriger cette question/étudiant', ['name' => 'corrigerQuestionEtudiant','class' => 'btn btn-info', $button_enabler => $button_enabler]) }}
 						</div>		
 						{{ Form::close() }}
 					</div>

@@ -22,10 +22,12 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="/">Cégep de Drummondville</a>
+			
 		</div>
 		<div class="collapse navbar-collapse" id="menu-principal">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="{{ action('HomeController@index') }}">Écran principal</a></li>
+				
 			</ul>
 		</div>
 	</nav>
