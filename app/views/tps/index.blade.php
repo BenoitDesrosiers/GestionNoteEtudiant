@@ -1,54 +1,42 @@
 @extends('layout')
 @section('content')
-
-
-
 	<div class="container">
 		<section class="section-padding">
 			<div class="jumbotron text-left">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h1> Liste des travaux pratiques</h1>
-						<a href="{{ action('TPsController@create') }}" class="btn btn-info">Créer un TP</a>						
+						{{ Form::open(['action'=> ['TPsController@create'], 'class' => 'form', 'method' => 'get']) }}
+							{{ Form::hidden('belongsToId', '1', array('id'=>'belongsToId')) }}
+							{{ Form::submit('Créer un TP', ['class' => 'btn btn-primary'])}}
+						{{ Form::close() }}
 					</div>
 					
-					@if ($tps->isEmpty())
-						<p>Aucun travail pratique disponible!</p>
-					@else
-						<table class="table">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Nom</th>
-									<th>Sur (calculé)</th>
-									<th>Poids</th>
-									<th> </th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach($tps as $tp)
-									<tr>
-										<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->id }}</a> </td>
-										<td>{{ $tp->nom }} </td>
-										<td>{{ $tp->questions()->sum('sur_local')}} </td>
-										<td>{{ $tp->poids }} </td>
-										<td><a href="{{ action('TPsController@edit', [$tp->id]) }}" class="btn btn-info">Éditer</a></td>
-										<td>
-											{{ Form::open(array('action' => array('TPsController@destroy', $tp->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}
-	                                        	<button type="submit" href="{{ URL::route('tps.destroy', $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>
-	                                        {{ Form::close() }}   
-	                                    </td>
-										<td><a href="{{ action('TPsQuestionsController@index', [$tp->id]) }}" class="btn btn-info">Questions</a></td>
-									</tr>
-								@endforeach
-									
-							</tbody>
-								
-						</table>
-					@endif
+					<div id="belongsToSelect">						
+						{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedId, array('id' => 'belongsToListSelect')) }}
+					</div> <!-- belongsToSelect -->
+					
+					<div id="liste-items">
+						<?php // cette div sera remplie par le code js ?>
+					</div> <!-- liste-items -->
 				</div>
 			</div>
 		</section>
 	</div>
 
+<script>	
+	function afficheListeItems() {
+		$.ajax({
+			type: 'POST',
+			url: '{{URL::action('TPsController@tpsPourClasse') }}',
+			data: { belongsToId : document.getElementById('belongsToListSelect').value  },
+			timeout: 1000,
+			success: function(data){
+				document.getElementById('liste-items').innerHTML=data;
+				}
+		});		
+	}	
+
+</script>
+{{ HTML::script('assets/js/script_ajax.js') }}
 @stop

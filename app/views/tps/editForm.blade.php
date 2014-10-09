@@ -1,29 +1,25 @@
+<?php if(!isset($tp)) {$tp = new TP;}?>
+<div id="belongsToSelect">
+	{{"Associer à:"}}
+	{{ Form::select('belongsToListSelect[]', $belongsToList,$belongsToSelectedIds, array('id' => 'belongsToListSelect', 'size' =>5, 'multiple'=>'true')) }}
+</div> <!-- belongsToSelect -->
 
 <div class="form-group">
-	{{ Form::label('classe_id', 'Classe(s) associée(s) : ') }}
-		<?php  $id_classes = ""; //TODO: gérer le cas ou il n'y a pas de classes associées, ca affiche le mot "classe id"??? 
-		foreach($tp->classes as $classe) :
-				if(!$id_classes == "") {
-					$id_classes = $id_classes . ', ';
-				}	
-				$id_classes = $id_classes . $classe->id ; 
-		endforeach ;
-		if($id_classes =="") { $id_classes = 'aucune'; }
-		?>
-	{{ Form::label('classse',$id_classes) }}
+	{{ Form::label('nom', 'Nom:', ['class' => "col-sm-2 control-label"]) }} 
+	<div class = 'col-sm-10'>
+		{{ Form::text('nom', $tp->nom, ['class' => 'form-control']) }}
+		{{ $errors->first('nom') }}
+	</div>
 </div>
 <div class="form-group">
-	{{ Form::label('nom', 'Nom:') }} 
-	{{ Form::text('nom', $tp->nom, ['class' => 'form-control']) }}
-	{{ $errors->first('nom') }}
+	{{ Form::label('poids', 'Poids:', ['class' => "col-sm-2 control-label"]) }} 
+	<div class = 'col-sm-10'>
+		{{ Form::text('poids',$tp->poids, ['class' => 'form-control']) }}
+	</div>	
 </div>
-
 <div class="form-group">
-	{{ Form::label('poids', 'Poids:') }} 
-	{{ Form::text('poids',$tp->poids, ['class' => 'form-control']) }}
-</div>
-
-<div class="form-group">
-	{{ Form::label('sur', 'Sur (calculé):') }} 
-	{{ Form::text('sur',$tp->questions()->sum('sur_local') , ['class' => 'form-control', 'readonly'=>'readonly']) }}
+	{{ Form::label('sur', 'Sur (calculé):', ['class' => "col-sm-2 control-label"]) }} 
+	<div class = 'col-sm-10'>
+		{{ Form::text('sur',$tp->questions()->sum('sur_local') , ['class' => 'form-control', 'readonly'=>'readonly']) }}
+	</div>
 </div>

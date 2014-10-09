@@ -21,12 +21,18 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/">Cégep de Drummondville</a>
+			<p class="navbar-text navbar-left">Cégep de Drummondville</p>
+			<p class="navbar-text navbar-left">Bienvenue {{ Auth::user()->username }}</p>
 			
+			<p> 
 		</div>
 		<div class="collapse navbar-collapse" id="menu-principal">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="{{ action('HomeController@index') }}">Écran principal</a></li>
+				<li>{{ link_to(URL::previous(), 'Écran précédent') }}</li>
+				
+				
+				<li><a href="{{ action('UserController@logout') }}">logout</a></li>
 				
 			</ul>
 		</div>

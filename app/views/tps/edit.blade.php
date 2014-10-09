@@ -4,8 +4,7 @@
 <section class="header section-padding">
 	<div class="container">
 		<div class="header-text">
-			<h1>Édition</h1>
-			<p>Page d'édition d'un travail pratique</p>
+			<h1>Édition d'un travail pratique</h1>
 		</div>
 	</div>
 </section>
@@ -13,9 +12,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Édition d'un TP</h1>
-			{{ Form::open(['action'=> array('TPsController@update', $tp->id), 'method' => 'PUT', 'class' => 'form']) }}
-			
+			{{ Form::open(['action'=> array('TPsController@update', $tp->id), 'method' => 'PUT', 'class' => 'form-horizontal', 'role'=>'form']) }}
 				@include('tps.editForm')
 				<div class="form-group">
 					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}

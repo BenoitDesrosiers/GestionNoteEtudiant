@@ -1,7 +1,7 @@
 
 <?php
 
-class Note extends Eloquent
+class Note extends EloquentValidating
 {
 	
  /*
@@ -39,9 +39,8 @@ class Note extends Eloquent
  *  
  */	
 	
-	public static $validationMessages;
 	
-	public static function validationRules($id=0) {
+	public function validationRules() {
 		return [	 
 			'classe_id'=>'required',
 			'tp_id'=>'required',
@@ -51,12 +50,4 @@ class Note extends Eloquent
 	];	
 	}
 
-	//TODO: mettre cette fonction dans une superclasse
-	public static function isValid($data, $id=0) {
-		
-		$validation = Validator::make($data, static::validationRules($id));
-		static::$validationMessages = $validation->messages();
-		
-		return $validation->passes();
-	}
 }

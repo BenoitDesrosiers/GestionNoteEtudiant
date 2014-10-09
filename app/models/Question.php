@@ -1,6 +1,6 @@
 <?php
 
-class Question extends Eloquent
+class Question extends EloquentValidating
 {
 	
  /*
@@ -29,22 +29,12 @@ class Question extends Eloquent
  *  
  */	
 	
-	public static $validationMessages;
 	
-	public static function validationRules($id=0) {
+	public function validationRules() {
 		return [	 
 			'nom'=>'required',
 			'enonce'=>'required',
 			'sur'=>'required'
 	];	
-	}
-
-	//TODO: mettre cette fonction dans une superclasse
-	public static function isValid($data, $id=0) {
-		
-		$validation = Validator::make($data, static::validationRules($id));
-		static::$validationMessages = $validation->messages();
-		
-		return $validation->passes();
 	}
 }

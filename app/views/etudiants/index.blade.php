@@ -6,45 +6,39 @@
 			<div class="jumbotron text-left">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h1> Liste des etudiants</h1>
-						<a href="{{ action('EtudiantsController@create') }}" class="btn btn-info">Créer une etudiant</a>						
+						<h1> Liste des étudiants</h1>
+						{{ Form::open(['action'=> ['EtudiantsController@create'], 'class' => 'form', 'method' => 'get']) }}
+							{{ Form::hidden('belongsToId', '1', array('id'=>'belongsToId')) }}
+							{{ Form::submit('Créer un Étudiant', ['class' => 'btn btn-primary'])}}
+						{{ Form::close() }}
 					</div>
+					<div id="belongsToSelect">						
+						{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedId, array('id' => 'belongsToListSelect')) }}
+					</div> <!-- belongsToSelect -->
 					
-					@if ($etudiants->isEmpty())
-						<p>Aucune etudiant de disponible!</p>
-					@else
-						<table class="table">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Nom</th>
-									<th>da</th>
-									<th> </th>
-									<th> </th>
-									
-								</tr>
-							</thead>
-							<tbody>
-								@foreach($etudiants as $etudiant)
-									<tr>
-										<td><a href="{{ action('EtudiantsController@show', [$etudiant->id]) }}">{{ $etudiant->id }}</a> </td>
-										<td>{{ $etudiant->nom }} </td>
-										<td>{{ $etudiant->da }} </td>
-										<td><a href="{{ action('EtudiantsController@edit', [$etudiant->id]) }}" class="btn btn-info">Éditer</a></td>
-										<td>
-											{{ Form::open(array('action' => array('EtudiantsController@destroy', $etudiant->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}
-	                                        	<button type="submit" href="{{ URL::route('etudiants.destroy', $etudiant->id) }}" class="btn btn-danger btn-mini">Effacer</button>
-	                                        {{ Form::close() }}   
-	                                    </td>
-									</tr>
-								@endforeach
-							</tbody>
-								
-						</table>
-					@endif
+					<div id="liste-items">
+						<?php // cette div sera remplie par le code js ?>
+					</div> <!-- liste-items -->
+					
+					
 				</div>
 			</div>
 		</section>
 	</div>
+<script>
+function afficheListeItems() {
+	$.ajax({
+		type: 'POST',
+		url: '{{URL::action('EtudiantsController@etudiantsPourClasse') }}',
+		data: { belongsToId : document.getElementById('belongsToListSelect').value  },
+		timeout: 1000,
+		success: function(data){
+			document.getElementById('liste-items').innerHTML=data;
+			}
+	});		
+}	
+
+</script>
+{{ HTML::script('assets/js/script_ajax.js') }}
 
 @stop

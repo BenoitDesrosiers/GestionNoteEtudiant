@@ -1,6 +1,6 @@
 <?php
 
-class Etudiant extends Eloquent
+class Etudiant extends EloquentValidating
 {
 	
  /*
@@ -28,21 +28,11 @@ class Etudiant extends Eloquent
  *  
  */	
 	
-	public static $validationMessages;
 	
-	public static function validationRules($id=0) {
+	public function validationRules() {
 		return [	 
 			'nom'=>'required',
 			'da'=>'required',
 	];	
-	}
-
-	//TODO: mettre cette fonction dans une superclasse
-	public static function isValid($data, $id=0) {
-		
-		$validation = Validator::make($data, static::validationRules($id));
-		static::$validationMessages = $validation->messages();
-		
-		return $validation->passes();
 	}
 }

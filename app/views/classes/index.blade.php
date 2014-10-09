@@ -15,11 +15,13 @@
 					@if ($classes->isEmpty())
 						<p>Aucune classes disponible!</p>
 					@else
+					
+						
+					<div class="table-responsive">	{{-- voir http://getbootstrap.com/css/#tables-responsive --}}
 						<table class="table">
 							<thead>
 								<tr>
-									<th>#</th>
-									<th>Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+									<th>Code</th>
 									<th>Nom</th>
 									<th>Session</th>
 									<th>Groupe</th>
@@ -35,8 +37,7 @@
 							<tbody>
 								@foreach($classes as $classe)
 									<tr>
-										<td><a href="{{ action('ClassesController@show', $classe->id) }}">{{ $classe->id }}</a> </td>
-										<td>{{ $classe->code }} </td>
+										<td><a href="{{ action('ClassesController@show', $classe->id) }}">{{ $classe->code }}</a> </td>
 										<td>{{ $classe->nom }} </td>
 										<td>{{ $classe->session }} </td>
 										<td>{{ $classe->groupe }} </td>
@@ -48,14 +49,15 @@
 	                                        {{ Form::close() }}   {{-- méthode pour faire le delete tel que décrit sur http://www.codeforest.net/laravel-4-tutorial-part-2 , 
 	                                        						   un script js est appelé pour tous les form qui ont un "data-confirm" (voir assets/js/script.js) --}}
 										</td>
-										<td><a href="{{ action('ClassesTPsController@index',$classe->id) }}" class="btn btn-info">TPs</a></td>
-										<td><a href="{{ action('ClassesEtudiantsController@index',$classe->id) }}" class="btn btn-info">Étudiants</a></td>
+										<td><a href="{{ action('TPsController@index',array('belongsToId'=>$classe->id))}}" class="btn btn-info">TPs</a></td>
+										<td><a href="{{ action('EtudiantsController@index',array('belongsToId'=>$classe->id)) }}" class="btn btn-info">Étudiants</a></td>
 										
 									</tr>
 								@endforeach
 							</tbody>
 								
 						</table>
+					</div>
 					@endif
 				</div>
 			</div>

@@ -32,6 +32,7 @@ Route::group(['before'=>'auth'], function() {
 		
 		
 		/* Travaux pratiques (TP) */
+		Route::post('tpsPourClasse', 'TPsController@tpsPourClasse');     //pour l'appel AJAX  
 		Route::resource('tps', 'TPsController');
 		Route::resource('classes.tps', 'ClassesTPsController');
 		
@@ -40,6 +41,7 @@ Route::group(['before'=>'auth'], function() {
 		Route::resource('tps.questions', 'TPsQuestionsController');
 		
 		/* Etudiants */
+		Route::post('etudiantsPourClasse', 'EtudiantsController@etudiantsPourClasse');     //pour l'appel AJAX
 		Route::resource('etudiants', 'EtudiantsController');
 		Route::resource('classes.etudiants', 'ClassesEtudiantsController');
 	

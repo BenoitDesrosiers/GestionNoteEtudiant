@@ -4,24 +4,22 @@
 <section class="header section-padding">
 	<div class="container">
 		<div class="header-text">
-			<h1>Création</h1>
-			<p>Page de création d'un travail pratique</p>
+			<h1>Création d'un travail pratique</h1>
 		</div>
 	</div>
 </section>
 
 <div class="container">
 	<section class="section-padding">
-		<div class="jumbotron text-left">
-			<h1>Création d'un travail pratique</h1>
-			
-			{{ Form::open(['url'=> 'tps', 'class' => 'form']) }}
-				@include('tps.createForm')
+		<div class="jumbotron text-left">			
+			{{ Form::open(['url'=> 'tps',  'class' => 'form-horizontal', 'role'=>'form']) }}
+				@include('tps.editForm')
 				<div class="form-group">
 					{{ Form::submit('Créer', ['class' => 'btn btn-primary'])}}
 				</div>
 			{{ Form::close() }}
 		</div>
+		
 	</section>
 </div>
 @stop

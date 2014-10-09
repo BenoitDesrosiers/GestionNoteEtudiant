@@ -4,22 +4,18 @@
 <section class="header section-padding">
 	<div class="container">
 		<div class="header-text">
-			<h1>Affichage</h1>
-			<p>Affichage d'une classe</p>
+			<h1>Affichage d'une classe</h1>
 		</div>
 	</div>
 </section>
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			<h1>Classe: {{ $classe->code ."   ". $classe->session }}</h1>
-			<p>Nom: {{ $classe->nom }} </p>
-			<p>Groupe: {{ $classe->groupe }} </p>
-			<p>Local: {{ $classe->local }} </p>
-			
+			<div class="form-horizontal">			
+				@include('classes.editForm')  <?php //TODO: l'include est un formulaire, et les champs sont editable... c'est pas clean ?>
+			</div>	
+			{{ link_to(URL::previous(), 'Écran précédent', ['class'=>"btn btn-info"]) }}				
 		</div>
-		<a href="{{ action('ClassesController@index') }}" class="btn btn-info">Retour à la page principale</a>
-		
 	</section>
 </div>
 @stop
