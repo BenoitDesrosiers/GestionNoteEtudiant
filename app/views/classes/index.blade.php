@@ -39,7 +39,7 @@
 									<tr>
 										<td><a href="{{ action('ClassesController@show', $classe->id) }}">{{ $classe->code }}</a> </td>
 										<td>{{ $classe->nom }} </td>
-										<td>{{ $classe->session }} </td>
+										<td>{{ $classe->sessionscholaire()->first()->nom }} </td>
 										<td>{{ $classe->groupe }} </td>
 										<td>{{ $classe->local }} </td>
 										<td><a href="{{ action('ClassesController@edit',$classe->id) }}" class="btn btn-info">Éditer</a></td>

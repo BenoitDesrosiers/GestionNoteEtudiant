@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Le controller pour les classes
+ * 
+ * @version 0.1
+ * @author benou
+ *
+ */
+
 class ClassesController extends BaseController
 {
 	public function index()
@@ -10,13 +18,17 @@ class ClassesController extends BaseController
 	
 	public function create()
 	{
-		return View::make('classes.create');
+		$sessionsList= DB::table("sessionscholaires")->lists( 'nom','id');
+		$sessionSelected = DB::table('sessionscholaires')->where("courant", 1)->pluck("id");
+		return View::make('classes.create', compact("sessionsList", "sessionSelected"));
 	}
 	
 	public function edit($id)
 	{
+		$sessionsList= DB::table("sessionscholaires")->lists( 'nom','id');
 		$classe = Classe::findOrFail($id);
-		return View::make('classes.edit', compact('classe'));
+		$sessionSelected = $classe->sessionscholaire->id;
+		return View::make('classes.edit', compact('classe',"sessionsList", "sessionSelected"));
 	}
 	
 	
@@ -29,15 +41,14 @@ class ClassesController extends BaseController
 	public function store()
 	{
 		$input = Input::all();
-		
 		$classe = new Classe;
 		$classe->code = $input['code'];
 		$classe->nom = $input['nom'];
-		$classe->session = $input['session'];
 		$classe->groupe = $input['groupe'];
 		$classe->local = $input['local'];
-			
-		if($classe->save()) {			
+		
+		$sessionScholaire = Sessionscholaire::findOrFail($input['session']); //TODO catcher l'exception
+		if($sessionScholaire->classes()->save($classe)) {
 			return Redirect::action('ClassesController@index');
 		} else {
 			return Redirect::back()->withInput()->withErrors($classe->validationMessages);		
@@ -52,11 +63,11 @@ class ClassesController extends BaseController
 		$classe = Classe::findOrFail($id);
 		$classe->code = $input['code'];
 		$classe->nom = $input['nom'];
-		$classe->session = $input['session'];
 		$classe->groupe = $input['groupe'];
 		$classe->local = $input['local'];
+		$sessionScholaire = Sessionscholaire::findOrFail($input['session']); //TODO catcher l'exception
 		
-		if($classe->save()) { 
+		if($sessionScholaire->classes()->save($classe)) { 
 			return Redirect::action('ClassesController@index');
 		} else {
 			return Redirect::back()->withInput()->withErrors($classe->validationMessages);

@@ -37,16 +37,25 @@ function checkLinkedId($defaut, $itemId, $classe) {
  * @return array associative ayant pour clé les valeurs de la colonne $cle, et pour valeur la concaténation des $proprietes, et optionnelement une première 
  *                           ligne avec la clé 0 et la valeur $tous.
  */
-function createSelectList($items, $cle, $proprietes, $tous = "") {
+function createSelectList($items, $cle, $proprietes, $tous = "", $proprietesLiees=null) {
 	$belongsToList = [];
 	if($tous <> "") {
 		$belongsToList[0] = $tous;	
 	}	
 	foreach($items as $item) {
 		$texte = "";
-		foreach($proprietes as $propriete) {
+		
+		foreach($proprietes as $propriete) {				
 			$texte = $texte." ".$item->$propriete;
 		}
+		if(isset($proprietesLiees)) {				
+			forEach($proprietesLiees as $proprieteLieeId => $proprieteLieeClasseColonne) {
+				$proprieteAdditionnelle  = $proprieteLieeClasseColonne['classe']::findOrFail($item->$proprieteLieeId);
+				$texte = $texte ." ".$proprieteAdditionnelle ->$proprieteLieeClasseColonne['colonne'];
+				
+			}
+		}
+		
 		$belongsToList[$item->$cle] = $texte;
 	}
 	return $belongsToList;
@@ -71,3 +80,8 @@ function allIdsExist($ids, $classe ) {
 		}
 	return $retour;
 }
+
+
+
+
+

@@ -30,7 +30,10 @@ class Classe extends EloquentValidating
 		return $this->belongsToMany('Etudiant', 'etudiants_classes', 'classe_id', 'etudiant_id');
 	}
 	
-	
+	// Une classe appartient à une session
+	public function sessionscholaire() {
+		return $this->belongsTo('Sessionscholaire');
+	}
 /*
  * Validation
  * 
@@ -46,9 +49,7 @@ class Classe extends EloquentValidating
 		return [
 			'code' => 'required|unique:classes,code'.($this->id ? ",$this->id" : ''),
 			'nom'=>'required',
-			'session'=>'required'
 	];	
 	}
-	//TODO: ajouter une validation pour la session en regex
 	
 }

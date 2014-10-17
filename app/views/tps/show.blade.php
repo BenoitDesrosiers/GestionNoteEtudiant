@@ -14,7 +14,7 @@
 			<div class="form-horizontal">
 				@include('tps.editForm')
 			</div>
-			{{ link_to(URL::previous(), 'Écran précédent', ['class'=>"btn btn-info"]) }}		
+			{{ link_to(Request::header('referer'), 'Écran précédent', ['class'=>"btn btn-info"]) }}		
 		</div>	
 	</section>
 </div>

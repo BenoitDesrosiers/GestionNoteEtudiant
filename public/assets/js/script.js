@@ -1,12 +1,16 @@
+
+
+/**
+ * functions affichant un pop-up demandant une confirmation
+ * utilisees pour confirmer lors de l'appuie sur un bouton "effacer"
+ */
 $(function() {
        catchDataConfirm();
 });
-
 $(document).ajaxComplete(function(){
 	//refait l'association du bouton data-confirm après un reload ajax.
 	catchDataConfirm();
 });
-
 function catchDataConfirm() {
 	
 	 // Confirm deleting resources
@@ -17,3 +21,30 @@ function catchDataConfirm() {
             }
     });
 }
+
+
+
+/**
+ * change un input select dans le formulaire
+ * 
+ * @param selectId l'id html du select sur le formulaire
+ * @param choix un array d'id d'option a afficher. Les autres seront display:none
+ * @param reset un boolean indiquand si on doit reseter les options qui sont "selected".
+ * 				Si vrai, la première option sera selected
+ * 				Si faux, les options qui étaient selected vont le rester. 
+ */
+function changeSelect(selectId, choix, reset) {
+	var leSelect = document.getElementById(selectId);
+	var leSelected = -1;
+	for(var j = 0; j < leSelect.options.length; ++j) {
+		leSelect.options[j].style = "display:none";
+		for(var i = 0; i< choix.length; i++) {
+			if(leSelect.options[j].value == choix[i] || ( leSelect.options[j].selected == true && !reset)) {
+				leSelect.options[j].style = "";
+				if(leSelected == -1)
+					{leSelected = leSelect.options[j].value;}
+			}
+		}
+	}
+	if(reset) {document.getElementById(selectId).value = leSelected;}
+};

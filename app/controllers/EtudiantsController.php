@@ -23,8 +23,7 @@ class EtudiantsController extends \BaseController {
 		$belongsToSelectedId = checkLinkedId(0, Input::get('belongsToId'), 'Classe');
 		return View::make('etudiants.index', compact('belongsToList', 'belongsToSelectedId'));
 	}
-
-
+	
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -37,6 +36,34 @@ class EtudiantsController extends \BaseController {
 		return View::make('etudiants.create', compact('belongsToList', 'belongsToSelectedIds'));
 	}
 
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$belongsToList = createSelectList(Classe::all(), "id", ['code', 'nom'], "Aucune classe");
+		$etudiant = Etudiant::findOrFail($id); //TODO: catcher ModelNotFoundException
+		$belongsToSelectedIds =  $etudiant->classes->fetch('id')->toArray();
+		return View::make('etudiants.edit', compact( 'etudiant', 'belongsToList', 'belongsToSelectedIds'));
+	}
+	
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$belongsToList = createSelectList(Classe::all(), "id", ['code', 'nom'], "Aucune classe");
+		$etudiant = Etudiant::findOrFail($id); //TODO: catcher ModelNotFoundException
+		$belongsToSelectedIds =  $etudiant->classes->fetch('id')->toArray();
+		return View::make('etudiants.show', compact( 'etudiant', 'belongsToList', 'belongsToSelectedIds'));
+	}
+	
 
 	/**
 	 * Store a newly created resource in storage.
@@ -51,7 +78,7 @@ class EtudiantsController extends \BaseController {
 		if(isset($input['belongsToListSelect'])) {
 			$classeIds = $input['belongsToListSelect'];
 			if(!allIdsExist($classeIds, 'Classe')){
-				App::abort(404); //TODO afficher une meilleur page d'erreur
+				return View::make("erreurSysteme"); 
 			}
 		} else {
 			$classeIds =[]; 
@@ -74,34 +101,6 @@ class EtudiantsController extends \BaseController {
 	}
 
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$belongsToList = createSelectList(Classe::all(), "id", ['code', 'nom'], "Aucune classe");
-		$etudiant = Etudiant::findOrFail($id); //TODO: catcher ModelNotFoundException
-		$belongsToSelectedIds =  $etudiant->classes->fetch('id')->toArray();
-		return View::make('etudiants.show', compact( 'etudiant', 'belongsToList', 'belongsToSelectedIds'));
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$belongsToList = createSelectList(Classe::all(), "id", ['code', 'nom'], "Aucune classe");
-		$etudiant = Etudiant::findOrFail($id); //TODO: catcher ModelNotFoundException
-		$belongsToSelectedIds =  $etudiant->classes->fetch('id')->toArray();
-		return View::make('etudiants.edit', compact( 'etudiant', 'belongsToList', 'belongsToSelectedIds'));	
-	}
 
 
 	/**
@@ -116,7 +115,7 @@ class EtudiantsController extends \BaseController {
 		//verifie que les ids de classe passé en paramêtre sont bons
 		$classeIds = Input::get('belongsToListSelect', []);
 		if(!allIdsExist($classeIds, 'Classe')){
-			App::abort(404); //TODO afficher une meilleur page d'erreur
+				return View::make("erreurSysteme"); 
 		}		
 		$etudiant = Etudiant::findOrFail($id); //TODO catch l'exception
 		$etudiant->nom = $input['nom'];

@@ -17,12 +17,25 @@ thead, tbody {
 	font-size: 12px;
 }
 
+td {
+	font-size: 12px;
+	font-family: Helvetica;
+}
+
 .btn-info, .btn-danger {
 	font-size: 12px;
 }
 
 
-/* hack pour Firefox pour bien afficher les table responsive 
+/* hack pour Firefox pour bien afficher les table responsive */
 @-moz-document url-prefix() {
   fieldset { display: table-cell; }
+}
+
+/* pour coller les inputs dans les formulaires */
+.form-group {
+  margin-bottom: 2px;
+}
+.jumbotron {
+	font-size:14px;
 }

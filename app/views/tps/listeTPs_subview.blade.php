@@ -41,7 +41,6 @@
 					</tr>
 				@endforeach
 				<tr>
-					<td> </td>
 					<td>total:</td>
 					<td class="text-right"> {{ $total_sur }}</td>					
 					<td class="text-right"> {{ $poids }}</td>

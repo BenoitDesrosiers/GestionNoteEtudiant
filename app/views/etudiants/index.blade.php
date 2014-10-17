@@ -26,17 +26,7 @@
 		</section>
 	</div>
 <script>
-function afficheListeItems() {
-	$.ajax({
-		type: 'POST',
-		url: '{{URL::action('EtudiantsController@etudiantsPourClasse') }}',
-		data: { belongsToId : document.getElementById('belongsToListSelect').value  },
-		timeout: 1000,
-		success: function(data){
-			document.getElementById('liste-items').innerHTML=data;
-			}
-	});		
-}	
+var controllerCallBackRoute ='{{URL::action('EtudiantsController@etudiantsPourClasse') }}'
 
 </script>
 {{ HTML::script('assets/js/script_ajax.js') }}
