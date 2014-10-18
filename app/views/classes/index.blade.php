@@ -1,8 +1,5 @@
 @extends('layout')
 @section('content')
-
-
-
 	<div class="container-fluid">
 		<section class="section-padding">
 			<div class="jumbotron text-left">

@@ -25,41 +25,6 @@ function checkLinkedId($defaut, $itemId, $classe) {
 	return $itemId;
 }
 
-/**
- * Crée une liste contenant un id et un valeur à afficher 
- * 
- * Pour l'instant, cette fonction est utilisée pour créer les items à afficher dans un select dans une view
- * 
- * @param string $items Les objets à partir desquels batir la liste.
- * @param string $cle Le nom de la colonne de l'objet contenant la clé qui sera associé à la valeur affichée
- * @param array $proprietes Le nom des propriétés à concaténer pour créer la valeur à afficher
- * @param string $tous Une ligne additionnelle qui aura l'indice 0. Si vide, alors il n'y a pas de ligne additionnelle. Utile pour ajouter "Toutes les valeurs".
- * @return array associative ayant pour clé les valeurs de la colonne $cle, et pour valeur la concaténation des $proprietes, et optionnelement une première 
- *                           ligne avec la clé 0 et la valeur $tous.
- */
-function createSelectList($items, $cle, $proprietes, $tous = "", $proprietesLiees=null) {
-	$belongsToList = [];
-	if($tous <> "") {
-		$belongsToList[0] = $tous;	
-	}	
-	foreach($items as $item) {
-		$texte = "";
-		
-		foreach($proprietes as $propriete) {				
-			$texte = $texte." ".$item->$propriete;
-		}
-		if(isset($proprietesLiees)) {				
-			forEach($proprietesLiees as $proprieteLieeId => $proprieteLieeClasseColonne) {
-				$proprieteAdditionnelle  = $proprieteLieeClasseColonne['classe']::findOrFail($item->$proprieteLieeId);
-				$texte = $texte ." ".$proprieteAdditionnelle ->$proprieteLieeClasseColonne['colonne'];
-				
-			}
-		}
-		
-		$belongsToList[$item->$cle] = $texte;
-	}
-	return $belongsToList;
-}
 
 /**
  * Vérifie que tous les $ids sont valide pour des objets de la classe $classe

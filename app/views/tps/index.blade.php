@@ -6,22 +6,34 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h1> Liste des travaux pratiques</h1>
-						{{ Form::open(['action'=> ['TPsController@create'], 'class' => 'form', 'method' => 'get']) }}
+						{{ Form::open(['action'=> ['TPsController@create'], 'role' => 'form', 'method' => 'get', 'class' => 'form-inline']) }}
 							{{ Form::hidden('belongsToId', '1', array('id'=>'belongsToId')) }}
-							{{ Form::submit('Créer un TP', ['class' => 'btn btn-primary'])}}					
-							<div id="belongsToSelect">						
-								{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedId, array('id' => 'belongsToListSelect')) }}
+							<div class="form-group">
+								<div >
+									{{ Form::submit('Créer un TP', ['class' => 'btn btn-primary'])}}	
+								</div>
+							</div>
+							<div class="form-group" id="belongsToSelect" >
+								<div>						
+									{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedId, 
+												['id' => 'belongsToListSelect', 'class' => 'form-control'])}}
+								</div>
 							</div> <!-- belongsToSelect -->
-							<div id="filtre1">
-								{{ Form::select('filtre1Select', $filtre1SelectList, 0, array('id' => 'filtre1Select')) }}
+							<div class="form-group" id="filtre1" >
+								<div>
+									{{ Form::select('filtre1Select',  $filtre1["selectList"], 0, 
+											['id' => 'filtre1Select', 'class' => 'form-control']) }}
+								</div>
 							</div>
 						{{ Form::close() }}
+					</div> <!-- panel-heading -->
+					<div class="panel-body">
+						<div id="liste-items"  >
+							<?php // cette div sera remplie par le code js ?>
+						</div> <!-- liste-items -->
 					</div>
-					<div id="liste-items">
-						<?php // cette div sera remplie par le code js ?>
-					</div> <!-- liste-items -->
-				</div>
-			</div>
+				</div> <!-- panel -->
+			</div> <!-- jumbotron -->
 		</section>
 	</div>
 
@@ -36,7 +48,7 @@
 	$("#filtre1Select").change(function(e) {
 		var cat = [];
 		<?php 
-			foreach($filtre1Categories as $nomCategorie => $categorieItems) {
+			foreach($filtre1["groupes"] as $nomCategorie => $categorieItems) {
 				echo "cat['".$nomCategorie. "'] = [";
 				foreach($categorieItems as $items) {
 					echo $items.", ";

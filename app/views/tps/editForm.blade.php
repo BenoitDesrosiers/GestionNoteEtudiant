@@ -6,9 +6,11 @@
 						['id' => 'belongsToListSelect', 'size' =>5, 'multiple'=>'true',
 						'class' => 'form-control']) }}
 	</div>
-	<div id="filtre1" class = 'col-sm-3'>
-		{{Form::label('dummy', "Sessions", ['class' =>"col-sm-12 control-label"])}}
-		{{ Form::select('filtre1Select', $filtre1SelectList, 0, ['class' =>"col-sm-12", 'id' => 'filtre1Select']) }}
+	<div  class = 'col-sm-3 form-group'>
+		{{Form::label('dummy', "Filtre de Sessions", ['class' =>"col-sm-12 control-label"])}}
+		<div id="filtre1" class = 'col-sm-12'>
+			{{ Form::select('filtre1Select', $filtre1["selectList"], 0, ['class' =>"form-control", 'id' => 'filtre1Select']) }}
+		</div>
 	</div>
 </div> <!-- belongsToSelect -->
 
@@ -37,8 +39,8 @@
 <script>
 $("#filtre1Select").change(function(e) {
 	var cat = [];
-	<?php 
-		foreach($filtre1Categories as $nomCategorie => $categorieItems) {
+	<?php //TODO: ce code se répète dans index.blade.php. Comment le mettre en fonction?
+		foreach($filtre1["groupes"] as $nomCategorie => $categorieItems) {
 			echo "cat['".$nomCategorie. "'] = [";
 			foreach($categorieItems as $items) {
 				echo $items.", ";

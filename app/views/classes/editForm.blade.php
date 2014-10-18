@@ -17,13 +17,20 @@
 </div>
 
 <div class="form-group">
+
 	{{ Form::label('session', 'Session:', ['class' => "col-sm-2 control-label"]) }} 
+	@if(isset($sessionsList))
 	<div class = 'col-sm-10'>
 		{{ Form::select('session', $sessionsList,$sessionSelected, array('id' => 'session', 'size' =>1, 'class' => 'form-control')) }}
 	
 		{{-- Form::text('session',$classe->session, ['class' => 'form-control']) --}}
 		{{ $errors->first('session') }}	
 	</div>
+	@else
+	<div class = 'col-sm-10'>
+		{{ Form::text('nom',$classe->sessionscholaire->nom, ['class' => 'form-control']) }}
+	</div>
+	@endif
 </div>
 
 <div class="form-group">
