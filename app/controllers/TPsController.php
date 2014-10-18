@@ -19,9 +19,9 @@ class TPsController extends BaseController
 	public function index()
 	{	
 		$lesClasses = Classe::all()->sortby("sessionscholaire_id"); //ce n'est pas exactement par session, mais si les id sont dans le bon ordre, ca le sera. 
-		$belongsToList=$this->createBelongsToList($lesClasses, "Tous");
+		$belongsToList=createBelongsToListForClasses($lesClasses, "Tous");
 		$belongsToSelectedId = checkLinkedId(0, Input::get('belongsToId'), 'Classe'); 
-		$filtre1 = $this->createFiltreParSession($lesClasses, true);
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
 		return View::make('tps.index', compact('belongsToList', 'belongsToSelectedId','filtre1')); 
 	}
 	
@@ -34,20 +34,19 @@ class TPsController extends BaseController
 	public function create()
 	{
 		$lesClasses = Classe::all();
-		$belongsToList=$this->createBelongsToList($lesClasses, "Aucune classe");
-		
+		$belongsToList=createBelongsToListForClasses($lesClasses, "Aucune classe");
 		$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'Classe');
-		$filtre1 = $this->createFiltreParSession($lesClasses, true);
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
 		return View::make('tps.create', compact('belongsToList', 'belongsToSelectedIds','filtre1'));
 	}
 	
 	public function edit( $tpId)
 	{
 		$lesClasses = Classe::all();
-		$belongsToList=$this->createBelongsToList($lesClasses, "Aucune classe");
+		$belongsToList=createBelongsToListForClasses($lesClasses, "Aucune classe");
 		$tp = TP::findOrFail($tpId); //TODO: catcher ModelNotFoundException
 		$belongsToSelectedIds =  $tp->classes->fetch('id')->toArray();
-		$filtre1 = $this->createFiltreParSession($lesClasses, true);
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
 		
 		return View::make('tps.edit', compact( 'tp', 'belongsToList', 'belongsToSelectedIds','filtre1'));
 	}
@@ -57,9 +56,9 @@ class TPsController extends BaseController
 	{
 		$tp = TP::findOrFail($tpId);
 		$lesClasses = $tp->classes;
-		$belongsToList=$this->createBelongsToList($lesClasses);		
+		$belongsToList=createBelongsToListForClasses($lesClasses);		
 		$belongsToSelectedIds =  $tp->classes->fetch('id')->toArray();
-		$filtre1 = $this->createFiltreParSession($lesClasses, true);
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
 		return View::make('tps.show', compact('tp', 'belongsToList', 'belongsToSelectedIds', 'filtre1'));
 	}	
 	
@@ -181,44 +180,7 @@ class TPsController extends BaseController
 	 * 
 	 */
 	
-	/**
-	 * Regroupement des classes par sessioncholaire
-	 * @param boolean $tous Est-ce que la liste doit avoir un choix "Tous"
-	 * @return une array associative: 
-	 * 			"groupes" => une array bidimensionnelle dont la clé de la première dimension est l'id de la session,
-	 * 						 et la deuxième dimension contient les ids des classes associées à cette session. 
-	 * 			"selectList" =>  une array dont la clé est l'id de chaque sessions, et la valeur est le nom de cette session.
-	 * 							 cette array est parfaite pour être utilisée dans un select sur une view. 
-	 *
-	 */
-	private function createFiltreParSession($classes, $tous) {
-		$groupes=[];
-		$selectList=[];
-		if($tous) 
-			{$selectList['tous']="Tous";}
-		foreach($classes as $classe) {
-			if($tous) 
-				{$groupes["tous"][]=$classe->id;}
-			$groupes[$classe->sessionscholaire->id][]=$classe->id;
-			$selectList[$classe->sessionscholaire->id] = $classe->sessionscholaire->nom;
-		}
-		if($tous) { //ajoute l'id 0 à tous les groupes afin que "Tous" soit aussi sélectionné
-			foreach($groupes as $key => $value) {
-				$groupes[$key][]=0;
-			}
-		}
-		$retour= ["groupes"=>$groupes, "selectList" => $selectList];
-		return $retour;
-	}
+
 	
 	
-	private function createBelongsToList($items, $valeur0=null) {
-		if(isset($valeur0)) {
-			$belongsToList[0]=$valeur0;
-		}
-		foreach($items as $item) {
-			$belongsToList[$item->id]=$item->sessionscholaire->nom." ". $item->code." ".$item->nom;
-		}
-		return $belongsToList;
-	}
 }

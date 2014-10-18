@@ -6,7 +6,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h1> Liste des classes disponibles</h1>
-						<a href="{{ action('ClassesController@create') }}" class="btn btn-info">Créer une classe</a>						
+						<a href="{{ action('ClassesController@create') }}" class="btn btn-primary">Créer une classe</a>						
 					</div>
 					
 					@if ($classes->isEmpty())

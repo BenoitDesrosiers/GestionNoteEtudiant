@@ -19,9 +19,11 @@ class EtudiantsController extends \BaseController {
 	 */
 	public function index()
 	{
-		$belongsToList = createSelectList(Classe::all(), "id", ['code', 'nom'], "Tous");
+		$lesClasses = Classe::all()->sortby("sessionscholaire_id"); 
+		$belongsToList=createBelongsToListForClasses($lesClasses, "Tous");		
 		$belongsToSelectedId = checkLinkedId(0, Input::get('belongsToId'), 'Classe');
-		return View::make('etudiants.index', compact('belongsToList', 'belongsToSelectedId'));
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
+		return View::make('etudiants.index', compact('belongsToList', 'belongsToSelectedId','filtre1'));
 	}
 	
 	/**
@@ -31,9 +33,11 @@ class EtudiantsController extends \BaseController {
 	 */
 	public function create()
 	{
-		$belongsToList = createSelectList(Classe::all(), "id", ['code', 'nom'], "Aucune classe");
+		$lesClasses = Classe::all()->sortby("sessionscholaire_id"); 
+		$belongsToList=createBelongsToListForClasses($lesClasses, "Aucune Classe");
 		$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'Classe');
-		return View::make('etudiants.create', compact('belongsToList', 'belongsToSelectedIds'));
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
+		return View::make('etudiants.create', compact('belongsToList', 'belongsToSelectedIds', 'filtre1'));
 	}
 
 	/**
@@ -181,4 +185,6 @@ class EtudiantsController extends \BaseController {
 		}
 	}
 	
+	
+
 }

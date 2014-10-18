@@ -46,7 +46,58 @@ function allIdsExist($ids, $classe ) {
 	return $retour;
 }
 
+/**
+ * helper pour créer les select dans les views utilisant des classes.
+ */
 
+/**
+ * Création de la liste utilisée dans le select pour choisir une classe
+ *
+ * Je n'ai pas trouvé comment en faire une fonction générique à cause du fait que j'ai besoin de sessionscholaire->nom. Je vois
+ * comment passer les colonnes, mais pas ->sessionscholaire->nom
+ *  
+ * @param collection $items la collection des classes à afficher
+ * @param string $valeur0 optionnelle, si utilisée, ca sera la valeur à l'indice 0 dans le select
+ * @return array l'array à utiliser dans le select. Contient l'indice et le texte à afficher basé sur certaines colonnes des classes.
+ */
 
+function createBelongsToListForClasses($items, $valeur0=null) {
+	if(isset($valeur0)) {
+		$belongsToList[0]=$valeur0;
+	}
+	foreach($items as $item) {
+		$belongsToList[$item->id]=$item->sessionscholaire->nom." ". $item->code." ".$item->nom;
+	}
+	return $belongsToList;
+}
 
+/**
+ * Regroupement des classes par sessioncholaire
+ * @param boolean $tous Est-ce que la liste doit avoir un choix "Tous"
+ * @return une array associative:
+ * 			"groupes" => une array bidimensionnelle dont la clé de la première dimension est l'id de la session,
+ * 						 et la deuxième dimension contient les ids des classes associées à cette session.
+ * 			"selectList" =>  une array dont la clé est l'id de chaque sessions, et la valeur est le nom de cette session.
+ * 							 cette array est parfaite pour être utilisée dans un select sur une view.
+ *
+ */
+function createFiltreParSessionPourClasses($classes, $tous) {
+	$groupes=[];
+	$selectList=[];
+	if($tous)
+	{$selectList['tous']="Tous";}
+	foreach($classes as $classe) {
+		if($tous)
+		{$groupes["tous"][]=$classe->id;}
+		$groupes[$classe->sessionscholaire->id][]=$classe->id;
+		$selectList[$classe->sessionscholaire->id] = $classe->sessionscholaire->nom;
+	}
+	if($tous) { //ajoute l'id 0 à tous les groupes afin que "Tous" soit aussi sélectionné
+		foreach($groupes as $key => $value) {
+			$groupes[$key][]=0;
+		}
+	}
+	$retour= ["groupes"=>$groupes, "selectList" => $selectList];
+	return $retour;
+}
 

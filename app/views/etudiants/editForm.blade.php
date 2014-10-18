@@ -1,7 +1,17 @@
 <?php if(!isset($etudiant)) {$etudiant = new Etudiant;}?>
-<div id="belongsToSelect">
-	{{"Associer à:"}}
-	{{ Form::select('belongsToListSelect[]', $belongsToList,$belongsToSelectedIds, array('id' => 'belongsToListSelect', 'size' =>5, 'multiple'=>'true')) }}
+<div id="belongsToSelect" class="form-group">
+	{{Form::label('dummy', "Associer à:", ['class' =>"col-sm-2 control-label"])}}
+	<div class = 'col-sm-7'>
+		{{ Form::select('belongsToListSelect[]', $belongsToList,$belongsToSelectedIds, 
+					['id' => 'belongsToListSelect', 'size' =>5, 'multiple'=>'true',
+					'class' => 'form-control']) }}
+	</div>
+	<div  class = 'col-sm-3 form-group'>
+		{{Form::label('dummy', "Filtre de Sessions", ['class' =>"col-sm-12 control-label"])}}
+		<div id="filtre1" class = 'col-sm-12'>
+			{{ Form::select('filtre1Select', $filtre1["selectList"], 0, ['class' =>"form-control", 'id' => 'filtre1Select']) }}
+		</div>
+	</div>
 </div> <!-- belongsToSelect -->
 
 <div class="form-group">
