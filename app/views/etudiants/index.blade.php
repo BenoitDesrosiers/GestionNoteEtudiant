@@ -16,7 +16,7 @@
 							</div>
 							<div class="form-group" id="belongsToSelect">
 								<div>						
-									{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedId, 
+									{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedIds, 
 											['id' => 'belongsToListSelect', 'class' => 'form-control']) }}
 								</div>
 							</div> <!-- belongsToSelect -->

@@ -34,29 +34,29 @@ class TPsController extends BaseController
 	
 	public function edit( $tpId)
 	{		
-		return $this->displayView('tps.edit','Aucune Classe', $tpId);
+		return $this->displayView('tps.edit','Aucune Classe', TP::findOrFail($tpId));
 	}
 	
 	
 	public function show( $tpId) 
 	{
-		return $this->displayView('tps.show',null,$tpId);
+		return $this->displayView('tps.show',null,TP::findOrFail($tpId),true);
 	}	
 	
-	private function displayView($view, $option0=null, $itemId=null) {
-		if(isset($itemId)) {
-			$tp = TP::findOrFail($itemId);
-			$lesClasses = $tp->classes;
-		} else {
+	private function displayView($view, $option0, $item=null, $displayOnlyLinked=null) {
+		if(isset($item) and isset($displayOnlyLinked) ) { 
+			$lesClasses = $item->classes;//affiche seulement les classes associées à cet item. (utile pour show)
+		} else {//sinon affiche toutes les classes. 
 			$lesClasses = Classe::all()->sortby("sessionscholaire_id"); //ce n'est pas exactement par session, mais si les id sont dans le bon ordre, ca le sera.
 		}
-		$belongsToList = createSelectOptions($lesClasses,['TPsController', 'createOptionsValue'], "Tous");
-		if(isset($itemId)) {
-			$belongsToSelectedIds =  $tp->classes->fetch('id')->toArray();
-		} else {
+		$belongsToList = createSelectOptions($lesClasses,[get_class(), 'createOptionsValue'], $option0);
+		if(isset($item)) { //si on a un item, on sélectionne toutes les classes déjà associées
+			$belongsToSelectedIds =  $item->classes->fetch('id')->toArray();
+		} else { //sinon, on sélectionne la classe qui a été passée en paramêtre (si elle est bonne, sinon, la première de la liste
 			$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'Classe');
 		}
 		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
+		$tp = $item;
 		return View::make($view, compact('tp', 'belongsToList', 'belongsToSelectedIds','filtre1'));
 	}
 	

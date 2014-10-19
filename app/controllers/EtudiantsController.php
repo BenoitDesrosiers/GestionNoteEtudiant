@@ -19,11 +19,7 @@ class EtudiantsController extends \BaseController {
 	 */
 	public function index()
 	{
-		$lesClasses = Classe::all()->sortby("sessionscholaire_id"); 
-		$belongsToList = createSelectOptions($lesClasses,['TPsController', 'createOptionsValue'], "Tous"); 
-		$belongsToSelectedId = checkLinkedId(0, Input::get('belongsToId'), 'Classe');
-		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
-		return View::make('etudiants.index', compact('belongsToList', 'belongsToSelectedId','filtre1'));
+		return $this->displayView('etudiants.index','Tous');
 	}
 	
 	/**
@@ -33,11 +29,7 @@ class EtudiantsController extends \BaseController {
 	 */
 	public function create()
 	{
-		$lesClasses = Classe::all()->sortby("sessionscholaire_id"); 
-		$belongsToList = createSelectOptions($lesClasses,['TPsController', 'createOptionsValue'], "Aucune classe"); 
-		$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'Classe');
-		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
-		return View::make('etudiants.create', compact('belongsToList', 'belongsToSelectedIds', 'filtre1'));
+		return $this->displayView('etudiants.create','Aucune Classe');
 	}
 
 	/**
@@ -48,12 +40,7 @@ class EtudiantsController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$lesClasses = Classe::all()->sortby("sessionscholaire_id");
-		$belongsToList = createSelectOptions($lesClasses,['TPsController', 'createOptionsValue'], "Aucune classe"); 
-		$etudiant = Etudiant::findOrFail($id); //TODO: catcher ModelNotFoundException
-		$belongsToSelectedIds =  $etudiant->classes->fetch('id')->toArray();
-		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
-		return View::make('etudiants.edit', compact( 'etudiant', 'belongsToList', 'belongsToSelectedIds', 'filtre1'));
+		return $this->displayView('etudiants.edit','Aucune Classe',Etudiant::findOrFail($id));
 	}
 	
 	/**
@@ -64,15 +51,28 @@ class EtudiantsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$lesClasses = Classe::all()->sortby("sessionscholaire_id");
-		$belongsToList = createSelectOptions($lesClasses,['TPsController', 'createOptionsValue']); 
-		$etudiant = Etudiant::findOrFail($id); //TODO: catcher ModelNotFoundException
-		$belongsToSelectedIds =  $etudiant->classes->fetch('id')->toArray();
-		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
-		return View::make('etudiants.show', compact( 'etudiant', 'belongsToList', 'belongsToSelectedIds', 'filtre1'));
+		return $this->displayView('etudiants.show',null,Etudiant::findOrFail($id),true);
 	}
 	
 
+	private function displayView($view, $option0=null, $item=null, $displayOnlyLinked=null) {
+		if(isset($item) and isset($displayOnlyLinked)) {
+			$lesClasses = $item->classes;
+		} else {
+			$lesClasses = Classe::all()->sortby("sessionscholaire_id"); //ce n'est pas exactement par session, mais si les id sont dans le bon ordre, ca le sera.
+		}
+		$belongsToList = createSelectOptions($lesClasses,[get_class(), 'createOptionsValue'], $option0);
+		if(isset($item)) {
+			$belongsToSelectedIds =  $item->classes->fetch('id')->toArray();
+		} else {
+			$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'Classe');
+		}
+		$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
+		$etudiant = $item; //hack juste pour ne pas avoir a renommer etudiant dans toutes les views. 
+		return View::make($view, compact('etudiant', 'belongsToList', 'belongsToSelectedIds','filtre1'));
+	}
+	
+	
 	/**
 	 * Store a newly created resource in storage.
 	 *

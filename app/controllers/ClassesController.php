@@ -18,6 +18,7 @@ class ClassesController extends BaseController
 	
 	public function create()
 	{
+		//TODO: changer les call à DB pour des call a Sessionscholaire
 		$sessionsList= DB::table("sessionscholaires")->lists( 'nom','id');
 		$sessionSelected = DB::table('sessionscholaires')->where("courant", 1)->pluck("id");
 		return View::make('classes.create', compact("sessionsList", "sessionSelected"));
