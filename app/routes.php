@@ -17,46 +17,48 @@ Route::group(['before'=>'auth'], function() {
 	Route::get('/','HomeController@index');
 	
 	/* Classes TPs */
-	Route::get('/classes/{classe}/tps/{tps}/disconnectTP', 'ClassesTPsController@disconnect');
+	/*Route::get('/classes/{classe}/tps/{tps}/disconnectTP', 'ClassesTPsController@disconnect');
 	Route::get('/classes/{classe}/connectTP', 'ClassesTPsController@connect');
 	Route::post('/classes/{classe}/doConnectTP', 'ClassesTPsController@doConnect');
-	
+	*/
 	/* Classes Etudiants */
-	Route::get('/classes/{classe}/etudiants/{etudiant}/disconnectEtudiant', 'ClassesEtudiantsController@disconnect');
+	/*Route::get('/classes/{classe}/etudiants/{etudiant}/disconnectEtudiant', 'ClassesEtudiantsController@disconnect');
 	Route::get('/classes/{classe}/connectEtudiant', 'ClassesEtudiantsController@connect');
 	Route::post('/classes/{classe}/doConnectEtudiant', 'ClassesEtudiantsController@doConnect');
-	
+	*/
 	
 		/* Classes */
 		Route::resource('classes', 'ClassesController');
 		
 		
 		/* Travaux pratiques (TP) */
-		Route::post('tpsPourClasse', 'TPsController@tpsPourClasse');     //pour l'appel AJAX  
+		Route::any('tpsPourClasse', 'TPsController@tpsPourClasse');     //pour l'appel AJAX  
 		Route::resource('tps', 'TPsController');
-		Route::resource('classes.tps', 'ClassesTPsController');
+		//Route::resource('classes.tps', 'ClassesTPsController');
 		
 		/* Questions */
+		Route::post('questionsPourTp', 'QuestionsController@questionsPourTp');     //pour l'appel AJAX
 		Route::resource('questions', 'QuestionsController');
-		Route::resource('tps.questions', 'TPsQuestionsController');
+		//Route::resource('tps.questions', 'TPsQuestionsController');
 		
 		/* Etudiants */
 		Route::post('etudiantsPourClasse', 'EtudiantsController@etudiantsPourClasse');     //pour l'appel AJAX
 		Route::resource('etudiants', 'EtudiantsController');
-		Route::resource('classes.etudiants', 'ClassesEtudiantsController');
+		//Route::resource('classes.etudiants', 'ClassesEtudiantsController');
 	
 	
 	
-	Route::get('/tps/{tp}/questions/{questions}/disconnectQuestion', 'TPsQuestionsController@disconnect');
+	/*Route::get('/tps/{tp}/questions/{questions}/disconnectQuestion', 'TPsQuestionsController@disconnect');
 	Route::get('/tps/{tp}/connectQuestion', 'TPsQuestionsController@connect');
 	Route::post('/tps/{tp}/doConnectQuestion', 'TPsQuestionsController@doConnect');
-	
+	*/
 	
 	
 	/* Correction / Notes */
-	Route::get('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@index');
+	/*Route::get('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@index');
 	Route::put('/classes/{classe}/tps/{tps}/correction', 'TPsNotesController@edit');
 	Route::put('/notes/update', 'TPsNotesController@update');
+	*/
 });
 
 // Confide routes

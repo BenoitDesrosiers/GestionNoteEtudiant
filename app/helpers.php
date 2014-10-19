@@ -14,7 +14,7 @@ function checkLinkedId($defaut, $itemId, $classe) {
 		try {
 			$item = $classe::findOrFail($itemId);
 		} catch (Exception $e) {
-			//si il n'existe pas, on prend celui du premier sport dans la liste
+			//si il n'existe pas, on prend celui du premier item dans la liste
 			$itemId = $defaut;
 		}
 
@@ -47,28 +47,28 @@ function allIdsExist($ids, $classe ) {
 }
 
 /**
- * helper pour créer les select dans les views utilisant des classes.
+ * helper pour créer les select dans les views
  */
 
 /**
- * Création de la liste utilisée dans le select pour choisir une classe
+ * Création de la liste utilisée dans le select
  *
- * Je n'ai pas trouvé comment en faire une fonction générique à cause du fait que j'ai besoin de sessionscholaire->nom. Je vois
- * comment passer les colonnes, mais pas ->sessionscholaire->nom
  *  
- * @param collection $items la collection des classes à afficher
+ * @param collection $items la collection des objets à afficher
  * @param string $valeur0 optionnelle, si utilisée, ca sera la valeur à l'indice 0 dans le select
- * @return array l'array à utiliser dans le select. Contient l'indice et le texte à afficher basé sur certaines colonnes des classes.
+ * @param function $func une fonction à rappeller pour créer la string à afficher comme valeur des options du select.
+ * @return array l'array à utiliser dans le select. Contient l'indice et le texte à afficher.
  */
 
-function createBelongsToListForClasses($items, $valeur0=null) {
+
+function createSelectOptions($items, $func, $valeur0=null) {
 	if(isset($valeur0)) {
-		$belongsToList[0]=$valeur0;
+		$optionsList[0]=$valeur0;
 	}
 	foreach($items as $item) {
-		$belongsToList[$item->id]=$item->sessionscholaire->nom." ". $item->code." ".$item->nom;
+		$optionsList[$item->id]=call_user_func($func,$item);
 	}
-	return $belongsToList;
+	return $optionsList;
 }
 
 /**

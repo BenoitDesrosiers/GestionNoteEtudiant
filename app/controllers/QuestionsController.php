@@ -1,6 +1,13 @@
 <?php
 
-class QuestionsController extends \BaseController {
+/**
+ * Le controller pour les questions
+ * 
+ * @version 0.1
+ * @author benou
+ *
+ */
+class QuestionsController extends BaseController {
 
 	/**
 	 * Display a listing of the resource.

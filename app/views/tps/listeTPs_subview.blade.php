@@ -18,13 +18,16 @@
 					$poids = 0; 
 					$poids_local = 0; 
 				?> 
+				
 				@foreach($tps as $tp)
+				
 						<?php 
 							$poids += $tp->poids;
 							if($belongsToId <>0) {$poids_local += $tp->pivot->poids_local;}
 							$unTotalSur = $tp->questions()->sum('sur_local');
 							$total_sur += $unTotalSur;
-						?> 				
+						?> 	
+									
 					<tr>
 						<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->nom }}</a> </td>
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
@@ -37,8 +40,9 @@
 							<button type="submit" href="{{ URL::route('tps.destroy', $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>
 						{{ Form::close() }}
 						</td>
-						<td><a href="{{ action('TPsQuestionsController@index', [$tp->id]) }}" class="btn btn-info">Questions</a></td>
+						<td><a href="{{ action('QuestionsController@index', ['belongsToId' => $tp->id]) }}" class="btn btn-info">Questions</a></td>
 					</tr>
+					
 				@endforeach
 				<tr>
 					<td>total:</td>

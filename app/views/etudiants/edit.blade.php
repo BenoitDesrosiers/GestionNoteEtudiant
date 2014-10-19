@@ -12,7 +12,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			{{ Form::open(['action'=> array('EtudiantsController@update', $etudiant->id), 'method' => 'PUT', 'class' => 'form-horizontal', 'role'=>'form']) }}
+			{{ Form::open(['action'=> ['EtudiantsController@update', $etudiant->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'role'=>'form']) }}
 				@include('etudiants.editForm')
 				<div class="form-group">
 					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}

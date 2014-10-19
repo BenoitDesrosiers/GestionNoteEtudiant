@@ -29,3 +29,20 @@
 	</div>
 </div>
 
+<script>
+$("#filtre1Select").change(function(e) {
+	var cat = [];
+	<?php //TODO: ce code se répète dans index.blade.php. Comment le mettre en fonction?
+		foreach($filtre1["groupes"] as $nomCategorie => $categorieItems) {
+			echo "cat['".$nomCategorie. "'] = [";
+			foreach($categorieItems as $items) {
+				echo $items.", ";
+			}
+			echo "];\n";
+		} 
+	?>
+	changeSelect("belongsToListSelect", cat[ document.getElementById("filtre1Select").value ], false);
+	
+});
+</script>
+{{ HTML::script('assets/js/script_ajax.js') }}
