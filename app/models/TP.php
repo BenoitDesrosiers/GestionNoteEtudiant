@@ -23,6 +23,27 @@ class TP extends EloquentValidating
 		return $this->belongsToMany('Question', 'tps_questions', 'tp_id', 'question_id')->withPivot('ordre','sur_local');
 	}
 	
+	
+	/**
+	 * Opérations de stockage
+	 * 
+	 */
+	
+	public function addQuestion($question) {
+		$this->questions()->attach($question->id,['sur_local'=>$question->sur]);// pour la création, je transfers les points associé à cette question directement
+		$questionsPourTP=$this->questions;
+		$maxordre=0;
+		foreach($questionsPourTP as $questionPourTP) { //pas elegant, mais c'est la seule facon que j'ai trouvé
+			if($questionPourTP->pivot->ordre > $maxordre) {
+				$maxordre=$questionPourTP->pivot->ordre;
+			}
+		}
+		$ordre = $maxordre+1;
+		$this->questions()->updateExistingPivot($question->id,['ordre' => $ordre], false);
+	}	
+		
+		
+	
 /*
  * Validation
  * 

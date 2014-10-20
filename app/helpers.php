@@ -85,10 +85,11 @@ function createFiltreParSessionPourClasses($classes, $tous) {
 	$groupes=[];
 	$selectList=[];
 	if($tous)
-	{$selectList['tous']="Tous";}
+	{$selectList[0]="Tous";}
 	foreach($classes as $classe) {
-		if($tous)
-		{$groupes["tous"][]=$classe->id;}
+		if($tous) {
+			$groupes["Tous"][]=$classe->id;
+		}
 		$groupes[$classe->sessionscholaire->id][]=$classe->id;
 		$selectList[$classe->sessionscholaire->id] = $classe->sessionscholaire->nom;
 	}
@@ -101,3 +102,38 @@ function createFiltreParSessionPourClasses($classes, $tous) {
 	return $retour;
 }
 
+/**
+ * Regroupement des TPs par Classe
+ * @param boolean $tous Est-ce que la liste doit avoir un choix "Tous"
+ * @return une array associative:
+ * 			"groupes" => une array bidimensionnelle dont la clé de la première dimension est l'id de la classe,
+ * 						 et la deuxième dimension contient les ids des TPs associées à cette classe.
+ * 			"selectList" =>  une array dont la clé est l'id de chaque classe, et la valeur est le nom de cette classe.
+ * 							 cette array est parfaite pour être utilisée dans un select sur une view.
+ *
+ */
+function createFiltreParClassePourTP($tps, $tous) {
+	$groupes=[];
+	$selectList=[];
+	if($tous)
+		{$selectList[0]="Tous";}
+	//un tp est associé à plusieurs classes (potentiellement les mêmes), et ces classes ont plusieurs TPs qui ne sont pas nécessairement
+	//dans la liste de $tps. Je dois donc commencer par batir une liste des valeurs unique des classes, ensuite la liste des TPs qui sont dans $tps et qui
+	//sont liés à chacune de ces classes. 
+	foreach($tps as $tp) {
+		if($tous) {
+			$groupes[0][]=$tp->id;
+		}
+		foreach($tp->classes as $classe) {
+			$groupes[$classe->id][]=$tp->id;
+			$selectList[$classe->id] = $classe->nom;
+		}
+	}
+	if($tous) { //ajoute l'id 0 à tous les groupes afin que "Tous" soit aussi sélectionné
+		foreach($groupes as $key => $value) {
+			$groupes[$key][]=0;
+		}
+	}
+	$retour= ["groupes"=>$groupes, "selectList" => $selectList];
+	return $retour;
+}

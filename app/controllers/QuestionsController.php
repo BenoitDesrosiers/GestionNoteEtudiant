@@ -16,8 +16,10 @@ class QuestionsController extends BaseController {
 	 */
 	public function index()
 	{
-		$questions = Question::all();
-		return View::make('questions.index', compact('questions'));
+		return $this->displayView('questions.index', 'Tous');
+		
+		/*$questions = Question::all();
+		return View::make('questions.index', compact('questions'));*/
 	}
 
 
@@ -28,36 +30,9 @@ class QuestionsController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('questions.create');
-		
+		return $this->displayView('questions.create', 'Aucun TP');
+				
 	}
-
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$input = Input::all();
-		
-		if (Question::isValid($input)) {
-			$question = new Question;
-			$question->nom = $input['nom'];			
-			$question->enonce = $input['enonce'];
-			$question->baliseCorrection = $input['baliseCorrection'];
-			$question->reponse = $input['reponse'];
-			$question->sur = $input['sur'];
-			
-			$question->save();
-			
-			return Redirect::action('QuestionsController@index');
-		}
-	
-		return Redirect::back()->withInput()->withErrors(Question::$validationMessages);				
-	}
-
 
 	/**
 	 * Display the specified resource.
@@ -70,8 +45,8 @@ class QuestionsController extends BaseController {
 		$question = Question::findOrFail($id); //TODO: catcher ModelNotFoundException
 		return View::make('questions.show', compact( 'question'));
 	}
-
-
+	
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -80,8 +55,50 @@ class QuestionsController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		$question = Question::findOrFail($id); //TODO: catcher ModelNotFoundException
-		return View::make('questions.edit', compact( 'question'));	}
+		return $this->displayView('questions.edit', 'Aucun TP', Question::findOrFail($id));
+	}
+	
+	
+	private function displayView($view, $option0, $item=null, $displayOnlyLinked=null) {
+		if(isset($item) and isset($displayOnlyLinked) ) {
+			$lesTPs = $item->tps;//affiche seulement les tps associées à cet item. (utile pour show)
+		} else {//sinon affiche tous.
+			$lesTPs = TP::all()->sortby("nom");
+		}
+		$belongsToList = createSelectOptions($lesTPs,[get_class(), 'createOptionsValue'], $option0);
+		if(isset($item)) { //si on a un item, on sélectionne seulement ce qui est associées
+			$belongsToSelectedIds =  $item->TPs->fetch('id')->toArray();
+		} else { //sinon, on sélectionne ce qui a été passée en paramêtre (si c'est bon, sinon, la première de la liste
+			$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'TP');
+		}
+		$filtre1 = createFiltreParClassePourTP($lesTPs, true);
+		$question = $item;
+		return View::make($view, compact('question', 'belongsToList', 'belongsToSelectedIds','filtre1'));
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		$input = Input::all();
+		
+		$tpId = 0;
+		//vérifie que les ids de TP passés en paramêtre sont bons
+		$tpIds = Input::get('belongsToListSelect',[]);
+		if(!allIdsExist($tpIds, 'TP')) {
+			return View::make("erreurSysteme");
+		}
+		
+		$question = new Question;
+		if($question->createWithTPs($input, $tpIds)) {
+			return Redirect::action('QuestionsController@index', array('belongsToId'=>$tpId));
+		} else {
+			return Redirect::back()->withInput()->withErrors($question->validationMessages);				
+		}
+	}
 
 
 	/**
@@ -93,19 +110,17 @@ class QuestionsController extends BaseController {
 	public function update($id)
 	{
 		$input = Input::all();
-				
-		if (Question::isValid($input,$id)) { 
-			$question = Question::findOrFail($id);
-			$question->nom = $input['nom'];
-			$question->enonce = $input['enonce'];
-			$question->baliseCorrection = $input['baliseCorrection'];
-			$question->reponse = $input['reponse'];
-			$question->sur = $input['sur'];
-			$question->save(); 
+		//vérifie que les ids de TP passés en paramêtre sont bons
+		$tpIds = Input::get('belongsToListSelect',[]);
+		if(!allIdsExist($tpIds, 'TP')) {
+			return View::make("erreurSysteme");
+		}
 		
+		$question = Question::findOrFail($id);
+		if($question->updateForTPs($input,$tpIds)) {			
 			return Redirect::action('QuestionsController@index');
 		} else {
-			return Redirect::back()->withInput()->withErrors(Question::$validationMessages);
+			return Redirect::back()->withInput()->withErrors($question->validationMessages);
 		}	
 	}
 
@@ -119,8 +134,8 @@ class QuestionsController extends BaseController {
 	public function destroy($id)
 	{
 		$question = Question::findOrFail($id);
-		$question->tps()->detach();
-		$question->delete();
+		$question->tps()->detach(); //TODO: resynch l'ordre
+		$question->delete(); 
 		
 		// Détruit les notes associées à cette question
 		$notes = Note::where('question_id', '=', $id)->get();
@@ -131,4 +146,58 @@ class QuestionsController extends BaseController {
 		return Redirect::action('QuestionsController@index');			
 	}
 
+	/**
+	 * retourne la liste des Questions pour un TP en format JSON
+	 *
+	 * Doit être appelé par un call AJAX.
+	 *
+	 * @param[in] post int belongsToId l'id du TP pour lequel on veut lister les Questions. La valeur 0 indique qu'on veut tous les Questions.
+	 * @return la sous-view pour afficher les items.
+	 *
+	 */
+	
+	public function questionsPourTPs() {
+		if(Request::ajax()) {
+			$belongsToId = Input::get('belongsToId');
+		//dd('belongsToid '.$belongsToId."  ".Input::get('filtre1Select'));
+			if($belongsToId <> 0) { //Si un TP en particulier est sélectionné, retourne les questions pour celui-ci
+				try {
+					$belongsTo = TP::findOrFail($belongsToId);
+				} catch (ModelNotFoundException $e) {
+					return "le TP n'existe pas";
+				}
+				$questions = $belongsTo->questions;
+			} else { //affiche tous les questions pour tous les TPs
+				$filtre1Value = Input::get('filtre1Select'); //filtre1 est pour la classe
+				if($filtre1Value==0) { //si il n'y a pas de classe de sélectionnée, on prends tous les questions
+					$questions = Question::all();
+				} else {//une classe est sélectionnée, on affiche donc uniquement les questions des TPs de cette classe 
+					$tps = Classe::find($filtre1Value)->tps; 
+					$questionsIds = [];
+					foreach($tps as $tp) { //créé la liste des ids des questions pour tous ces TPs.
+						$questionsIds=array_merge($questionsIds,$tp->questions->lists('id'));
+					}
+					//une questions peut être avec 2 TPs, il faut donc aller les chercher par leur id afin d'enlever les doublons
+					if(count($questionsIds)>0) {
+						$questions = Question::whereIn('id', $questionsIds)->get();
+					} else {
+						$questions = new Illuminate\Database\Eloquent\Collection;
+					}
+						
+				}
+			}
+			return View::make('questions.listeQuestions_subview')->with('questions',$questions->sortBy("id"))->with('belongsToId',$belongsToId);
+	
+		} else { //si le call n'est pas ajax.
+			return "vous n'avez pas les droits d'obtenir cette information";
+		}
+	}
+	/**
+	 * Helpers
+	 *
+	 */
+	static function createOptionsValue($item) {
+		return $item->nom;
+	}
+	
 }

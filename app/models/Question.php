@@ -18,6 +18,50 @@ class Question extends EloquentValidating
 	}
 	
 	
+/**
+ * Opérations de stockage
+ * 
+ */
+	public function createWithTPs($input, $tpIds) {
+		$this->nom = $input['nom'];
+		$this->enonce = $input['enonce'];
+		$this->baliseCorrection = $input['baliseCorrection'];
+		$this->reponse = $input['reponse'];
+		$this->sur = $input['sur'];
+		if($this->save()) { 
+			foreach($tpIds as $tpId) {
+				if($tpId <> 0) {	
+					TP::find($tpId)->addQuestion($this);
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function updateForTPs($input, $tpIds) {
+		$this->nom = $input['nom'];
+		$this->enonce = $input['enonce'];
+		$this->baliseCorrection = $input['baliseCorrection'];
+		$this->reponse = $input['reponse'];
+		$this->sur = $input['sur'];
+		if($this->save()) {//TODO: mettre ca dans une transaction
+			$allOldTpIds = $this->tps->lists('id');
+			$deletedTpIds = array_diff($allOldTpIds,$tpIds);
+			$newTpIds = array_diff($tpIds,$allOldTpIds);
+			foreach($deletedTpIds as $tpId) {
+				if($tpId<>0){TP::find($tpId)->questions()->detach($this->id);} //TODO resynch l'ordre
+			}
+			foreach($newTpIds as $tpId) {
+				if($tpId<>0){TP::find($tpId)->addQuestion($this);}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	
 /*
  * Validation

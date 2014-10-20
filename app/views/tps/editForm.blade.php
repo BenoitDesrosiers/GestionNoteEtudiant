@@ -18,9 +18,7 @@
 	{{ Form::label('nom', 'Nom:', ['class' => "col-sm-2 control-label"]) }} 
 	<div class = 'col-sm-10'>
 		{{ Form::text('nom', $tp->nom, ['class' => 'form-control']) }}
-		{{--@if( $errors->first('nom') != null) 
-				{{$errors->first('nom')}}
-		@endif--}}
+		{{$errors->first('nom')}}
 	</div>
 </div>
 <div class="form-group">

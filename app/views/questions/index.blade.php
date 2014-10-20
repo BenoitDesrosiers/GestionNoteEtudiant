@@ -7,44 +7,60 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h1> Liste des questions</h1>
-						<a href="{{ action('QuestionsController@create') }}" class="btn btn-info">Créer une question</a>						
+						{{ Form::open(['action'=> ['QuestionsController@create'], 'role' => 'form', 'method' => 'get', 'class' => 'form-inline']) }}
+							{{ Form::hidden('belongsToId', '1', array('id'=>'belongsToId')) }}
+							<div class="form-group">
+								<div >
+									{{ Form::submit('Créer une question', ['class' => 'btn btn-primary'])}}	
+								</div>
+							</div>
+							<div class="form-group" id="belongsToSelect" >
+								<div>						
+									{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedIds, 
+												['id' => 'belongsToListSelect', 'class' => 'form-control'])}}
+								</div>
+							</div> <!-- belongsToSelect -->
+							<div class="form-group" id="filtre1" >
+								<div>
+									{{ Form::select('filtre1Select',  $filtre1["selectList"], 0, 
+											['id' => 'filtre1Select', 'class' => 'form-control']) }}
+								</div>
+							</div>
+						{{ Form::close() }}					
+					</div> <!-- panel-heading -->
+					<div class="panel-body">
+						<div id="liste-items"  >
+							<?php // cette div sera remplie par le code js ?>
+						</div> <!-- liste-items -->
 					</div>
-					
-					@if ($questions->isEmpty())
-						<p>Aucune question de disponible!</p>
-					@else
-						<table class="table">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Nom</th>
-									<th>Enoncé</th>
-									<th>Sur</th>
-									<th> </th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach($questions as $question)
-									<tr>
-										<td><a href="{{ action('QuestionsController@show', [$question->id]) }}">{{ $question->id }}</a> </td>
-										<td>{{ $question->nom }} </td>
-										<td>{{ $question->enonce }} </td>
-										<td>{{ $question->sur }} </td>
-										<td><a href="{{ action('QuestionsController@edit', [$question->id]) }}" class="btn btn-info">Éditer</a></td>
-										<td>
-											{{ Form::open(array('action' => array('QuestionsController@destroy', $question->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}
-	                                        	<button type="submit" href="{{ URL::route('questions.destroy', $question->id) }}" class="btn btn-danger btn-mini">Effacer</button>
-	                                        {{ Form::close() }}   
-	                                    </td>
-									</tr>
-								@endforeach
-							</tbody>
-								
-						</table>
-					@endif
 				</div>
 			</div>
 		</section>
 	</div>
+<script>
 
+	var controllerCallBackRoute ='{{URL::action('QuestionsController@questionsPourTPs') }}'
+
+	/*
+	 * change le contenu du "belongsToSelect" selon les filtres sélectionnés. 
+	 */
+	 
+	$("#filtre1Select").change(function(e) {
+		var cat = [];
+		<?php 
+			foreach($filtre1["groupes"] as $nomCategorie => $categorieItems) {
+				echo "cat['".$nomCategorie. "'] = [";
+				foreach($categorieItems as $items) {
+					echo $items.", ";
+				}
+				echo "];\n";
+			} 
+		?>
+		changeSelect("belongsToListSelect", cat[ document.getElementById("filtre1Select").value ], true);
+		afficheListeItems();
+		updateCreateButton();
+		
+	});
+</script>
+{{ HTML::script('assets/js/script_ajax.js') }}
 @stop

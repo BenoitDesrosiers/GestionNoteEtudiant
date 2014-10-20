@@ -163,7 +163,7 @@ class EtudiantsController extends \BaseController {
 	 *
 	 * Doit être appelé par un call AJAX.
 	 *
-	 * @param[in] post int classeId l'id de la classe pour lequel on veut lister les étudiants. 
+	 * @param[in] post int belongsToId l'id de la classe pour lequel on veut lister les étudiants. 
 	 * 			La valeur 0 indique qu'on veut tous les étudiants.
 	 * @return la sous-view pour afficher les items.
 	 *
