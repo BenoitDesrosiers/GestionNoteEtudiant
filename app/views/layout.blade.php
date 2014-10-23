@@ -38,6 +38,24 @@
 		</div>
 	</nav>
 </header>
+   	@if(Session::has('message_success')) 
+	    <div class="form-group">
+	    	<div class="alert alert-success">
+	    		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	    		{{ Session::get('message_success') }}
+	    	</div>
+    	</div>			    	
+    @endif
+    @if(Session::has('message_danger')) 
+	    <div class="form-group">
+	    	<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	    		{{ Session::get('message_danger') }}
+	    	</div>
+    	</div>			    	
+    @endif
+
+
 
 @yield('content')
 </body>

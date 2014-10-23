@@ -92,7 +92,7 @@ class QuestionsController extends BaseController {
 			return View::make("erreurSysteme");
 		}
 		
-		$question = new Question;
+		$question = new Question; //TODO ajouter un constructeur et une méthode de classe newWithTPs
 		if($question->createWithTPs($input, $tpIds)) {
 			return Redirect::action('QuestionsController@index', array('belongsToId'=>$tpId));
 		} else {

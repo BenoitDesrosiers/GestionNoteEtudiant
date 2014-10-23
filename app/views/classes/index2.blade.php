@@ -9,7 +9,7 @@
 						<a href="{{ action('ClassesController@create') }}" class="btn btn-primary">Créer une classe</a>						
 					</div>
 					
-					@if ($lignes->isEmpty())
+					@if ($classes->isEmpty())
 						<p>Aucune classes disponible!</p>
 					@else
 					
@@ -32,7 +32,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($lignes as $classe)
+								@foreach($classes as $classe)
 									<tr>
 										<td><a href="{{ action('ClassesController@show', $classe->id) }}">{{ $classe->code }}</a> </td>
 										<td>{{ $classe->nom }} </td>
