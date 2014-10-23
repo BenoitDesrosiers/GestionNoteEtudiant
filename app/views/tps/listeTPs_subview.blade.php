@@ -1,4 +1,4 @@
-@if ($tps->isEmpty())
+@if ($lignes->isEmpty())
 	<p>Aucun travail pratique disponible!</p>
 @else
 	<div class="table-responsive">	{{-- voir http://getbootstrap.com/css/#tables-responsive --}}
@@ -19,7 +19,7 @@
 					$poids_local = 0; 
 				?> 
 				
-				@foreach($tps as $tp)
+				@foreach($lignes as $tp)
 				
 						<?php 
 							$poids += $tp->poids;

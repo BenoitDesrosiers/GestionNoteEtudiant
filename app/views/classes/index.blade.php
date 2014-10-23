@@ -32,6 +32,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								
 								@foreach($lignes as $classe)
 									<tr>
 										<td><a href="{{ action('ClassesController@show', $classe->id) }}">{{ $classe->code }}</a> </td>

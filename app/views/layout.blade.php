@@ -54,7 +54,7 @@
 	    	</div>
     	</div>			    	
     @endif
-
+	
 
 
 @yield('content')

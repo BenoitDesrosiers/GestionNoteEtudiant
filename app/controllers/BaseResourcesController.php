@@ -15,11 +15,13 @@ class BaseResourcesController extends BaseController
 	protected $base;
 	protected $message_store;
 	protected $message_update;
+	protected $message_delete;
+	protected $message_critical;
+	
 	
 	public function index()
 	{	
-		$lignes = $this->gestion->listeAllLignes();		
-		return View::make($this->base.'.index', compact('lignes'));
+		return View::make($this->base.'.index', $this->gestion->index());
 	}
 	
 	public function create()
@@ -62,6 +64,6 @@ class BaseResourcesController extends BaseController
 	public function destroy($id)
 	{
 		$this->gestion->destroy($id);
-		return Redirect::back();	
+		return Redirect::back()->with('message_success', $this->message_delete);	
 	}
 }

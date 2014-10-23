@@ -6,8 +6,12 @@ public function __construct(Classe $model){
 	$this->model = $model;
 }
 
-public function listeAllLignes(){
-	return $this->model->all();
+public function index() {
+	$lignes = $this->listeAllLignes();
+	$sessionsList= Sessionscholaire::all()->lists( 'nom','id'); //TODO: y a-t-il moyen d'injecter Sessionscholaire?
+	$sessionSelected = Sessionscholaire::where("courant", 1)->pluck("id");
+	return compact('lignes','sessionsList', 'sessionSelected');
+	
 }
 
 public function create() {

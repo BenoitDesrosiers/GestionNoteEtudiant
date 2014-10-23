@@ -1,4 +1,4 @@
-@if ($etudiants->isEmpty())
+@if ($lignes->isEmpty())
 	<p>Aucune etudiant de disponible!</p>
 @else
 <div class="table-responsive">	{{-- voir http://getbootstrap.com/css/#tables-responsive --}}
@@ -13,7 +13,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		@foreach($etudiants as $etudiant)
+		@foreach($lignes as $etudiant)
 		<tr>
 			<td><a href="{{ action('EtudiantsController@show', [$etudiant->id]) }}">{{ $etudiant->nom }} </a></td>
 			<td>{{ $etudiant->da }} </td>

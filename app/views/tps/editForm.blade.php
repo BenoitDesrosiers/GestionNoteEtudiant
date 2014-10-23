@@ -25,6 +25,8 @@
 	{{ Form::label('poids', 'Poids:', ['class' => "col-sm-2 control-label"]) }} 
 	<div class = 'col-sm-10'>
 		{{ Form::text('poids',$tp->poids, ['class' => 'form-control']) }}
+		{{$errors->first('poids')}}
+		
 	</div>	
 </div>
 <div class="form-group">

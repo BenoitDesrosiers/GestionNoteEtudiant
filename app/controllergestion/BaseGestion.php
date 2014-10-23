@@ -19,12 +19,14 @@ abstract class BaseGestion
 		return $this->model->paginate($pages);
 	}
 	
+	
 	/**
 	 * retourne toutes les instances de la classe gérée
 	 * 
 	 * @return collection représentant ::ALL()
 	 */
-	abstract function listeAllLignes();
-	
+	public function listeAllLignes(){
+		return $this->model->all();
+	}	
 
 }
