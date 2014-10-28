@@ -22,6 +22,8 @@ Route::group(['before'=>'auth'], function() {
 		
 		
 		/* Travaux pratiques (TP) */
+		Route::get('distributionTP/{id}', ['as' => 'distributionTP', 'uses' => 'TPsController@distribuer']);
+		Route::post('doDistributionTP/{id}',  ['as' => 'doDistributionTP', 'uses' => 'TPsController@doDistribuer']);
 		Route::post('tpsPourClasse', ['as' => 'tpsPourClasse', 'uses' => 'TPsController@itemsFor2Filters']);     //pour l'appel AJAX  
 		Route::resource('tps', 'TPsController');
 		
@@ -30,9 +32,11 @@ Route::group(['before'=>'auth'], function() {
 		Route::resource('questions', 'QuestionsController');
 		
 		/* Etudiants */
-		//Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@etudiantsPourClasse']);     //pour l'appel AJAX
 		Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@itemsFor2Filters']);     //pour l'appel AJAX
 		Route::resource('etudiants', 'EtudiantsController');
+		
+		/* Distribution des TPs */
+		// Ce controller n'est pas pour une ressource. 
 		
 });
 

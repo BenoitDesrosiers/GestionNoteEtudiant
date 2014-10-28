@@ -140,6 +140,58 @@ private function displayView( $option0, $item=null, $displayOnlyLinked=null) {
 	$tp = $item;	
 	return compact('tp', 'belongsToList', 'belongsToSelectedIds','filtre1');
 }
+
+/**
+ * Affiche la liste des classes associées à ce TP afin de permettre de choisir lesquels distribuer
+ * 
+ * @param integer $id l'id du TP à distribuer
+ * @return view la view pour choisir pour quelles classes distribuer le TP
+ */
+public function distribuer($id) {
+	$lignes= [];
+	try {
+		$tp = $this->model->findOrFail($id);
+		$classes = $tp->classes;
+		foreach($classes as $classe) {
+			$dejaDistribue = !(Note::forClasse($classe->id)->forTP($tp->id)->get()->isEmpty());
+			$lignes[$classe->id] = ['nom' => $classe->nom, 'session' => $classe->sessionscholaire->nom,'dejaDistribue'=>$dejaDistribue ];
+		}
+	} catch (Exception $e) {
+		$tp = new $this->model;
+	}
+	
+	
+	return compact('tp', 'lignes');
+}
+
+public function doDistribuer($id, $input){
+	
+	try {
+		$tp = $this->model->findOrFail($id);
+		$classes = $tp->classes;
+		foreach($classes as $classe) { //TODO mettre toute la création dans une transaction
+			if(in_array($classe->id,$input['distribue'])) { //le checkbox pour cette classe est sélectionné
+				Note::forClasse($classe->id)->forTP($tp->id)->delete(); //efface les notes déjà distribuées pour ce TP/Classe
+				$etudiants= $classe->etudiants;
+				$questions = $tp->questions;
+				foreach($etudiants as $etudiant) {
+					foreach($questions as $question) {
+						$note = new Note;
+						$note->classe_id = $classe->id;
+						$note->tp_id = $tp->id;
+						$note->question_id = $question->id;
+						$note->etudiant_id = $etudiant->id;
+						$note->save();
+					}
+				}
+			}
+		}
+	} catch (Exception $e) {
+		return "Une erreur c'est produite";
+	}
+	
+	return true;
+}
 /**
  * Helpers
  *

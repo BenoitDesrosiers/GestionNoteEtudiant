@@ -41,7 +41,8 @@
 						{{ Form::close() }}
 						</td>
 						<td><a href="{{ action('QuestionsController@index', ['belongsToId' => $tp->id]) }}" class="btn btn-info">Questions</a></td>						
-						
+						<td><a href="{{ URL::route('distributionTP',  [$tp->id]) }}" class="btn btn-info">Distribuer</a></td>						
+												
 					</tr>
 					
 				@endforeach

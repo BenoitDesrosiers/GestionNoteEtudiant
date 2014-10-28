@@ -26,25 +26,26 @@ class Classe extends EloquentValidating
  * database relationships
  */
 	
-	// Une classe a plusieurs Travaux Pratiques (TP)
+	// Une Classe a plusieurs Travaux Pratiques (TP)
 	public function tps() {
-		//TODO: c'est pas belongsToMany, c'est hasMany ... le CHANGER
 		return $this->belongsToMany('TP', 'classes_tps', 'classe_id', 'tp_id')->withPivot('poids_local'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????
 	}
 	
-	// Une classe a plusieurs étudiants d'inscrit
+	// Une Classe a plusieurs Etudiants d'inscrit
 	
 	public function etudiants() {
 		return $this->belongsToMany('Etudiant', 'etudiants_classes', 'classe_id', 'etudiant_id');
 	}
 	
-	// Une classe appartient à une session
+	// Une Classe appartient à une Session
 	public function sessionscholaire() {
 		return $this->belongsTo('Sessionscholaire');
 	}
 	
-	
-	
+	// Une Classe a plusieurs Notes
+	public function notes() {
+		return $this->hasMany('Note');
+	}
 	
 /*
  * Validation

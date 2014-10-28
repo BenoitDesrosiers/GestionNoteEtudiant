@@ -27,6 +27,25 @@ class Note extends EloquentValidating
 		return $this->belongsTo('Question');
 	}
 	
+	/**
+	 * scope 
+	 * 
+	 * functions permettant de chainer les requetes afin de trouver une note plus simplement
+	 */
+	
+	public function scopeForClasse($query, $classeId) {
+		return $query->where('classe_id', '=', $classeId);
+	}
+	public function scopeForTP($query,$tpId){
+		return $query->where('tp_id', '=', $tpId);
+	}	
+	public function scopeForEtudiant($query, $etudiantId) {
+		return $query->where('etudiant_id', '=', $etudiantId);
+	}
+	public function scopeForQuestion($query, $questionId) {
+		return $query->where('question_id', '=', $questionId);
+	}
+	
 	
 /*
  * Validation
