@@ -1,18 +1,18 @@
-@if ($questions->isEmpty())
+@if ($lignes->isEmpty())
 	<p>Aucune question de disponible!</p>
 @else
 <div class="table-responsive">
 	<table class="table">
 		<thead>
 			<tr>
-				<th class="text-right">Nom</th>
-				<th class="text-right">Enoncé</th>
-				<th class="text-right">Sur</th>
+				<th class="text-left">Nom</th>
+				<th class="text-left">Enoncé</th>
+				<th class="text-left">Sur</th>
 				<th> </th>
 			</tr>
 		</thead>
 		<tbody>
-		@foreach($questions as $question)
+		@foreach($lignes as $question)
 			<tr>
 				<td><a href="{{ action('QuestionsController@show', [$question->id]) }}">{{ $question->nom }}</a></td>
 				<td>{{ $question->enonce }} </td>

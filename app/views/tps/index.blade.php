@@ -39,7 +39,7 @@
 
 <script>
 
-	var controllerCallBackRoute ='{{URL::action('TPsController@tpsPourClasse') }}'
+	var controllerCallBackRoute ='{{URL::route('tpsPourClasse') }}'
 
 	/*
 	 * change le contenu du "belongsToSelect" selon les filtres sélectionnés. 

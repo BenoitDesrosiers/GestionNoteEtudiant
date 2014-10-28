@@ -22,17 +22,18 @@ Route::group(['before'=>'auth'], function() {
 		
 		
 		/* Travaux pratiques (TP) */
-		Route::any('tpsPourClasse', 'TPsController@tpsPourClasse');     //pour l'appel AJAX  
+		Route::post('tpsPourClasse', ['as' => 'tpsPourClasse', 'uses' => 'TPsController@itemsFor2Filters']);     //pour l'appel AJAX  
 		Route::resource('tps', 'TPsController');
 		
 		/* Questions */
-		Route::post('questionsPourTp', 'QuestionsController@questionsPourTPs');     //pour l'appel AJAX
+		Route::any('questionsPourTp', ['as' => 'questionsPourTp', 'uses' => 'QuestionsController@itemsFor2Filters' ]);     //pour l'appel AJAX
 		Route::resource('questions', 'QuestionsController');
 		
 		/* Etudiants */
-		Route::post('etudiantsPourClasse', 'EtudiantsController@etudiantsPourClasse');     //pour l'appel AJAX
+		//Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@etudiantsPourClasse']);     //pour l'appel AJAX
+		Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@itemsFor2Filters']);     //pour l'appel AJAX
 		Route::resource('etudiants', 'EtudiantsController');
-	
+		
 });
 
 // Confide routes

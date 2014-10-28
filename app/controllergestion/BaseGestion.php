@@ -10,23 +10,23 @@ abstract class BaseGestion
 	 * L'avantage de l'injecté est qu'il est facile de changer la classe du modèle
 	 * Ce qui permet de faire des mock-up plus facilement. 
 	 */
-  protected $model;
+protected $model;
   
-  protected $validation;
+protected $validation;
  
-	public function listePages($pages)
-	{
-		return $this->model->paginate($pages);
-	}
-	
-	
-	/**
-	 * retourne toutes les instances de la classe gérée
-	 * 
-	 * @return collection représentant ::ALL()
-	 */
-	public function listeAllLignes(){
-		return $this->model->all();
-	}	
+public function listePages($pages)
+{
+	return $this->model->paginate($pages);
+}
+
+/**
+ * retourne toutes les instances de la classe gérée
+ * 
+ * @return collection représentant ::ALL()
+ */
+public function listeAllLignes(){
+	return $this->model->all();
+}	
+
 
 }

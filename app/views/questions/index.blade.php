@@ -39,7 +39,7 @@
 	</div>
 <script>
 
-	var controllerCallBackRoute ='{{URL::action('QuestionsController@questionsPourTPs') }}'
+	var controllerCallBackRoute ='{{URL::route('questionsPourTp') }}'
 
 	/*
 	 * change le contenu du "belongsToSelect" selon les filtres sélectionnés. 

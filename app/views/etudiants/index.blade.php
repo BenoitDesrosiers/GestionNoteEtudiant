@@ -38,7 +38,7 @@
 		</section>
 	</div>
 <script>
-	var controllerCallBackRoute ='{{URL::action('EtudiantsController@etudiantsPourClasse') }}'
+	var controllerCallBackRoute ='{{URL::route('etudiantsPourClasse') }}'
 
 	/*
 	 * change le contenu du "belongsToSelect" selon les filtres sélectionnés. 

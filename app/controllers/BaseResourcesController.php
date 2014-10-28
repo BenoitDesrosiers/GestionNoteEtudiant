@@ -66,4 +66,5 @@ class BaseResourcesController extends BaseController
 		$this->gestion->destroy($id);
 		return Redirect::back()->with('message_success', $this->message_delete);	
 	}
+
 }

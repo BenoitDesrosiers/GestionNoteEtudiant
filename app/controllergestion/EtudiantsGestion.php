@@ -1,9 +1,38 @@
 <?php 
 
-class EtudiantsGestion extends BaseGestion{
+class EtudiantsGestion extends BaseFilteredGestion{
 
-public function __construct(Etudiant $model){
-	$this->model = $model;
+public function __construct(Etudiant $model, Classe $filteringClass){
+	parent::__construct($model, $filteringClass);
+}
+
+protected function filter1($filteringItem) {
+	//$filteringItems doit être une Classe
+	return $filteringItem->etudiants->sortBy('nom');
+}
+protected function filter2($filterValue) {
+	//Pour les Etudiants, le filter 2 est la sessionScholaire
+	if($filterValue == 0) {// 0 indique 'Tous' sur filter2
+		$lignes = $this->model->all()->sortBy('nom');
+	} else {
+		try {
+			$filterByItems = $this->filteringClass->where('sessionscholaire_id', '=' , $filterValue)->get(); //va chercher les classes pour cette session
+			$modelIds = [];
+			foreach($filterByItems as $item) { //créé la liste des ids des TPs pour toutes ces classes.
+				$modelIds=array_merge($modelIds,$this->filter1($item)->lists('id'));
+			}
+	
+			//un Etudiant peut être avec 2 classes, il faut donc aller les chercher par leur id afin d'enlever les doublons
+			if(count($modelIds)>0) {
+				$lignes = $this->model->whereIn('id', $modelIds)->get()->sortBy('nom');
+			} else { //aucun TP de retourné, on créé donc une liste vide.
+				$lignes = new Illuminate\Database\Eloquent\Collection;
+			}
+		} catch (Exception $e) {
+			$lignes = new Illuminate\Database\Eloquent\Collection;
+		}
+	}
+	return $lignes;
 }
 
 public function index() {
@@ -51,7 +80,7 @@ public function store($input) {
 }
 
 public function show($id){
-	return $this->displayView(null,Etudiant::findOrFail($id),true);
+	return $this->displayView(null,$this->model->findOrFail($id),true);
 }
 
 public function edit($id){

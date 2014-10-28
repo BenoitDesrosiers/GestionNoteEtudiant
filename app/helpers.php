@@ -26,6 +26,7 @@ function checkLinkedId($defaut, $itemId, $classe) {
 }
 
 
+
 /**
  * Vérifie que tous les $ids sont valide pour des objets de la classe $classe
  * @param array $ids une liste d'ids à vérifier
@@ -88,7 +89,7 @@ function createFiltreParSessionPourClasses($classes, $tous) {
 	{$selectList[0]="Tous";}
 	foreach($classes as $classe) {
 		if($tous) {
-			$groupes["Tous"][]=$classe->id;
+			$groupes["0"][]=$classe->id;
 		}
 		$groupes[$classe->sessionscholaire->id][]=$classe->id;
 		$selectList[$classe->sessionscholaire->id] = $classe->sessionscholaire->nom;

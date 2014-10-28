@@ -22,13 +22,21 @@ class Question extends EloquentValidating
  * Opérations de stockage
  * 
  */
+	
+	/**
+	 * save la question dans la bd et ajoute cette question à tous les TPs ayant les id dans $tpIds
+	 * 
+	 * @param associative array $input [nom, enonce, baliseCorrection, reponse, sur] pour créer la question
+	 * @param array $tpIds les ids des TPs qui doivent être associé à cette question
+	 * @return boolean true si tout c'est bien passé, validationMessages pour cette question si il y'a un problème
+	 */
 	public function createWithTPs($input, $tpIds) {
 		$this->nom = $input['nom'];
 		$this->enonce = $input['enonce'];
 		$this->baliseCorrection = $input['baliseCorrection'];
 		$this->reponse = $input['reponse'];
 		$this->sur = $input['sur'];
-		if($this->save()) { 
+		if($this->save()) { //TODO mettre ca dans une transaction
 			foreach($tpIds as $tpId) {
 				if($tpId <> 0) {	
 					TP::find($tpId)->addQuestion($this);
@@ -36,7 +44,7 @@ class Question extends EloquentValidating
 			}
 			return true;
 		} else {
-			return false;
+			return $this->validationMessages;
 		}
 	}
 	
@@ -58,7 +66,7 @@ class Question extends EloquentValidating
 			}
 			return true;
 		} else {
-			return false;
+			return $this->validationMessages;
 		}
 	}
 	
