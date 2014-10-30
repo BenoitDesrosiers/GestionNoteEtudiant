@@ -31,10 +31,11 @@ class Classe extends EloquentValidating
 		return $this->belongsToMany('TP', 'classes_tps', 'classe_id', 'tp_id')->withPivot('poids_local'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????
 	}
 	
-	// Une Classe a plusieurs Etudiants d'inscrit
+
+	// Une classe a plusieurs étudiants (users) d'inscrit
 	
 	public function etudiants() {
-		return $this->belongsToMany('Etudiant', 'etudiants_classes', 'classe_id', 'etudiant_id');
+		return $this->belongsToMany('User', 'etudiants_classes', 'classe_id', 'etudiant_id');
 	}
 	
 	// Une Classe appartient à une Session

@@ -15,18 +15,12 @@
 </div> <!-- belongsToSelect -->
 
 <div class="form-group">
-	{{ Form::label('nom', 'Nom:', ['class' => "col-sm-2 control-label"]) }} 
-	<div class = 'col-sm-10'>
-		{{ Form::text('nom', $etudiant->nom, ['class' => 'form-control']) }}
-		{{ $errors->first('nom') }}
-	</div>
+	{{ Form::label('nom', 'Nom:', ['class' => "col-sm-2 text-right"]) }} 
+	{{ Form::label('nom1', $etudiant->prenom.' '.$etudiant->nom, ['class' => "col-sm-10  text-left"]) }} 
 </div>
 <div class="form-group">
-	{{ Form::label('da', 'DA:', ['class' => "col-sm-2 control-label"]) }} 
-	<div class = 'col-sm-10'>
-		{{ Form::text('da', $etudiant->da, ['class' => 'form-control']) }}
-		{{ $errors->first('da') }}
-	</div>
+	{{ Form::label('da', 'DA:', ['class' => "col-sm-2 text-right"]) }} 
+	{{ Form::label('da1', $etudiant->username, ['class' => "col-sm-10  text-left"]) }} 
 </div>
 
 <script>

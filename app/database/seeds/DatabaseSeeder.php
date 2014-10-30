@@ -22,6 +22,9 @@ class UserTableSeeder extends Seeder {
 			DB::table('password_reminders')->delete();
 			$user = new User();
 			$user->username = 'usager';
+			$user->nom = 'usager';
+			$user->prenom = 'un';
+			$user->type= 'p';
 			$user->email = 'usager@chose.com';
 			$user->password = 'usager';
 			$user->password_confirmation = 'usager';

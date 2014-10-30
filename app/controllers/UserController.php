@@ -17,7 +17,8 @@ class UserController extends BaseController {
      */
     public function create()
     {
-        return View::make(Config::get('confide::signup_form'));
+    	return View::make('users.signup');
+        //return View::make(Config::get('confide::signup_form'));
     }
 
     /**
@@ -31,7 +32,10 @@ class UserController extends BaseController {
         $user->username = Input::get( 'username' );
         $user->email = Input::get( 'email' );
         $user->password = Input::get( 'password' );
-
+		$user->nom = Input::get('nom');
+		$user->prenom = Input::get('prenom');
+		$user->type = Input::get('type');
+		
         // The password confirmation will be removed from model
         // before saving. This field will be used in Ardent's
         // auto validation.
@@ -73,7 +77,8 @@ class UserController extends BaseController {
         }
         else
         {
-            return View::make(Config::get('confide::login_form'));
+        	return View::make('users.login');
+            //return View::make(Config::get('confide::login_form'));
         }
     }
 

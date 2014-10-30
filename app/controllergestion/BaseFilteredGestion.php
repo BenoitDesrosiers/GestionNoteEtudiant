@@ -46,7 +46,7 @@ public function itemsFor2Filters($filter1, $filter2) {
 	if($filter1 <> 0) { //Si un choix du filter1 est sélectionnée, retourne les items pour celui-ci
 		try {
 			$filterObject = $this->filteringClass->findOrFail($filter1);
-			$lignes = $this->filter1($filterObject);
+			$lignes = $this->filter1($filterObject);				
 		} catch (Exception $e) {
 			//la valeur de $filter1 n'est pas bonne. On retourne une liste vide, et reset $filter1 à 0 
 			$lignes= new Illuminate\Database\Eloquent\Collection;
@@ -56,6 +56,7 @@ public function itemsFor2Filters($filter1, $filter2) {
 		$lignes = $this->filter2($filter2);
 	}
 	$belongsToId = $filter1;
+	
 	return compact('lignes', 'belongsToId' );	
 }
 
