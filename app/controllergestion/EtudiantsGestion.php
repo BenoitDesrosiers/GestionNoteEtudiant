@@ -1,19 +1,20 @@
 <?php 
 
+
 class EtudiantsGestion extends BaseFilteredGestion{
 
-public function __construct(Etudiant $model, Classe $filteringClass){
+public function __construct(User $model, Classe $filteringClass){
 	parent::__construct($model, $filteringClass);
 }
 
 protected function filter1($filteringItem) {
 	//$filteringItems doit être une Classe
-	return $filteringItem->etudiants->sortBy('nom');
+	return $filteringItem->etudiants()->where('type','=','e')->get()->sortBy('nom');
 }
 protected function filter2($filterValue) {
 	//Pour les Etudiants, le filter 2 est la sessionScholaire
 	if($filterValue == 0) {// 0 indique 'Tous' sur filter2
-		$lignes = $this->model->all()->sortBy('nom');
+		$lignes = $this->model->where('type','=','e')->get()->sortBy('nom');
 	} else {
 		try {
 			$filterByItems = $this->filteringClass->where('sessionscholaire_id', '=' , $filterValue)->get(); //va chercher les classes pour cette session
@@ -39,10 +40,12 @@ public function index() {
 	return $this->displayView( 'Tous');
 	
 }
+
+/* on ne doit pas créer un étudiant ici, car un étudiant est avant tout un usager. 
 public function create() {
 	return $this->displayView('Aucune Classe');
 }
-
+*/
 
 /**
  * Enregistrement initial dans la BD
@@ -53,7 +56,8 @@ public function create() {
  * 				 	Les ids doivent être valide, sinon une page d'erreur sera affichée.
  *
  */
-public function store($input) {
+/*
+public function obsolete_store($input) { //je ne devrais pas storer un nouvel etudiant, il doit avoir été créer en tant qu'user
 	$classeId = 0;
 	//verifie que les ids de classe passé en paramêtre sont bons
 	if(isset($input['belongsToListSelect'])) {
@@ -78,7 +82,7 @@ public function store($input) {
 	}
 
 }
-
+*/
 public function show($id){
 	return $this->displayView(null,$this->model->findOrFail($id),true);
 }
@@ -86,6 +90,14 @@ public function show($id){
 public function edit($id){
 	return $this->displayView('Aucune classe', $this->model->findOrFail($id));
 }
+
+/**
+ * La seule chose qu'on peut updater, c'est l'association entre un etudiant et une classe. 
+ * La création ou modification d'un étudiant doit se faire via User
+ * @param int $id
+ * @param array $input l'input provenant de la view. Seul l'association avec la classe sera modifiable. 
+ * @return boolean
+ */
 
 public function update($id, $input){
 		//verifie que les ids de classe passé en paramêtre sont bons
@@ -99,8 +111,7 @@ public function update($id, $input){
 		}
 					
 		$etudiant = $this->model->findOrFail($id); //TODO catch l'exception
-		$etudiant->nom = $input['nom'];
-		$etudiant->da = $input['da'];
+		// ne permet pas de changer les autres champs. 
 		if($etudiant->save()) {
 			$etudiant->classes()->sync($classeIds);
 			return true;
@@ -110,6 +121,7 @@ public function update($id, $input){
 
 }
 
+/* ne permet pas d'effacer un étudiant. Ca doit être fait via les Users 
 public function destroy($id){
 	$etudiant = $this->model->findOrFail($id);
 	$etudiant->classes()->detach();
@@ -122,6 +134,7 @@ public function destroy($id){
 	
 	return true;
 }
+*/
 
 private function displayView( $option0, $item=null, $displayOnlyLinked=null) {
 	if(isset($item) and isset($displayOnlyLinked) ) {

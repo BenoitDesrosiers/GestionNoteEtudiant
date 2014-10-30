@@ -31,19 +31,25 @@ Route::group(['before'=>'auth'], function() {
 		
 		/* Etudiants */
 		//Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@etudiantsPourClasse']);     //pour l'appel AJAX
-		Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@itemsFor2Filters']);     //pour l'appel AJAX
+		Route::any('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@itemsFor2Filters']);     //pour l'appel AJAX
 		Route::resource('etudiants', 'EtudiantsController');
 		
 });
 
 // Confide routes
-Route::get( 'user/create',                 'UserController@create');
-Route::post('user',                        'UserController@store');
-Route::get( 'user/login',                  'UserController@login');
-Route::post('user/login',                  'UserController@do_login');
-Route::get( 'user/confirm/{code}',         'UserController@confirm');
-Route::get( 'user/forgot_password',        'UserController@forgot_password');
-Route::post('user/forgot_password',        'UserController@do_forgot_password');
-Route::get( 'user/reset_password/{token}', 'UserController@reset_password');
-Route::post('user/reset_password',         'UserController@do_reset_password');
-Route::get( 'user/logout',                 'UserController@logout');
+Route::get( 'users/create',                 'UserController@create');
+Route::post('users',                        'UserController@store');
+Route::get( 'users/login',                  'UserController@login');
+Route::post('users/login',                  'UserController@do_login');
+Route::get( 'users/confirm/{code}',         'UserController@confirm');
+Route::get( 'users/forgot_password',        'UserController@forgot_password');
+Route::post('users/forgot_password',        'UserController@do_forgot_password');
+Route::get( 'users/reset_password/{token}', 'UserController@reset_password');
+Route::post('users/reset_password',         'UserController@do_reset_password');
+Route::get( 'users/logout',                 'UserController@logout');
+
+// Dashboard route
+Route::get('userpanel/dashboard', function(){ return View::make('userpanel.dashboard'); });
+
+// Applies auth filter to the routes within admin/
+Route::when('userpanel/*', 'auth');

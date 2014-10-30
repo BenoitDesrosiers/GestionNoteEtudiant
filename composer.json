@@ -6,7 +6,7 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"davejamesmiller/laravel-breadcrumbs": "~2.2.1",
-		"zizaco/confide": "3.2.x"
+		"zizaco/confide": "~4.0@dev"
 	},
 	"autoload": {
 		"classmap": [

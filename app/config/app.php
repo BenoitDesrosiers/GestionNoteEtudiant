@@ -122,7 +122,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
-        'Zizaco\Confide\ConfideServiceProvider',
+        'Zizaco\Confide\ServiceProvider',
 	),
 
 	/*
@@ -190,7 +190,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
-        'Confide'    => 'Zizaco\Confide\ConfideFacade',
+        'Confide'    => 'Zizaco\Confide\Facade',
 	),
 
 );

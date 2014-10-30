@@ -1,6 +1,6 @@
 <?php
 
-class Etudiant extends EloquentValidating
+class obsoleteEtudiant extends EloquentValidating
 {
 	
  /*

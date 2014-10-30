@@ -3,13 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Gestion des notes</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-	<script src="https://code.jquery.com/jquery.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	{{ HTML::script('assets/js/script.js') }}
-	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+{{ HTML::script('assets/js/script.js') }}
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
 <header>
@@ -22,7 +22,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<p class="navbar-text navbar-left">Cégep de Drummondville</p>
-			<p class="navbar-text navbar-left">Bienvenue {{ Auth::user()->username }}</p>
+			<p class="navbar-text navbar-left">Bienvenue {{Confide::user()? Auth::user()->username:'visiteur' }}</p>
 			
 			<p> 
 		</div>

@@ -8,21 +8,14 @@
 				<th>Nom</th>
 				<th>da</th>
 				<th> </th>
-				<th> </th>
-				
 			</tr>
 		</thead>
 		<tbody>
 		@foreach($lignes as $etudiant)
 		<tr>
-			<td><a href="{{ action('EtudiantsController@show', [$etudiant->id]) }}">{{ $etudiant->nom }} </a></td>
-			<td>{{ $etudiant->da }} </td>
+			<td><a href="{{ action('EtudiantsController@show', [$etudiant->id]) }}">{{ $etudiant->prenom.' '.$etudiant->nom }} </a></td>
+			<td>{{ $etudiant->username }} </td>
 			<td><a href="{{ action('EtudiantsController@edit', [$etudiant->id]) }}" class="btn btn-info">Éditer</a></td>
-			<td>
-				{{ Form::open(array('action' => array('EtudiantsController@destroy', $etudiant->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}
-					<button type="submit" href="{{ URL::route('etudiants.destroy', $etudiant->id) }}" class="btn btn-danger btn-mini">Effacer</button>
-                {{ Form::close() }}   
-            </td>
 		</tr>
 			@endforeach
 		</tbody>
