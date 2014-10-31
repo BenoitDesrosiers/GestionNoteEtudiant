@@ -34,14 +34,15 @@ Route::group(['before'=>'auth'], function() {
 		/* Etudiants */
 		Route::post('etudiantsPourClasse', ['as' => 'etudiantsPourClasse', 'uses' => 'EtudiantsController@itemsFor2Filters']);     //pour l'appel AJAX
 		Route::resource('etudiants', 'EtudiantsController');
+	
 		
-		/* Distribution des TPs */
-		// Ce controller n'est pas pour une ressource. 
+		// la création d'un usager ne peu se faire que par un usager déjà connecté. 
+		// TODO: ajouter que seul les gestionnaires peuvent le faire. Mais j'ai besoin de Entrust pour ca
+		Route::get( 'users/create',                 'UserController@create');
 		
 });
 
 // Confide routes
-Route::get( 'users/create',                 'UserController@create');
 Route::post('users',                        'UserController@store');
 Route::get( 'users/login',                  'UserController@login');
 Route::post('users/login',                  'UserController@do_login');
