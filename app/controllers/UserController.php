@@ -110,7 +110,6 @@ class UserController extends BaseController {
         else
         {
             $user = new User;
-
             // Check if there was too many login attempts
             if( Confide::isThrottled( $input ) )
             {

@@ -49,7 +49,7 @@ public function itemsFor2Filters($filter1, $filter2) {
 			$lignes = $this->filter1($filterObject);				
 		} catch (Exception $e) {
 			//la valeur de $filter1 n'est pas bonne. On retourne une liste vide, et reset $filter1 à 0 
-			$lignes= new Illuminate\Database\Eloquent\Collection;
+			$lignes= new Illuminate\Database\Eloquent\Collection;  //TODO: je crée une collection, mais dans TPsPassationGestion, $lignes est une array. Faudrait toujours retourner une array
 			$filter1 = 0; 
 		}
 	} else { //filter1 est sur "Tous", mais il peut y avoir un choix sur filter2

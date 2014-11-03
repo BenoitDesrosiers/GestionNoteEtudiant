@@ -23,9 +23,16 @@ Route::group(['before'=>'auth'], function() {
 		
 		/* Travaux pratiques (TP) */
 		Route::get('distributionTP/{id}', ['as' => 'distributionTP', 'uses' => 'TPsController@distribuer']);
-		Route::post('doDistributionTP/{id}',  ['as' => 'doDistributionTP', 'uses' => 'TPsController@doDistribuer']);
-		Route::post('tpsPourClasse', ['as' => 'tpsPourClasse', 'uses' => 'TPsController@itemsFor2Filters']);     //pour l'appel AJAX  
+		Route::post('doDistributionsTP/{id}',  ['as' => 'doDistributionTP', 'uses' => 'TPsController@doDistribuer']);
+		Route::any('tpsPourClasse', ['as' => 'tpsPourClasse', 'uses' => 'TPsController@itemsFor2Filters']);     //pour l'appel AJAX  
 		Route::resource('tps', 'TPsController');
+		
+		/* Passation des TPs */ 
+		Route::any('tpsPassationPourClasse', ['as' => 'tpsPassationPourClasse', 'uses' => 'TPsPassationController@itemsFor2Filters']);     //pour l'appel AJAX
+		Route::get('tpPassationIndex', ['as' => 'tpPassationIndex', 'uses' => 'TPsPassationController@index']);
+		Route::get('tpPassationRepondre/{etudiantId}/{classeId}/{tpId}', ['as' => 'tpPassationRepondre', 'uses' => 'TPsPassationController@repondre']);
+		
+		
 		
 		/* Questions */
 		Route::any('questionsPourTp', ['as' => 'questionsPourTp', 'uses' => 'QuestionsController@itemsFor2Filters' ]);     //pour l'appel AJAX

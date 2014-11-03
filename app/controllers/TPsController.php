@@ -36,4 +36,6 @@ class TPsController extends BaseFilteredResourcesController
 			return Redirect::route($this->base.'.distribuer')->withInput()->withErrors($return);
 		}
  	}
+
+ 
 }

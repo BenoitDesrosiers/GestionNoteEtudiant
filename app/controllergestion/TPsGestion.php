@@ -2,6 +2,13 @@
 
 class TPsGestion extends BaseFilteredGestion{
 
+	/*******
+	******
+	***** TODO: associer un TP à un prof
+	*****
+	***/
+	
+	
 public function __construct(TP $model, Classe $filteringClass){
 	parent::__construct($model, $filteringClass);
 }
@@ -36,11 +43,11 @@ protected function filter2($filterValue) {
 }
 
 public function index() {
-	return $this->displayView( 'Tous');
+	return $this->createHeaderForView( 'Tous');
 	
 }
 public function create() {
-	return $this->displayView('Aucune Classe');
+	return $this->createHeaderForView('Aucune Classe');
 }
 
 
@@ -80,12 +87,12 @@ public function store($input) {
 }
 
 public function show($id){
-	return $this->displayView(null,$this->model->findOrFail($id),true);
+	return $this->createHeaderForView(null,$this->model->findOrFail($id),true);
 	
 }
 
 public function edit($id){
-	return $this->displayView('Aucune classe', $this->model->findOrFail($id));
+	return $this->createHeaderForView('Aucune classe', $this->model->findOrFail($id));
 }
 
 public function update($id, $input){
@@ -124,7 +131,7 @@ public function destroy($id){
 	return true;
 }
 
-private function displayView( $option0, $item=null, $displayOnlyLinked=null) {
+private function createHeaderForView( $option0, $item=null, $displayOnlyLinked=null) {
 	if(isset($item) and isset($displayOnlyLinked) ) {
 		$lesClasses = $item->classes;//affiche seulement les classes associées à cet item. (utile pour show)
 	} else {//sinon affiche toutes les classes.
@@ -192,6 +199,8 @@ public function doDistribuer($id, $input){
 	
 	return true;
 }
+
+
 /**
  * Helpers
  *

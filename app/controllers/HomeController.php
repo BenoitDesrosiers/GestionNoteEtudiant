@@ -8,7 +8,11 @@ class HomeController extends BaseController {
 
 	public function index()
 	{
-		return View::make('homePage');
+		if(Auth::user()->type == 'p') {
+			return View::make('homePageProf');
+		} else {
+			return View::make('homePageEtudiant');
+		}
 	}
 
 }
