@@ -25,7 +25,22 @@ function checkLinkedId($defaut, $itemId, $classe) {
 	return $itemId;
 }
 
+function checkLinkedId2($defaut, $itemId, $filteringClasse) {
+	if($itemId <> 0) {
+		//verifie que l'id passé en paramêtre existe.
+		try {
+			$item = $filteringClasse->findOrFail($itemId);
+		} catch (Exception $e) {
+			//si il n'existe pas, on prend celui du premier item dans la liste
+			$itemId = $defaut;
+		}
 
+	} else {
+		//par default on prend la valeur par défaut
+		$itemId= $defaut;
+	}
+	return $itemId;
+}
 
 /**
  * Vérifie que tous les $ids sont valide pour des objets de la classe $classe
@@ -71,7 +86,17 @@ function createSelectOptions($items, $func, $valeur0=null) {
 	}
 	return $optionsList;
 }
-
+function createSelectOptions2($items, $func, $valeurSpeciales=null) {
+	if(isset($valeurSpeciales)) {
+		foreach($valeurSpeciales as $indice=>$valeur){
+			$optionsList[$indice]=$valeur;
+		}
+	}
+	foreach($items as $item) {
+		$optionsList[$item->id]=call_user_func($func,$item);
+	}
+	return $optionsList;
+}
 /**
  * Regroupement des classes par sessioncholaire
  * @param boolean $tous Est-ce que la liste doit avoir un choix "Tous"

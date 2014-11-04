@@ -48,6 +48,7 @@ class Classe extends EloquentValidating
 		return $this->hasMany('Note');
 	}
 	
+	
 /*
  * Validation
  * 

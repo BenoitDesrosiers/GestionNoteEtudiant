@@ -23,6 +23,10 @@ class TP extends EloquentValidating
 		return $this->belongsToMany('Question', 'tps_questions', 'tp_id', 'question_id')->withPivot('ordre','sur_local');
 	}
 	
+	public function notes() {
+		return $this->hasMany('Note','tp_id');
+	}
+	
 	
 	/**
 	 * Opérations de stockage

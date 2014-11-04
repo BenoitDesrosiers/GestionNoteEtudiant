@@ -8,11 +8,7 @@
 						<h1> Liste des travaux pratiques à passer</h1>
 						{{ Form::open(['action'=> ['TPsController@create'], 'role' => 'form', 'method' => 'get', 'class' => 'form-inline']) }}
 							{{ Form::hidden('belongsToId', '1', array('id'=>'belongsToId')) }}
-							<div class="form-group">
-								<div >
-									{{ Form::submit('Créer un TP', ['class' => 'btn btn-primary'])}}	
-								</div>
-							</div>
+							
 							<div class="form-group" id="belongsToSelect" >
 								<div>						
 									{{ Form::select('belongsToListSelect', $belongsToList, $belongsToSelectedIds, 

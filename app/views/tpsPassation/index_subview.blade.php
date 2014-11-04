@@ -34,7 +34,7 @@
 						<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->nom }}</a> </td>
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
 						<td class="text-right">{{ $tp->pivot->poids_local }} </td>
-						<td><a href="{{ route('tpPassationRepondre', [Auth::user()->id,$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Répondre</a></td>
+						<td><a href="{{ route('tpsPassation.repondre', [Auth::user()->id,$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Répondre</a></td>
 						<td>					
 												
 					</tr>

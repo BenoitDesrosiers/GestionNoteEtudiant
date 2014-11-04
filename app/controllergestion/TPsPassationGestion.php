@@ -14,20 +14,60 @@ public function __construct(TP $model, Classe $filteringClass){
  *
  */
 public function index() {
-	return $this->createHeaderForView('Tous',Auth::user());
+		return $this->createFilters('Tous',Auth::user());
 }
 
 public function show($id){
-	return $this->createHeaderForView(null,$this->model->findOrFail($id),true);	
+	return $this->createFilters(null,$this->model->findOrFail($id),true);	
 }
 
-private function createHeaderForView( $option0, $item=null, $displayOnlyLinked=null) {
+public function repondre($etudiant_id, $classe_id, $tp_id) {
+	$etudiant = User::findorfail($etudiant_id); //TODO catch exception (au pire, retourner une liste vide)
+	$classe = Classe::findorfail($classe_id);
+	$tp = TP::findorfail($tp_id);
+	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
+	Session::put('etudiantId', $etudiant_id);
+	Session::put('classeId', $classe_id);
+	Session::put('tpId', $tp_id);
+	$questions = $tp->questions()->orderBy('ordre')->get();
+	return  compact('questions','tp');
+}
+
+public function doRepondre($input) {
+	$etudiant_id = Session::get('etudiantId');
+	$classe_id = Session::get('classeId');
+	$tp_id = Session::get('tpId');
+	
+	$etudiant = User::findorfail($etudiant_id); // pas besoin de les vérifier puisque ca provient de la session ... à moins qu'il ait été effacé entretemps
+	$classe = Classe::findorfail($classe_id);
+	$tp = TP::findorfail($tp_id);
+	$questions = $tp->questions()->orderBy('ordre')->get();
+	//verifie que c'est les bonnes questions qui nous revienne
+	$listeIdReponses = 	array_keys($input['reponse']);
+	$return = true;
+	foreach($questions as $question) {
+		if(!in_array($question->id, $listeIdReponses)) { $return=false; }
+	}
+	if($return) { // on a toutes les réponses, on peut les stocker
+		foreach($questions as $question) {
+			$note = Note::where('classe_id','=',$classe_id)
+					->where('tp_id','=',$tp_id)
+					->where('etudiant_id','=',$etudiant_id)
+					->where('question_id','=',$question->id)->first(); // cette requete devrait toujour fonctionner
+			$note->reponse = $input['reponse'][$question->id];
+			$note->save();
+		}
+	}
+	return $return;
+}
+private function createFilters( $option0, $item=null, $displayOnlyLinked=null) {
 	if(isset($item) and isset($displayOnlyLinked) ) {
-		$lesClasses = $item->classes;//affiche seulement les classes associées à cet item.
+		$lesClasses = $item->classes->sortby("sessionscholaire_id");//affiche seulement les classes associées à cet item.
 	} else {//sinon affiche toutes les classes.
 		$lesClasses = Classe::all()->sortby("sessionscholaire_id"); //ce n'est pas exactement par session, mais si les id de session sont dans le bon ordre, ca le sera.
 	}
 	$belongsToList = createSelectOptions($lesClasses,[get_class(), 'createOptionsValue'], $option0);
+	
 	if(isset($item)) { //si on a un item, on sélectionne toutes les classes déjà associées
 		$belongsToSelectedIds =  $item->classes->fetch('id')->toArray();
 	} else { //sinon, on sélectionne la classe qui a été passée en paramêtre (si elle est bonne, sinon, la première de la liste
@@ -74,7 +114,7 @@ protected function filter2($filterValue) {
 
 
 /**
- * Helpers
+ * Call back
  *
  */
 static function createOptionsValue($item) {
