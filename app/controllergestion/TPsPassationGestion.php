@@ -21,19 +21,55 @@ public function show($id){
 	return $this->createFilters(null,$this->model->findOrFail($id),true);	
 }
 
-public function repondre($etudiant_id, $classe_id, $tp_id) {
-	$etudiant = User::findorfail($etudiant_id); //TODO catch exception (au pire, retourner une liste vide)
+public function repondre($etudiant_id, $classe_id, $tp_id, $pageCourante) {
+	$pages[1] = [20,22,21];
+	$pages[2] = [23];
+	$pages[3] = [24,25]; 
+	
+ 	$etudiant = User::findorfail($etudiant_id); //TODO catch exception (au pire, retourner une liste vide)
 	$classe = Classe::findorfail($classe_id);
-	$tp = TP::findorfail($tp_id);
+	$tp = $classe->tps()->where('tp_id',"=", $tp_id)->first();
 	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
 	Session::put('etudiantId', $etudiant_id);
 	Session::put('classeId', $classe_id);
 	Session::put('tpId', $tp_id);
-	$questions = $tp->questions()->orderBy('ordre')->get();
-	return  compact('questions','tp');
+	$questions = $tp->questions()->wherein('question_id',$pages[$pageCourante])->orderBy('ordre')->get();
+	
+	//batit la liste des réponses déjà soumise par l'étudiant
+	$lesReponses = Note::where('classe_id','=',$classe_id)
+					->where('tp_id','=',$tp_id)
+					->where('etudiant_id','=',$etudiant_id)->get();
+	
+	
+	foreach($lesReponses as $uneReponse) {
+		$reponses[$uneReponse->question_id] = $uneReponse->reponse;
+	}
+	if(!empty($pages[$pageCourante+1])) {
+		$pageSuivante = $pageCourante+1;
+	} else {
+		$pageSuivante = null;
+	}
+	if(!empty($pages[$pageCourante-1])) {
+		$pagePrecedente = $pageCourante-1;
+	} else {
+		$pagePrecedente = null;
+	}
+	return  compact('questions','reponses','tp','classe_id','etudiant_id', 'pagePrecedente', 'pageCourante','pageSuivante');
 }
 
-public function doRepondre($input) {
+public function doRepondre($etudiant_id, $classe_id, $tp_id,$input) {
+	
+	if(isset($input['sauvegarde'])) {
+		$return = "sauvegarder";  //le bouton Sauvegarder a été utilisé, on retourne sur le formulaire
+	} elseif(isset($input['suivant'])){
+		$return = 'suivant';
+	} elseif(isset($input['precedent'])) {
+		$return = 'precedent';
+	} else {
+		$return = "terminer"; //le bouton terminé a été utilisé, on sauve et on quitte. 
+	}
+	$pageCourante = $input['pageCourante'];
+	>.> setter le table pages
 	$etudiant_id = Session::get('etudiantId');
 	$classe_id = Session::get('classeId');
 	$tp_id = Session::get('tpId');
@@ -41,12 +77,14 @@ public function doRepondre($input) {
 	$etudiant = User::findorfail($etudiant_id); // pas besoin de les vérifier puisque ca provient de la session ... à moins qu'il ait été effacé entretemps
 	$classe = Classe::findorfail($classe_id);
 	$tp = TP::findorfail($tp_id);
-	$questions = $tp->questions()->orderBy('ordre')->get();
+	$questions = $tp->questions()->wherein('question_id',$pages[$pageCourante])->orderBy('ordre')->get();
 	//verifie que c'est les bonnes questions qui nous revienne
 	$listeIdReponses = 	array_keys($input['reponse']);
-	$return = true;
+	
 	foreach($questions as $question) {
-		if(!in_array($question->id, $listeIdReponses)) { $return=false; }
+		if(!in_array($question->id, $listeIdReponses)) {
+			$return='erreur'; 
+		}
 	}
 	if($return) { // on a toutes les réponses, on peut les stocker
 		foreach($questions as $question) {

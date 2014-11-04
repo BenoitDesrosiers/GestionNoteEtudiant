@@ -35,7 +35,6 @@
 						<td class="text-right">@if($belongsToId <> 0) {{ $tp->pivot->poids_local }}  @endif </td>
 						<td><a href="{{ action('TPsController@edit', [$tp->id]) }}" class="btn btn-info">Éditer</a></td>
 						<td>
-						
 						{{ Form::open(array('action' => array('TPsController@destroy', $tp->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}
 							<button type="submit" href="{{ URL::route('tps.destroy', $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>
 						{{ Form::close() }}

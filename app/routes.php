@@ -31,7 +31,7 @@ Route::group(['before'=>'auth'], function() {
 		Route::any('tpsPassationPourClasse', ['as' => 'tpsPassationPourClasse', 'uses' => 'TPsPassationController@itemsFor2Filters']);     //pour l'appel AJAX
 		Route::get('tpsPassationIndex', ['as' => 'tpsPassation.index', 'uses' => 'TPsPassationController@index']);
 		Route::get('tpsPassationRepondre/{etudiantId}/{classeId}/{tpId}', ['as' => 'tpsPassation.repondre', 'uses' => 'TPsPassationController@repondre']);
-		Route::put('tpsPassationDoRepondre', ['as' => 'tpsPassation.doRepondre', 'uses' => 'TPsPassationController@doRepondre']);
+		Route::any('tpsPassationDoRepondre/{etudiantId}/{classeId}/{tpId}', ['as' => 'tpsPassation.doRepondre', 'uses' => 'TPsPassationController@doRepondre']);
 				
 		
 		/* Questions */
