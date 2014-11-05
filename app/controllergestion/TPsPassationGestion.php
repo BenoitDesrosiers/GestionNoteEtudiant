@@ -152,7 +152,7 @@ protected function filter2($filterValue) {
 	
 	try {
 		if($filterValue == 0) {// 0 indique 'Tous' sur filter2
-			$classes = Auth::user()->classes->sortBy("sessionscholaire_id");
+			$classes = Auth::user()->classes->sortBy("sessionscholaire_id"); //TODO si un prof test et que les filtres sont tous/tous, ca n'affiche rien car le prof n'est pas un étudiant de la classe
 		} else {
 			$classes = $this->filteringClass->where('sessionscholaire_id', '=' , $filterValue)->get(); //va chercher les classes pour cette session
 		}

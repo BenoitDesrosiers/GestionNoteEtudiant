@@ -191,6 +191,15 @@ public function doDistribuer($id, $input){
 						$note->save();
 					}
 				}
+				//distribue une copie au prof pour qu'il puisse l'essayer
+				foreach($questions as $question) {
+					$note = new Note;
+					$note->classe_id = $classe->id;
+					$note->tp_id = $tp->id;
+					$note->question_id = $question->id;
+					$note->etudiant_id = Auth::user()->id;
+					$note->save();
+				}
 			}
 		}
 	} catch (Exception $e) {
