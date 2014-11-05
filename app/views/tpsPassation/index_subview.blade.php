@@ -1,4 +1,4 @@
-@if (empty($lignes))
+@if(empty($lignes))
 	<p>Aucun travail pratique disponible!</p>
 @else
 	<div class="table-responsive">	{{-- voir http://getbootstrap.com/css/#tables-responsive --}}

@@ -15,30 +15,38 @@ public function __construct(TP $model, Classe $filteringClass){
 
 protected function filter1( $filteringItem) {
 	//$filteringItems doit être une Classe
-	return $filteringItem->tps->sortBy('nom'); 
+	$lignes = [];
+	$lignes[$filteringItem->nom] = $filteringItem->tps->sortBy('nom');
+	return $lignes; 
 }
 protected function filter2($filterValue) {
 	//Pour les TPs, le filter 2 est la sessionScholaire
-	if($filterValue == 0) {// 0 indique 'Tous' sur filter2 
+	
+	/*if($filterValue == 0) {// 0 indique 'Tous' sur filter2 
 		$lignes = $this->model->all()->sortBy('nom');
-	} else {
+	} else {*/
 		try {
-			$filterByItems = $this->filteringClass->where('sessionscholaire_id', '=' , $filterValue)->get(); //va chercher les classes pour cette session
-			$modelIds = [];
-			foreach($filterByItems as $item) { //créé la liste des ids des TPs pour toutes ces classes.
-				$modelIds=array_merge($modelIds,$this->filter1($item)->lists('id'));
+			if($filterValue == 0) {// 0 indique 'Tous' sur filter2
+				$classes = Classe::all();
+			} else {
+				$classes = $this->filteringClass->where('sessionscholaire_id', '=' , $filterValue)->get(); //va chercher les classes pour cette session
 			}
+			$lignes = [];
+			foreach($classes as $classe) { //créé la liste des ids des TPs pour toutes ces classes.
+				$lignes[$classe->nom] = $classe->tps->sortBy('nom');
+			}	
 			
-			//un TP peut être avec 2 classes, il faut donc aller les chercher par leur id afin d'enlever les doublons
-			if(count($modelIds)>0) {
-				$lignes = $this->model->whereIn('id', $modelIds)->get()->sortBy('nom');
-			} else { //aucun TP de retourné, on créé donc une liste vide. 
-				$lignes = new Illuminate\Database\Eloquent\Collection;
+			// liste les TPs qui ne sont associés à aucune classe. 
+			$tps = TP::all();
+			foreach($tps as $tp){
+				if($tp->classes->isempty()) {$listeTPsOrphelins[]=$tp->id;}
+			}
+			if(!empty($listeTPsOrphelins)) {
+				$lignes['Aucune classe associée'] = TP::wherein('id',$listeTPsOrphelins)->get();
 			}
 		} catch (Exception $e) {
-			$lignes = new Illuminate\Database\Eloquent\Collection;
-		}
-	}
+			$lignes = [];
+		}	
 	return $lignes;
 }
 
