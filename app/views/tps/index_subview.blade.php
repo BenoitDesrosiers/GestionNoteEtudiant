@@ -9,14 +9,12 @@
 					<th>Nom</th>
 					<th class="text-right">Sur (calculé)</th>
 					<th class="text-right">Poids</th>
-					<th class="text-right">Poids local</th>
 					<th> </th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 	
 					$total_sur = 0; 
-					$poids = 0; 
 					$poids_local = 0; 
 					$ancienNomClasse = "";
 				?> 
@@ -24,7 +22,6 @@
 				@foreach($tps as $tp)
 				
 						<?php 
-							$poids += $tp->poids;
 							if(!$tp->classes->isempty()) {$poids_local += $tp->pivot->poids_local;}								
 							$unTotalSur = $tp->questions()->sum('sur_local');
 							$total_sur += $unTotalSur;
@@ -35,7 +32,6 @@
 					
 						<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->nom }}</a> </td>
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
-						<td class="text-right">{{ $tp->poids }} </td>										
 						<td class="text-right">@if(!$tp->classes->isempty()) {{ $tp->pivot->poids_local }} @endif </td>
 						<td><a href="{{ action('TPsController@edit', [$tp->id]) }}" class="btn btn-info">Éditer</a></td>
 						<td>
@@ -51,13 +47,15 @@
 					</tr>
 					<?php $ancienNomClasse = $classeNom; ?>
 				@endforeach	
-				@endforeach
 				<tr>
 					<td>total:</td>
-					<td class="text-right"> {{ $total_sur }}</td>					
-					<td class="text-right"> {{ $poids }}</td>
+					<td class="text-right"> </td>					
 					<td class="text-right"> </td>
+					<td class="text-right"> {{ $poids_local }}</td>
 				</tr>	
+				<?php $poids_local = 0;  ?>
+				@endforeach
+				
 			</tbody>
 		</table>
 	</div>
