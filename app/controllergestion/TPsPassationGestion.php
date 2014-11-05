@@ -139,12 +139,17 @@ private function createFilters( $option0, $item=null, $displayOnlyLinked=null) {
 protected function filter1( $filteringItem) {
 	//$filteringItems doit être une Classe
 	$lignes = [];
-	$lignes[$filteringItem->nom] = $filteringItem->tps->sortBy('nom');
+	$idEtudiant = Auth::user()->id;
+	$validTps = Note::where('etudiant_id', '=',$idEtudiant)->where('classe_id','=',$filteringItem->id)->select('tp_id')->distinct()->lists('tp_id');
+	$lignes[$filteringItem->nom] = $filteringItem->tps()->whereIn('tp_id',$validTps)->get()->sortBy('nom');
 	return $lignes;
 }
 protected function filter2($filterValue) {
 	//Pour appeler cette function, filter1 doit être sur TOUS
 	//Pour les TPs, le filter 2 est la sessionScholair
+	
+	$idEtudiant = Auth::user()->id;
+	
 	try {
 		if($filterValue == 0) {// 0 indique 'Tous' sur filter2
 			$classes = Auth::user()->classes->sortBy("sessionscholaire_id");
@@ -153,7 +158,8 @@ protected function filter2($filterValue) {
 		}
 		$lignes = [];
 		foreach($classes as $classe) {
-			$lignes[$classe->nom] = $classe->tps->sortBy('nom');
+			$validTps = Note::where('etudiant_id', '=',$idEtudiant)->where('classe_id','=',$classe->id)->select('tp_id')->distinct()->lists('tp_id');
+			$lignes[$classe->nom] = $classe->tps()->whereIn('tp_id',$validTps)->get()->sortBy('nom');
 		}
 	} catch (Exception $e) {
 		$lignes = [];

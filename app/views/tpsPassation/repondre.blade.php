@@ -4,7 +4,7 @@
 <section class="header section-padding">
 	<div class="container">
 		<div class="header-text">
-			<h1>{{{$tp->nom}}}</h1>
+			<h1>{{{Classe::find($classe_id)->nom}}} / {{{$tp->nom}}}</h1>
 			<p>sur: {{$tp->questions()->sum('sur_local')}}  vaut: {{{$tp->pivot->poids_local}}}
 		</div>
 	</div>
