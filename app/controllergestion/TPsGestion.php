@@ -200,7 +200,26 @@ public function doDistribuer($id, $input){
 	return true;
 }
 
+public function format($id) {
+	$tp = TP::findOrFail($id);
+	$questions = $tp->questions()->orderBy('ordre')->get();
+	return(compact('tp','questions'));
+}
 
+public function doFormat($id, $input) {
+	$tp = TP::findOrFail($id);
+	$ordres= $input['ordre'];
+	$breaks= $input['break'];
+	$questions = $tp->questions();
+	foreach($ordres as $id => $ordre) {
+		$questions->updateExistingPivot($id, ['ordre' => $ordre], false);
+	} 
+	foreach($breaks as $id => $value) {
+		$questions->updateExistingPivot($id, ['breakafter' => 1], false);
+	}
+	
+	return true;
+}
 /**
  * Helpers
  *

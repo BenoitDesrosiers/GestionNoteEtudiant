@@ -22,9 +22,6 @@ public function show($id){
 }
 
 public function repondre($etudiant_id, $classe_id, $tp_id, $pageCourante) {
-	$pages[1] = [20,22,21];
-	$pages[2] = [23];
-	$pages[3] = [24,25]; 
 	
  	$etudiant = User::findorfail($etudiant_id); //TODO catch exception (au pire, retourner une liste vide)
 	$classe = Classe::findorfail($classe_id);
@@ -33,27 +30,35 @@ public function repondre($etudiant_id, $classe_id, $tp_id, $pageCourante) {
 	Session::put('etudiantId', $etudiant_id);
 	Session::put('classeId', $classe_id);
 	Session::put('tpId', $tp_id);
-	$questions = $tp->questions()->wherein('question_id',$pages[$pageCourante])->orderBy('ordre')->get();
-	
-	//batit la liste des réponses déjà soumise par l'étudiant
+	$lesQuestions = $tp->questions()->orderBy('ordre')->get();
+	//batit la pagination des questions
+	$i = 1;
+	foreach($lesQuestions as $question) {
+		$page[$i][] = $question->id;
+		if($question->pivot->breakafter == 1) { $i++; } 	
+	}
+	//batit la liste des réponses déjà soumise par l'étudiant associé aux questions de la page affichée
 	$lesReponses = Note::where('classe_id','=',$classe_id)
 					->where('tp_id','=',$tp_id)
-					->where('etudiant_id','=',$etudiant_id)->get();
+					->where('etudiant_id','=',$etudiant_id)
+					->whereIn('question_id',$page[$pageCourante])
+					->get();
 	
 	
 	foreach($lesReponses as $uneReponse) {
 		$reponses[$uneReponse->question_id] = $uneReponse->reponse;
 	}
-	if(!empty($pages[$pageCourante+1])) {
+	if(!empty($page[$pageCourante+1])) {
 		$pageSuivante = $pageCourante+1;
 	} else {
 		$pageSuivante = null;
 	}
-	if(!empty($pages[$pageCourante-1])) {
+	if(!empty($page[$pageCourante-1])) {
 		$pagePrecedente = $pageCourante-1;
 	} else {
 		$pagePrecedente = null;
 	}
+	$questions = $lesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
 	return  compact('questions','reponses','tp','classe_id','etudiant_id', 'pagePrecedente', 'pageCourante','pageSuivante');
 }
 
@@ -69,7 +74,6 @@ public function doRepondre($etudiant_id, $classe_id, $tp_id,$input) {
 		$return = "terminer"; //le bouton terminé a été utilisé, on sauve et on quitte. 
 	}
 	$pageCourante = $input['pageCourante'];
-	>.> setter le table pages
 	$etudiant_id = Session::get('etudiantId');
 	$classe_id = Session::get('classeId');
 	$tp_id = Session::get('tpId');
@@ -77,16 +81,26 @@ public function doRepondre($etudiant_id, $classe_id, $tp_id,$input) {
 	$etudiant = User::findorfail($etudiant_id); // pas besoin de les vérifier puisque ca provient de la session ... à moins qu'il ait été effacé entretemps
 	$classe = Classe::findorfail($classe_id);
 	$tp = TP::findorfail($tp_id);
-	$questions = $tp->questions()->wherein('question_id',$pages[$pageCourante])->orderBy('ordre')->get();
+	$lesQuestions = $tp->questions()->orderBy('ordre')->get();
+	//batit la pagination des questions
+	$i = 1;
+	foreach($lesQuestions as $question) {
+		$page[$i][] = $question->id;
+		if($question->pivot->breakafter == 1) { $i++; }
+	}
+	//choisi la bonne page de questions
+	$questions = $lesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
+	
+	
 	//verifie que c'est les bonnes questions qui nous revienne
 	$listeIdReponses = 	array_keys($input['reponse']);
-	
 	foreach($questions as $question) {
 		if(!in_array($question->id, $listeIdReponses)) {
 			$return='erreur'; 
 		}
 	}
-	if($return) { // on a toutes les réponses, on peut les stocker
+	
+	if($return <> 'erreur') { // on a toutes les réponses, on peut les stocker
 		foreach($questions as $question) {
 			$note = Note::where('classe_id','=',$classe_id)
 					->where('tp_id','=',$tp_id)

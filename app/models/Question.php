@@ -14,7 +14,7 @@ class Question extends EloquentValidating
 	
 	// Une question est associée à plusieurs TPs
 	public function tps() {
-		return $this->belongsToMany('TP', 'tps_questions', 'question_id', 'tp_id')->withPivot('ordre', 'sur_local');
+		return $this->belongsToMany('TP', 'tps_questions', 'question_id', 'tp_id')->withPivot('ordre', 'sur_local','breakafter');
 	}
 	
 	

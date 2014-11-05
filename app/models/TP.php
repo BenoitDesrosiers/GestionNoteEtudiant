@@ -20,7 +20,7 @@ class TP extends EloquentValidating
 	
 	// Un TP est associé à plusieurs questions
 	public function questions() {
-		return $this->belongsToMany('Question', 'tps_questions', 'tp_id', 'question_id')->withPivot('ordre','sur_local');
+		return $this->belongsToMany('Question', 'tps_questions', 'tp_id', 'question_id')->withPivot('ordre','sur_local','breakafter');
 	}
 	
 	public function notes() {

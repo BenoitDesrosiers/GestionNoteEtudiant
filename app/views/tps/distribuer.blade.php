@@ -13,7 +13,7 @@
 							@if(empty($lignes))
 								<p>Ce TP n'est associé à aucune classe et ne peut donc pas être distribué</p>
 							@else 
-								{{ Form::open(['route'=> ['doDistributionTP', $tp->id], 'role' => 'form', 'method' => 'post']) }}
+								{{ Form::open(['route'=> ['tps.doDistribuer', $tp->id], 'role' => 'form', 'method' => 'post']) }}
 							
 								<div class="table-responsive">
 									<table class="table">

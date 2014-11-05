@@ -38,7 +38,6 @@ class TPsPassationController extends BaseFilteredResourcesController
 			return Redirect::route($this->base.'.index')->with('message_success', 'Vos réponses sont enregistrées');
 		} elseif($return === 'sauvegarder') {
 			return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, Input::get('pageCourante')) ); 				
-			//return Redirect::back()->withInput();
 		} elseif($return === 'suivant'){ //TODO checker que pagecourante est dans le bon range
 			return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, Input::get('pageCourante')+1) ); 
 		} elseif($return === 'precedent'){

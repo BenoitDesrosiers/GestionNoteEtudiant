@@ -36,11 +36,13 @@
 						<td><a href="{{ action('TPsController@edit', [$tp->id]) }}" class="btn btn-info">Éditer</a></td>
 						<td>
 						{{ Form::open(array('action' => array('TPsController@destroy', $tp->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}
-							<button type="submit" href="{{ URL::route('tps.destroy', $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>
+							<button type="submit" href="{{ route('tps.destroy', $tp->id) }}" class="btn btn-danger btn-mini">Effacer</button>
 						{{ Form::close() }}
 						</td>
-						<td><a href="{{ action('QuestionsController@index', ['belongsToId' => $tp->id]) }}" class="btn btn-info">Questions</a></td>						
-						<td><a href="{{ URL::route('distributionTP',  [$tp->id]) }}" class="btn btn-info">Distribuer</a></td>						
+						<td><a href="{{ action('QuestionsController@index', ['belongsToId' => $tp->id]) }}" class="btn btn-info">Questions</a></td>	
+						<td><a href="{{ route('tps.format', [$tp->id]) }}" class="btn btn-info">Format</a></td>	
+											
+						<td><a href="{{ route('tps.distribuer',  [$tp->id]) }}" class="btn btn-info">Distribuer</a></td>						
 												
 					</tr>
 					

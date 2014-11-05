@@ -37,5 +37,20 @@ class TPsController extends BaseFilteredResourcesController
 		}
  	}
 
- 
+ 	/**
+ 	 * affiche la liste de questions et permet de les reordonner et de mettre des pages break
+ 	 */
+ 	
+ 	public function format($id) {
+ 		return View::make($this->base.'.format', $this->gestion->format($id));
+ 	}
+ 	
+ 	public function doformat($id) {
+ 		$return = $this->gestion->doFormat($id, Input::all());
+ 		if($return === true ) {
+ 			return Redirect::route($this->base.'.index')->with('message_success', "Le format du TP a été mis à jour");
+ 		} else {
+ 			return Redirect::route($this->base.'.index')->with('message_danger', "Une erreur c'est produite");
+  		}
+ 	}
 }
