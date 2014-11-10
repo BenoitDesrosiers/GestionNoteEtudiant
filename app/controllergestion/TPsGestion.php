@@ -21,10 +21,6 @@ protected function filter1( $filteringItem) {
 }
 protected function filter2($filterValue) {
 	//Pour les TPs, le filter 2 est la sessionScholaire
-	
-	/*if($filterValue == 0) {// 0 indique 'Tous' sur filter2 
-		$lignes = $this->model->all()->sortBy('nom');
-	} else {*/
 		try {
 			if($filterValue == 0) {// 0 indique 'Tous' sur filter2
 				$classes = Classe::all();
@@ -169,7 +165,7 @@ public function distribuer($id) {
 		$classes = $tp->classes;
 		foreach($classes as $classe) {
 			$dejaDistribue = !(Note::forClasse($classe->id)->forTP($tp->id)->get()->isEmpty());
-			$lignes[$classe->id] = ['nom' => $classe->nom, 'session' => $classe->sessionscholaire->nom,'dejaDistribue'=>$dejaDistribue ];
+			$lignes[$classe->id] = ['classeid' => $classe->id, 'nom' => $classe->nom, 'session' => $classe->sessionscholaire->nom,'dejaDistribue'=>$dejaDistribue ];
 		}
 	} catch (Exception $e) {
 		$tp = new $this->model;
@@ -185,7 +181,7 @@ public function doDistribuer($id, $input){
 		$tp = $this->model->findOrFail($id);
 		$classes = $tp->classes;
 		foreach($classes as $classe) { //TODO mettre toute la création dans une transaction
-			if(in_array($classe->id,$input['distribue'])) { //le checkbox pour cette classe est sélectionné
+			if(in_array($classe->id,$input['distribue'])) { //le checkbox distribuer pour cette classe est sélectionné
 				Note::forClasse($classe->id)->forTP($tp->id)->delete(); //efface les notes déjà distribuées pour ce TP/Classe
 				$etudiants= $classe->etudiants;
 				$questions = $tp->questions;
@@ -208,6 +204,7 @@ public function doDistribuer($id, $input){
 					$note->etudiant_id = Auth::user()->id;
 					$note->save();
 				}
+			} else if(in_array($classe->id,$input['retire'])) { //le checkbox retirer pour cette classe est sélectionné
 			}
 		}
 	} catch (Exception $e) {

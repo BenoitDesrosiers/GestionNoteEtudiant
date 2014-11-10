@@ -21,8 +21,9 @@
 											<tr>
 												<th>Nom de la classe</th>
 												<th class="text-right">Session</th>
-												<th class="text-center">distribuer?</th>
-												<th class="text-right">Déjà&nbsp;distribuée</th>
+												<th class="text-center">distribuer</th>
+												<th class="text-center">retirer</th>
+												
 												<th></th>
 											</tr>
 										</thead>
@@ -31,15 +32,18 @@
 											<tr>
 												<td>{{{$ligne['nom']}}}</td>
 												<td class="text-right">{{{$ligne['session']}}}</td>
-												<td class="text-center">{{Form::checkbox('distribue[]',$key)}}</td>
-												<td class="text-right">@if($ligne['dejaDistribue']) {{{'sera redistribué si sélectionné'}}}@endif</td>
+												<td class="text-center" >
+													@if(!$ligne['dejaDistribue']){{Form::checkbox('distribue[]',$key, true) }} @endif
+													</td>
+												<td class="text-center" >@if($ligne['dejaDistribue']){{Form::checkbox('retire[]',$key)}}@endif</td>
+												
 											</tr>
 										@endforeach
 										
 										</tbody>
 									</table>								
 								</div>
-								{{ Form::submit('Distribuer les TPs sélectionnés', ['class' => 'btn btn-primary'])}}
+								{{ Form::submit('Distribuer/Retirer les TPs sélectionnés', ['class' => 'btn btn-primary'])}}
 						
 								{{ Form::close() }}	
 							@endif
@@ -50,4 +54,5 @@
 			</div> <!-- jumbotron -->
 		</section>
 	</div>
+
 @stop

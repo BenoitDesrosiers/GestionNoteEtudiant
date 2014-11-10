@@ -32,7 +32,7 @@
 				<li>{{ link_to(URL::previous(), 'Écran précédent') }}</li>
 				
 				
-				<li><a href="{{ action('UserController@logout') }}">logout</a></li>
+				<li><a href="{{ action('UsersController@logout') }}">logout</a></li>
 				
 			</ul>
 		</div>

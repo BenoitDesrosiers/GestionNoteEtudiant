@@ -24,6 +24,7 @@ Route::group(['before'=>'auth'], function() {
 		/* Travaux pratiques (TP) */
 		Route::get('tpsDistribuer/{id}', ['as' => 'tps.distribuer', 'uses' => 'TPsController@distribuer']);
 		Route::post('tpsDistribuer/{id}',  ['as' => 'tps.doDistribuer', 'uses' => 'TPsController@doDistribuer']);
+		Route::post('tpsCorriger/{tpid}/{classeid}',  ['as' => 'tps.corriger', 'uses' => 'TPsController@corriger']);
 		
 		Route::get('tpsFormat/{id}', ['as' => 'tps.format', 'uses' => 'TPsController@format']);
 		Route::put('tpsDoFormat/{id}', ['as' => 'tps.doFormat', 'uses' => 'TPsController@doFormat']);
@@ -48,23 +49,36 @@ Route::group(['before'=>'auth'], function() {
 		
 		// la création d'un usager ne peu se faire que par un usager déjà connecté. 
 		// TODO: ajouter que seul les gestionnaires peuvent le faire. Mais j'ai besoin de Entrust pour ca
-		Route::get( 'users/create',                 'UserController@create');
+		Route::get( 'users/create',                 'UsersController@create');
 		
 });
 
 // Confide routes
-Route::post('users',                        'UserController@store');
-Route::get( 'users/login',                  'UserController@login');
-Route::post('users/login',                  'UserController@do_login');
-Route::get( 'users/confirm/{code}',         'UserController@confirm');
-Route::get( 'users/forgot_password',        'UserController@forgot_password');
-Route::post('users/forgot_password',        'UserController@do_forgot_password');
-Route::get( 'users/reset_password/{token}', 'UserController@reset_password');
-Route::post('users/reset_password',         'UserController@do_reset_password');
-Route::get( 'users/logout',                 'UserController@logout');
+Route::post('users',                        'UsersController@store');
+Route::get( 'users/login',                  'UsersController@login');
+Route::post('users/login',                  'UsersController@do_login');
+Route::get( 'users/confirm/{code}',         'UsersController@confirm');
+Route::get( 'users/forgot_password',        'UsersController@forgot_password');
+Route::post('users/forgot_password',        'UsersController@do_forgot_password');
+Route::get( 'users/reset_password/{token}', 'UsersController@reset_password');
+Route::post('users/reset_password',         'UsersController@do_reset_password');
+Route::get( 'users/logout',                 'UsersController@logout');
 
 // Dashboard route
 Route::get('userpanel/dashboard', function(){ return View::make('userpanel.dashboard'); });
 
 // Applies auth filter to the routes within admin/
 Route::when('userpanel/*', 'auth');
+//
+
+// Confide routes
+Route::get('users/create', 'UsersController@create');
+Route::post('users', 'UsersController@store');
+Route::get('users/login', 'UsersController@login');
+Route::post('users/login', 'UsersController@doLogin');
+Route::get('users/confirm/{code}', 'UsersController@confirm');
+Route::get('users/forgot_password', 'UsersController@forgotPassword');
+Route::post('users/forgot_password', 'UsersController@doForgotPassword');
+Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
+Route::post('users/reset_password', 'UsersController@doResetPassword');
+Route::get('users/logout', 'UsersController@logout');

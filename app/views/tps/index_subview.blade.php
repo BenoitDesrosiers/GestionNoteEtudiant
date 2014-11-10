@@ -42,7 +42,8 @@
 						<td><a href="{{ action('QuestionsController@index', ['belongsToId' => $tp->id]) }}" class="btn btn-info">Questions</a></td>	
 						<td><a href="{{ route('tps.format', [$tp->id]) }}" class="btn btn-info">Format</a></td>	
 											
-						<td><a href="{{ route('tps.distribuer',  [$tp->id]) }}" class="btn btn-info">Distribuer</a></td>						
+						<td>@if(!$tp->classes->isempty())<a href="{{ route('tps.distribuer',  [$tp->id]) }}" class="btn btn-info">Distribuer</a>@endif</td>						
+						<td>@if(!$tp->classes->isempty() and !$tp->notes->isempty()) <a href="{{ route('tps.corriger',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Corriger</a>@endif</td>						
 												
 					</tr>
 					<?php $ancienNomClasse = $classeNom; ?>

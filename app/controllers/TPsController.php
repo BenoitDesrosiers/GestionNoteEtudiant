@@ -45,12 +45,22 @@ class TPsController extends BaseFilteredResourcesController
  		return View::make($this->base.'.format', $this->gestion->format($id));
  	}
  	
- 	public function doformat($id) {
+ 	public function doFormat($id) {
  		$return = $this->gestion->doFormat($id, Input::all());
  		if($return === true ) {
  			return Redirect::route($this->base.'.index')->with('message_success', "Le format du TP a été mis à jour");
  		} else {
  			return Redirect::route($this->base.'.index')->with('message_danger', "Une erreur c'est produite");
   		}
+ 	}
+ 	
+ 	
+ 	/**
+ 	 * Correction d'un tp
+ 	 * 
+ 	 */
+ 	
+ 	public function corriger($tp_id, $classe_id) {
+ 		return View::make($this->base.'.corriger', $this->gestion->corriger($tp_id, $classe_id));
  	}
 }
