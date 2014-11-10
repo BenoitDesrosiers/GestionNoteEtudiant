@@ -176,42 +176,49 @@ public function distribuer($id) {
 }
 
 public function doDistribuer($id, $input){
-	
+	$return = true;
 	try {
 		$tp = $this->model->findOrFail($id);
 		$classes = $tp->classes;
+		
 		foreach($classes as $classe) { //TODO mettre toute la création dans une transaction
-			if(in_array($classe->id,$input['distribue'])) { //le checkbox distribuer pour cette classe est sélectionné
-				Note::forClasse($classe->id)->forTP($tp->id)->delete(); //efface les notes déjà distribuées pour ce TP/Classe
-				$etudiants= $classe->etudiants;
-				$questions = $tp->questions;
-				foreach($etudiants as $etudiant) {
+			if(isset($input['distribue'])) {
+				if(in_array($classe->id,$input['distribue'])) { //le checkbox distribuer pour cette classe est sélectionné
+					Note::forClasse($classe->id)->forTP($tp->id)->delete(); //efface les notes déjà distribuées pour ce TP/Classe
+					$etudiants= $classe->etudiants;
+					$questions = $tp->questions;
+					foreach($etudiants as $etudiant) {
+						foreach($questions as $question) {
+							$note = new Note;
+							$note->classe_id = $classe->id;
+							$note->tp_id = $tp->id;
+							$note->question_id = $question->id;
+							$note->etudiant_id = $etudiant->id;
+							$note->save();
+						}
+					}
+					//distribue une copie au prof pour qu'il puisse l'essayer
 					foreach($questions as $question) {
 						$note = new Note;
 						$note->classe_id = $classe->id;
 						$note->tp_id = $tp->id;
 						$note->question_id = $question->id;
-						$note->etudiant_id = $etudiant->id;
+						$note->etudiant_id = Auth::user()->id;
 						$note->save();
 					}
 				}
-				//distribue une copie au prof pour qu'il puisse l'essayer
-				foreach($questions as $question) {
-					$note = new Note;
-					$note->classe_id = $classe->id;
-					$note->tp_id = $tp->id;
-					$note->question_id = $question->id;
-					$note->etudiant_id = Auth::user()->id;
-					$note->save();
+			}
+			if(isset($input['retire'])){
+				if(in_array($classe->id,$input['retire'])) { //le checkbox retirer pour cette classe est sélectionné
+					Note::forClasse($classe->id)->forTP($tp->id)->delete(); //efface les notes déjà distribuées pour ce TP/Classe
 				}
-			} else if(in_array($classe->id,$input['retire'])) { //le checkbox retirer pour cette classe est sélectionné
 			}
 		}
 	} catch (Exception $e) {
-		return "Une erreur c'est produite";
+		$return = false;
 	}
 	
-	return true;
+	return $return;
 }
 
 public function format($id) {

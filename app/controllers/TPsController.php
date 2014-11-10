@@ -31,9 +31,9 @@ class TPsController extends BaseFilteredResourcesController
 	public function doDistribuer($id) {
 		$return = $this->gestion->doDistribuer($id, Input::all());
 		if($return === true ) {
-			return Redirect::route($this->base.'.index')->with('message_success', 'Les TPs ont été distribuées correctement');
+			return Redirect::route($this->base.'.index')->with('message_success', 'Les TPs ont été distribués/retirés correctement');
 		} else {
-			return Redirect::route($this->base.'.distribuer')->withInput()->withErrors($return);
+			return Redirect::route($this->base.'.distribuer',$id)->withInput()->with('message_danger', "Une erreur c'est produite");
 		}
  	}
 
