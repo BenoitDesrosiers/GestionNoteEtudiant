@@ -4,8 +4,9 @@
 <section class="header section-padding">
 	<div class="container">
 		<div class="header-text">
-			<h1>{{{Classe::find($classe_id)->nom}}} / {{{$tp->nom}}}</h1>
-			<p>sur: {{$tp->questions()->sum('sur_local')}}  vaut: {{{$tp->pivot->poids_local}}}
+			<h1>{{{$etudiant->prenom}}} {{{$etudiant->nom}}}</h1>
+			<h2>{{{$classe->nom}}} / {{{$tp->nom}}}</h2>
+			<p>sur: {{$tp->questions()->sum('sur_local') }}/ &nbsp;&nbsp;vaut: {{{$tp->pivot->poids_local}}}% de la note finale</p>
 		</div>
 	</div>
 </section>
@@ -13,9 +14,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">
-			{{ Form::open(['route'=> array('tpsPassation.doRepondre', $etudiant_id, $classe_id, $tp->id ), 'method' => 'PUT', 'class' => 'form-horizontal form-compact', 'role'=>'form']) }}
-				{{ Form::hidden('pageCourante', $pageCourante) }}
-				
+			{{ Form::open(['route'=> array('tpsPassation.doRepondre' ), 'method' => 'PUT', 'class' => 'form-horizontal form-compact', 'role'=>'form']) }}
 				@include('tpsPassation.repondre_subview')
 				<div class="form-group">
 					{{ Form::submit('Terminer', ['class' => 'btn btn-primary', 'name'=>'terminer']) }}

@@ -221,6 +221,11 @@ public function doDistribuer($id, $input){
 	return $return;
 }
 
+/**
+ * Formattage des questions sur le TP
+ */
+
+
 public function format($id) {
 	$tp = TP::findOrFail($id);
 	$questions = $tp->questions()->orderBy('ordre')->get();
@@ -240,6 +245,68 @@ public function doFormat($id, $input) {
 	}
 	
 	return true;
+}
+
+
+/**
+ * Correction d'un TP
+ */
+
+
+/**
+ * Retourne l'information nécessaire pour faire la correction d'une question d'un TP d'une classe pour un étudiant
+ * 
+ * @param integer $tp_id
+ * @param integer $classe_id
+ * @param integer $offset_etudiant le numéro de séquence de l'étudiant à corriger 
+ * @param integer $offset_question le numéro de séquence de la question à corriger 
+ */
+public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question) {
+	try{
+		$classe= Classe::findOrFail($classe_id);
+		$tp = $classe->tps()->where("tp_id",'=',$tp_id)->first();
+	} catch (Exception $e) {
+		throw new Exception("Paramêtres incorrects");
+	}
+	$questions = $tp->questions()->orderBy('ordre')->get();
+	$etudiants = $classe->etudiants()->orderBy('id')->get();
+	//batit la liste des réponses déjà soumise par l'étudiant associé aux questions de la page affichée
+	$offset_etudiant = max(0,min($offset_etudiant,$etudiants->count()));
+	$offset_question = max(0,min($offset_question,$questions->count()));
+	$etudiant = $etudiants->offsetGet($offset_etudiant);
+	$question = $questions->offsetGet($offset_question);
+	$reponse = Note::where('classe_id','=',$classe->id)
+					->where('tp_id','=',$tp->id)
+					->where('etudiant_id','=',$etudiant->id)
+					->where('question_id',$question->id)
+					->first();
+	
+	$flagEtudiantSuivant = ($offset_etudiant == $etudiants->count())?false:true;
+	$flagQuestionSuivante = ($offset_question == $questions->count())?false:true;
+	$flagEtudiantPrecedent = ($offset_etudiant == 0);
+	$flagQuestionPrecedente = ($offset_question == 0);
+	//Sauvegarde les ids de la réponse que l'on traite afin d'être certain que les infos n'auront pas été trafiqués au retour
+	Session::put('etudiantId', $etudiant->id);
+	Session::put('classeId', $classe_id);
+	Session::put('tpId', $tp_id);
+	Session::put('questionId', $question->id);
+	Session::put('offsetEtudiant', $offset_etudiant);
+	Session::put('offsetQuestion', $offset_question);
+	return compact('tp', 'classe', 'etudiant','question','reponse', 'flagEtudiantPrecedent', 'flagEtudiantSuivant', 'flagQuestionPrecedente', 'flagQuestionSuivante');
+}
+
+/**
+ * Sauvegarde la correction 
+ * @param unknown $etudiant_id
+ * @param unknown $classe_id
+ * @param unknown $tp_id
+ * @param unknown $questions_id
+ * @param unknown $input
+ */
+public function doCorriger($etudiant_id, $classe_id, $tp_id, $questions_id, $input) {
+	dd('iccite');
+	
+	
 }
 /**
  * Helpers

@@ -27,21 +27,29 @@ class TPsPassationController extends BaseFilteredResourcesController
 	 */
 	//TODO: faire une réponse paginée
 	
-	public function repondre($etudiant_id, $classe_id, $tp_id) {
+	public function repondre( $classe_id, $tp_id) {
 		//vérifie que les id sont bons. 
-		return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, 1) );
+		return View::make($this->base.'.repondre', $this->gestion->repondre( $classe_id, $tp_id, 1) );
 	}
  	
-	public function doRepondre($etudiant_id, $classe_id, $tp_id) {
-		$return = $this->gestion->doRepondre($etudiant_id, $classe_id, $tp_id,Input::all());
-		if($return === 'terminer') {
-			return Redirect::route($this->base.'.index')->with('message_success', 'Vos réponses sont enregistrées');
-		} elseif($return === 'sauvegarder') {
-			return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, Input::get('pageCourante')) ); 				
-		} elseif($return === 'suivant'){ //TODO checker que pagecourante est dans le bon range
-			return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, Input::get('pageCourante')+1) ); 
-		} elseif($return === 'precedent'){
-			return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, Input::get('pageCourante')-1) );
+	public function doRepondre() {
+		//les ids ont été sauvé dans la session afin de s'assurer que l'étudiant ne triche pas. 
+		$pageCourante = Session::pull('pageCourante');
+		$etudiant_id = Auth::user()->id;
+		$classe_id = Session::pull('classeId');
+		$tp_id = Session::pull('tpId');
+		$input = Input::all();
+		$return = $this->gestion->doRepondre(Input::get('reponse'), $etudiant_id, $classe_id, $tp_id, $pageCourante);
+		if($return) {
+			if(isset($input['sauvegarde'])) {
+				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante) ); 				
+			} elseif(isset($input['suivant'])){
+				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante+1) ); 
+			} elseif(isset($input['precedent'])) {
+				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante-1) );
+			} else {
+				return Redirect::route($this->base.'.index')->with('message_success', 'Vos réponses sont enregistrées');
+			}
 		} else {
 			return Redirect::route($this->base.'.index')->with('message_danger', "Une erreur grave c'est produite, veuillez avertir le professeur");
 		}

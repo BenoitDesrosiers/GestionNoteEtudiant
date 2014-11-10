@@ -21,15 +21,11 @@ public function show($id){
 	return $this->createFilters(null,$this->model->findOrFail($id),true);	
 }
 
-public function repondre($etudiant_id, $classe_id, $tp_id, $pageCourante) {
-	
- 	$etudiant = User::findorfail($etudiant_id); //TODO catch exception (au pire, retourner une liste vide)
-	$classe = Classe::findorfail($classe_id);
+public function repondre($classe_id, $tp_id, $pageCourante) {
+	$etudiant_id = Auth::user()->id;
+ 	$etudiant = Auth::user(); 
+	$classe = Classe::findorfail($classe_id);//TODO catch exception (au pire, retourner une liste vide)
 	$tp = $classe->tps()->where('tp_id',"=", $tp_id)->first();
-	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
-	Session::put('etudiantId', $etudiant_id);
-	Session::put('classeId', $classe_id);
-	Session::put('tpId', $tp_id);
 	$lesQuestions = $tp->questions()->orderBy('ordre')->get();
 	//batit la pagination des questions
 	$i = 1;
@@ -37,17 +33,17 @@ public function repondre($etudiant_id, $classe_id, $tp_id, $pageCourante) {
 		$page[$i][] = $question->id;
 		if($question->pivot->breakafter == 1) { $i++; } 	
 	}
-	//batit la liste des réponses déjà soumise par l'étudiant associé aux questions de la page affichée
+	//batit la liste des réponses déjà soumises par l'étudiant associées aux questions de la page affichée
 	$lesReponses = Note::where('classe_id','=',$classe_id)
 					->where('tp_id','=',$tp_id)
 					->where('etudiant_id','=',$etudiant_id)
 					->whereIn('question_id',$page[$pageCourante])
 					->get();
-	
-	
 	foreach($lesReponses as $uneReponse) {
 		$reponses[$uneReponse->question_id] = $uneReponse->reponse;
 	}
+	
+	//prépare les indicateurs pour la pagination
 	if(!empty($page[$pageCourante+1])) {
 		$pageSuivante = $pageCourante+1;
 	} else {
@@ -59,26 +55,27 @@ public function repondre($etudiant_id, $classe_id, $tp_id, $pageCourante) {
 		$pagePrecedente = null;
 	}
 	$questions = $lesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
-	return  compact('questions','reponses','tp','classe_id','etudiant_id', 'pagePrecedente', 'pageCourante','pageSuivante');
+	
+	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
+	Session::put('classeId', $classe_id);
+	Session::put('tpId', $tp_id);
+	Session::put('pageCourante', $pageCourante);
+	return  compact('questions','reponses','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante');
 }
 
-public function doRepondre($etudiant_id, $classe_id, $tp_id,$input) {
-	
-	if(isset($input['sauvegarde'])) {
-		$return = "sauvegarder";  //le bouton Sauvegarder a été utilisé, on retourne sur le formulaire
-	} elseif(isset($input['suivant'])){
-		$return = 'suivant';
-	} elseif(isset($input['precedent'])) {
-		$return = 'precedent';
-	} else {
-		$return = "terminer"; //le bouton terminé a été utilisé, on sauve et on quitte. 
-	}
-	$pageCourante = $input['pageCourante'];
-	$etudiant_id = Session::get('etudiantId');
-	$classe_id = Session::get('classeId');
-	$tp_id = Session::get('tpId');
-	
-	$etudiant = User::findorfail($etudiant_id); // pas besoin de les vérifier puisque ca provient de la session ... à moins qu'il ait été effacé entretemps
+/**
+ * Sauvegarde les données présentement à l'écran 
+ * 
+ * @param unknown $input
+ * @param unknown $etudiant_id
+ * @param unknown $classe_id
+ * @param unknown $tp_id
+ * @param unknown $pageCourante
+ * @return boolean|string
+ */
+public function doRepondre($reponses, $etudiant_id, $classe_id, $tp_id, $pageCourante) {
+	$return = true;
+	$etudiant = User::findorfail($etudiant_id);
 	$classe = Classe::findorfail($classe_id);
 	$tp = TP::findorfail($tp_id);
 	$lesQuestions = $tp->questions()->orderBy('ordre')->get();
@@ -93,20 +90,20 @@ public function doRepondre($etudiant_id, $classe_id, $tp_id,$input) {
 	
 	
 	//verifie que c'est les bonnes questions qui nous revienne
-	$listeIdReponses = 	array_keys($input['reponse']);
+	$listeIdReponses = 	array_keys($reponses);
 	foreach($questions as $question) {
 		if(!in_array($question->id, $listeIdReponses)) {
-			$return='erreur'; 
+			$return=false; 
 		}
 	}
 	
-	if($return <> 'erreur') { // on a toutes les réponses, on peut les stocker
+	if($return) { // on a toutes les réponses, on peut les stocker
 		foreach($questions as $question) {
 			$note = Note::where('classe_id','=',$classe_id)
 					->where('tp_id','=',$tp_id)
 					->where('etudiant_id','=',$etudiant_id)
 					->where('question_id','=',$question->id)->first(); // cette requete devrait toujour fonctionner
-			$note->reponse = $input['reponse'][$question->id];
+			$note->reponse = $reponses[$question->id];
 			$note->save();
 		}
 	}

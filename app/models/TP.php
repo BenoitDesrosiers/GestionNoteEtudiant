@@ -1,5 +1,5 @@
 <?php
-
+//TODO: ajouter une description au TP dans la BD. 
 class TP extends EloquentValidating
 {
 	
