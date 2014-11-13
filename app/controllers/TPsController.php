@@ -61,18 +61,21 @@ class TPsController extends BaseFilteredResourcesController
  	 */
  	
  	public function corriger($tp_id, $classe_id) {
- 		return View::make($this->base.'.corriger', $this->gestion->corriger($tp_id, $classe_id, 1, 1));
+ 		Session::put('autreEtudiantOffset', 0); //init de la variable de session
+ 		return View::make($this->base.'.corriger', $this->gestion->corriger($tp_id, $classe_id, 0, 0));
  	}
  	
  	public function doCorriger() {
  		$etudiant_id = Session::pull('etudiantId');
  		$classe_id = Session::pull('classeId');
  		$tp_id = Session::pull('tpId');
- 		$question_id = Session::put('questionId');
+ 		$question_id = Session::pull('questionId');
  		$offset_etudiant = Session::pull('offsetEtudiant');
  		$offset_question = Session::pull('offsetQuestion');
- 		$commentaires= Input::get('commentaires'); 		
- 		$return = $this->gestion->doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaires);
+ 		$commentaire= Input::get('commentaire'); 	
+ 		$pointage = Input::get('pointage');	
+ 		$return = $this->gestion->doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaire, $pointage);
+ 		$input = Input::all();
  		if($return){
 	 		if(isset($input['terminer'])) {
 	 			return Redirect::route($this->base.'.index')->with('message_success', 'Vos corrections sont enregistrées');
@@ -83,11 +86,24 @@ class TPsController extends BaseFilteredResourcesController
 	 				$offset_etudiant++;
 	 			} elseif(isset($input['etudiantPrecedent']))	 {
 	 				$offset_etudiant--;
+	 			} elseif(isset($input['questionSuivante']))	 {
+	 				$offset_question++;
+	 			} elseif(isset($input['questionPrecedente']))	 {
+	 				$offset_question--;
 	 			}
-	 			return View::make($this->base.'.repondre', $this->gestion->repondre($etudiant_id, $classe_id, $tp_id, $offset_etudiant, $offset_question) );
+	 			return View::make($this->base.'.corriger', $this->gestion->corriger($tp_id, $classe_id,  $offset_etudiant, $offset_question) );
 	 		}
  		} else {
- 			return Redirect::route($this->base.'.index')->with('message_danger', "Une erreur grave c'est produite, veuillez avertir le professeur");
+			return Redirect::route($this->base.'.corriger')->withInput()->withErrors($return);
  		}
+ 	}
+ 	
+ 	public function afficheReponseAutreEtudiant(){
+ 		$etudiantCourant_id = Session::get('etudiantId');
+ 		$classe_id = Session::get('classeId');
+ 		$tp_id = Session::get('tpId');
+ 		$question_id = Session::get('questionId');
+ 		return View::make($this->base.'.reponseAutreEtudiant_subview', 
+ 				$this->gestion->afficheReponseAutreEtudiant(Input::get('direction'), $etudiantCourant_id, $classe_id, $tp_id, $question_id));
  	}
 }

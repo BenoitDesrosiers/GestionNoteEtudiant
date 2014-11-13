@@ -44,7 +44,7 @@
 											
 						<td>@if(!$tp->classes->isempty())<a href="{{ route('tps.distribuer',  [$tp->id]) }}" class="btn btn-info">Distribuer</a>@endif</td>						
 						<td>@if(!$tp->classes->isempty() and !$tp->notes->isempty()) <a href="{{ route('tps.corriger',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Corriger</a>@endif</td>						
-												
+						<?php //TODO: ajouter la classe afin de pouvoir aller chercher notes()->forClasse($classe->id) afin de mettre le bouton seulment pour les classes qui sont distribuées ?>	
 					</tr>
 					<?php $ancienNomClasse = $classeNom; ?>
 				@endforeach	

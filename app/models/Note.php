@@ -65,7 +65,7 @@ class Note extends EloquentValidating
 			'tp_id'=>'required',
 			'etudiant_id'=>'required',
 			'question_id'=>'required',
-				
+			'note'=> 'numeric',
 	];	
 	}
 

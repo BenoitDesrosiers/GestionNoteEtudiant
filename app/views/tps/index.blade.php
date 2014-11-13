@@ -38,28 +38,25 @@
 	</div>
 
 <script>
-
 	var controllerCallBackRoute ='{{URL::route('tpsPourClasse') }}'
 
 	/*
-	 * change le contenu du "belongsToSelect" selon les filtres sélectionnés. 
-	 */
-	 
+	* change le contenu du "belongsToSelect" selon les filtres sélectionnés.
+	*/
 	$("#filtre1Select").change(function(e) {
-		var cat = [];
-		<?php 
+		var cat = [];	
+		<?php
 			foreach($filtre1["groupes"] as $nomCategorie => $categorieItems) {
 				echo "cat['".$nomCategorie. "'] = [";
 				foreach($categorieItems as $items) {
 					echo $items.", ";
 				}
 				echo "];\n";
-			} 
+			}
 		?>
 		changeSelect("belongsToListSelect", cat[ document.getElementById("filtre1Select").value ], true);
 		afficheListeItems();
 		updateCreateButton();
-		
 	});
 </script>
 {{ HTML::script('assets/js/script_ajax.js') }}

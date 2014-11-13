@@ -270,9 +270,9 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
 	}
 	$questions = $tp->questions()->orderBy('ordre')->get();
 	$etudiants = $classe->etudiants()->orderBy('id')->get();
-	//batit la liste des réponses déjà soumise par l'étudiant associé aux questions de la page affichée
-	$offset_etudiant = max(0,min($offset_etudiant,$etudiants->count()));
-	$offset_question = max(0,min($offset_question,$questions->count()));
+	//batit la liste des réponses déjà soumises par l'étudiant associé aux questions de la page affichée
+	$offset_etudiant = max(0,min($offset_etudiant,$etudiants->count()-1));
+	$offset_question = max(0,min($offset_question,$questions->count()-1));
 	$etudiant = $etudiants->offsetGet($offset_etudiant);
 	$question = $questions->offsetGet($offset_question);
 	$reponse = Note::where('classe_id','=',$classe->id)
@@ -281,10 +281,10 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
 					->where('question_id',$question->id)
 					->first();
 	
-	$flagEtudiantSuivant = ($offset_etudiant == $etudiants->count())?false:true;
-	$flagQuestionSuivante = ($offset_question == $questions->count())?false:true;
-	$flagEtudiantPrecedent = ($offset_etudiant == 0);
-	$flagQuestionPrecedente = ($offset_question == 0);
+	$flagEtudiantSuivant = ($offset_etudiant < $etudiants->count()-1);
+	$flagQuestionSuivante = ($offset_question < $questions->count()-1);
+	$flagEtudiantPrecedent = ($offset_etudiant > 0);
+	$flagQuestionPrecedente = ($offset_question > 0);
 	//Sauvegarde les ids de la réponse que l'on traite afin d'être certain que les infos n'auront pas été trafiqués au retour
 	Session::put('etudiantId', $etudiant->id);
 	Session::put('classeId', $classe_id);
@@ -292,7 +292,9 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
 	Session::put('questionId', $question->id);
 	Session::put('offsetEtudiant', $offset_etudiant);
 	Session::put('offsetQuestion', $offset_question);
-	return compact('tp', 'classe', 'etudiant','question','reponse', 'flagEtudiantPrecedent', 'flagEtudiantSuivant', 'flagQuestionPrecedente', 'flagQuestionSuivante');
+	return compact('tp', 'classe', 'etudiant','question','reponse', 
+						'flagEtudiantPrecedent', 'flagEtudiantSuivant', 'flagQuestionPrecedente', 'flagQuestionSuivante',
+						'offset_etudiant', 'offset_question');
 }
 
 /**
@@ -303,10 +305,72 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
  * @param unknown $questions_id
  * @param unknown $input
  */
-public function doCorriger($etudiant_id, $classe_id, $tp_id, $questions_id, $input) {
-	dd('iccite');
+public function doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaire, $pointage) {
+	$etudiant = User::findorfail($etudiant_id);
+	$classe = Classe::findorfail($classe_id);
+	$tp = TP::findorfail($tp_id);
+	$question = Question::findorfail($question_id);
 	
+	$reponse = Note::where('classe_id','=',$classe->id)
+		->where('tp_id','=',$tp->id)
+		->where('etudiant_id','=',$etudiant->id)
+		->where('question_id',$question->id)
+		->first();
+	$reponse->commentaire = $commentaire;
+	$reponse->note = $pointage;
+	if($reponse->save()) {
+		return true;
+	} else {
+		return $reponse->validationMessages;
+	}
+}
+
+public function afficheReponseAutreEtudiant($direction, $etudiantCourant_id, $classe_id, $tp_id, $question_id) {
+	$nom = "";
+	$reponse = "";
+	$pointage = "";
+	$commentaire = "";
+	$autreEtudiantOffset = Session::pull('autreEtudiantOffset');
+	$offsetOriginal = $autreEtudiantOffset;
+	if($direction=='precedent') {$autreEtudiantOffset--;} else if($direction=='suivant') {$autreEtudiantOffset++;};
 	
+	$classe = Classe::findorfail($classe_id);
+	$etudiants = $classe->etudiants()->orderBy('id')->get();
+	$autreEtudiantOffset =  max(0,min($autreEtudiantOffset,$etudiants->count()-1));
+	$autreEtudiant = $etudiants->offsetGet($autreEtudiantOffset);
+	if($autreEtudiant->id==$etudiantCourant_id) {
+		//saute l'étudiant courant
+		if($direction=='precedent') {
+			if($autreEtudiantOffset > 0) {
+				$autreEtudiantOffset--; //saute
+			} else {$autreEtudiantOffset = $offsetOriginal; } //on est au début, on revient ou on était
+		} else if($direction=='suivant') {
+			if($autreEtudiantOffset<$etudiants->count()-1) {
+				$autreEtudiantOffset++; //saute
+			} else {$autreEtudiantOffset = $offsetOriginal; } //on est à la fin, on revient ou on était
+		}
+		//retourne rechercher le nouvel étudiant
+		$autreEtudiant = $etudiants->offsetGet($autreEtudiantOffset);
+	}
+	//
+	
+	if($autreEtudiant->id <> $etudiantCourant_id) {
+		//je dois quand même faire ce if car dans le cas ou il n'y aurait qu'un étudiant (le else), je ne dois rien afficher
+		$note =  Note::where('classe_id','=',$classe_id)
+		->where('tp_id','=',$tp_id)
+		->where('etudiant_id','=',$autreEtudiant->id)
+		->where('question_id','=', $question_id)
+		->first();	
+		$nom = $autreEtudiant->prenom . ' '. $autreEtudiant->nom;
+		$reponse = $note->reponse;
+		$pointage = $note->note;
+		$commentaire = $note->commentaire;	
+	}	
+	$flagBoutonEtudiantSuivant = ($autreEtudiantOffset < $etudiants->count()-1);
+	$flagBoutonEtudiantPrecedent = ($autreEtudiantOffset > 0);
+	Session::put('autreEtudiantOffset', $autreEtudiantOffset);
+	
+	return compact('nom', 'reponse','pointage', 'commentaire', 'flagBoutonEtudiantPrecedent', 'flagBoutonEtudiantSuivant');
 }
 /**
  * Helpers
