@@ -24,28 +24,28 @@
 <div class="form-group">
 	{{ Form::label('enonce', 'Énoncé:', ['class' => "col-sm-2 control-label"]) }} 
 	<div class = 'col-sm-10'>
-		{{ Form::textarea('enonce', $question->enonce, ['class' => 'form-control']) }}
+		{{ Form::textarea('enonce', $question->enonce, ['class' => 'form-control ckeditor']) }}
 		{{ $errors->first('enonce') }}
 	</div>
 </div>
 <div class="form-group">
 	{{ Form::label('baliseCorrection', 'Balises de correction:', ['class' => "col-sm-2 control-label"]) }} 	
 	<div class = 'col-sm-10'>
-		{{ Form::textarea('baliseCorrection', $question->baliseCorrection, ['class' => 'form-control']) }}
+		{{ Form::textarea('baliseCorrection', $question->baliseCorrection, ['class' => 'form-control ckeditor']) }}
 		{{ $errors->first('baliseCorrection') }}
 	</div>
 </div>
 <div class="form-group">
 	{{ Form::label('reponse', 'Réponse:', ['class' => "col-sm-2 control-label"]) }} 
 	<div class = 'col-sm-10'>
-		{{ Form::textarea('reponse', $question->reponse, ['class' => 'form-control']) }}
+		{{ Form::textarea('reponse', $question->reponse, ['class' => 'form-control ckeditor']) }}
 		{{ $errors->first('reponse') }}
 	</div>
 </div>
 <div class="form-group">
 	{{ Form::label('sur', 'Sur:', ['class' => "col-sm-2 control-label"]) }} 
 	<div class = 'col-sm-10'>
-		{{ Form::text('sur', $question->sur, ['class' => 'form-control']) }}
+		{{ Form::text('sur', $question->sur, ['class' => 'col-sm-1 form-control']) }}
 		{{ $errors->first('sur') }}
 	</div>
 </div>

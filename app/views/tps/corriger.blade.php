@@ -59,15 +59,18 @@ function afficheAutreEtudiant(direction) {
 			timeout: 1000,
 			success: function(data){
 				document.getElementById('autre-reponse').innerHTML=data;
+				$( 'textarea' ).ckeditor(); //je sais pas pourquoi, mais le call doi
 				}
 		});		
 	}	
 function changeAutreEtudiant(direction) {
-	afficheAutreEtudiant(direction);	
+	afficheAutreEtudiant(direction);
 }
 
 $(document).ready(function() {
-	changeAutreEtudiant('suivant');
+	afficheAutreEtudiant('suivant');
+	$( 'textarea' ).ckeditor();
+	
 });
 
 </script>

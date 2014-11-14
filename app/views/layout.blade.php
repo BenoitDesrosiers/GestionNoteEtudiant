@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//cdn.ckeditor.com/4.4.5.1/standard/ckeditor.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.4.2/adapters/jquery.min.js"></script>
+
 {{ HTML::script('assets/js/script.js') }}
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
@@ -63,3 +68,6 @@
 
 
 </html>
+<script>
+
+</script>

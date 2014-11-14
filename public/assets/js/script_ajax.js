@@ -17,12 +17,14 @@ function updateCreateButton() {
 $(document).ready(function() {
 	afficheListeItems();
 	updateCreateButton();
+	CKEDITOR.replaceALL('ckeditor');
 });
 
 
 $("#belongsToListSelect").change(function(e) {
 	afficheListeItems();
 	updateCreateButton();
+	CKEDITOR.replaceALL('ckeditor');
 	
 });
 
@@ -48,6 +50,7 @@ function afficheListeItems() {
 		timeout: 1000,
 		success: function(data){
 			document.getElementById('liste-items').innerHTML=data;
+			$( 'textarea' ).ckeditor();
 			}
 	});		
 }	
