@@ -1,17 +1,22 @@
 <div>
-	{{ Form::label('msg','Corrections déjà faites pour les autres étudiants', ['class' => "col-sm-12 "]) }} 
+	<div class="col-xs-12"><strong>Corrections déjà faites pour les autres étudiants</strong></div> 
 	
 	<div class="form-group">
-		{{ Form::label('autreEtudiant','Réponse de: '.$nom."&nbsp;&nbsp;&nbsp;valant ".$pointage.' points', ['class' => "col-sm-12 "]) }} 
+		<div class="col-sm-9"><strong>{{'Réponse de: '.$nom."&nbsp;&nbsp;&nbsp;valant ".$pointage.' points'}}</strong></div>
 		<div class = 'col-sm-12'>
-			<?php $rows = round(strlen($reponse)/130)+1?>
-			{{ Form::textarea('reponse1', $reponse, ['class' => 'form-control ckeditor', 'disabled' => 'disabled', 'rows' => $rows]) }}
+			<?php if(strlen($reponse) == 0) 
+			     {$reponse = "<mark>Aucune réponse donnée</mark>";
+			  } ?>
+			<div id="reponse1" class="resizeDiv"> {{$reponse}}</div>
 		</div>
 	</div>
 	<div class="form-group">
-		{{ Form::label('commentaire1', 'Commentaires de correction', ['class' => "col-sm-12 "]) }} 	
+		<div class="col-sm-12"><strong>'Commentaires de correction</strong></div>	
 		<div class = 'col-sm-12'>
-			{{ Form::textarea('commentaire1', $commentaire, ['class' => 'form-control ckeditor', 'rows' => '4', 'disabled' => 'disabled']) }}
+			<?php if(strlen($commentaire) == 0) 
+			     {$commentaire = "<mark>Aucun commentaire donné</mark>";
+			  } ?>
+			<div id="commentaire1" class="resizeDiv"> {{$commentaire}}</div>
 		</div>
 	</div>
 	

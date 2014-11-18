@@ -1,25 +1,30 @@
- 
+
+
 <div class="form-group">
-	{{ Form::label('surlocal','(sur '.$question->pivot->sur_local.')', ['class' => "col-sm-1 "]) }} 	
-	{{ Form::label('titre', $offset_question+1 . ") ".$question->nom, ['class' => "col-sm-9 "]) }} 	
+
+	<div class='col-sm-1'><strong>{{'(sur '.$question->pivot->sur_local.')'}}</strong></div>	
+	<div class='col-sm-9'><strong>{{'titre', $offset_question+1 . ") ".$question->nom}}</strong></div> 	
 	<div class = 'col-sm-12'>
-		<?php $rows = round(strlen($question->enonce)/130)+1?>
-		{{ Form::textarea('enonce', $question->enonce, ['class' => 'form-control ckeditor', 'disabled' => 'disabled', 'rows' => $rows]) }}
+		<div id="enonce" class="resizeDiv resizeDiv-height-2-rows" ">{{$question->enonce}}</div>
 	</div>
+	@if(strlen($question->reponse) > 0)
 	<div class = 'col-sm-6'>
-		<?php $rows = round(strlen($question->reponse)/65)+1?>
-		{{ Form::textarea('questionReponse', $question->reponse, ['class' => 'form-control ckeditor', 'disabled' => 'disabled', 'rows' => $rows]) }}
+		<div id="questionReponse" class="resizeDiv resizeDiv-height-2-rows"><strong>Réponse:</strong><br>{{$question->reponse}}</div>
 	</div>
+	@endif
+	@if(strlen($question->baliseCorrection) > 0)
 	<div class = 'col-sm-6'>
-		<?php $rows = round(strlen($question->baliseCorrection)/65)+1?>
-		{{ Form::textarea('questionBaliseCorrection', $question->baliseCorrection, ['class' => 'form-control ckeditor', 'disabled' => 'disabled', 'rows' => $rows]) }}
+		<div id="questionBaliseCorrection" class="resizeDiv resizeDiv-height-2-rows"><strong>Balises de correction:</strong><br> {{$question->baliseCorrection}}</div>
 	</div>
+	@endif
 </div>
 <div class="form-group">
-	{{ Form::label('reponse', 'Réponse', ['class' => "col-sm-12 "]) }} 	
+	<div class="col-sm-12"><strong>Réponse de l'étudiant</strong></div>	
 	<div class = 'col-sm-12'>
-		<?php $rows = round(strlen($reponse->reponse)/130)+1?>
-		{{ Form::textarea('reponse', $reponse->reponse, ['class' => 'form-control ckeditor', 'disabled' => 'disabled', 'rows' => $rows]) }}
+		<?php if(strlen($reponse->reponse) == 0) 
+			     {$lareponse = "<mark>Aucune réponse donnée</mark>";
+			  } else {$lareponse = $reponse->reponse;} ?>
+		<div id="reponse" class="resizeDiv"> {{$lareponse}}</div>
 	</div>
 </div>
 <div class="form-group">
@@ -31,7 +36,7 @@
 	
 </div>
 <div class="form-group">
-	{{ Form::label('commentaire', 'Commentaires de correction', ['class' => "col-sm-12 "]) }} 	
+	<div class='col-sm-12'><strong>Commentaires de correction</strong></div>	
 	<div class = 'col-sm-12'>
 		{{ Form::textarea('commentaire', $reponse->commentaire, ['class' => 'form-control ckeditor', 'rows' => '4']) }}
 	</div>

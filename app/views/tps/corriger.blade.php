@@ -16,26 +16,39 @@
 			{{ Form::open(['route'=> array('tps.doCorriger', $etudiant->id, $classe->id, $tp->id, $question->id), 'method' => 'PUT', 'class' => 'form-horizontal form-compact', 'role'=>'form']) }}
 				@include('tps.corriger_subview')
 				<div class="form-group">
-					{{ Form::submit('Terminer', ['class' => 'btn btn-primary', 'name'=>'terminer']) }}
-				<?php if($flagEtudiantPrecedent) {$disabledState = ''; } else {$disabledState = 'disabled';} ?>
-					{{ Form::submit('étudiant précédent', ['class' => 'btn btn-primary', 'name'=>'etudiantPrecedent', $disabledState=>$disabledState]) }}
+					
+				<?php $infoSup = ['class' => 'btn btn-primary col-xs-6 col-sm-3 col-md-2', 'name'=>'etudiantPrecedent'];
+						if(!$flagEtudiantPrecedent) {$infoSup['disabled'] = 'disabled';} ?>
+					{{ Form::submit('étudiant précédent', $infoSup) }}
 
-				<?php if($flagEtudiantSuivant) {$disabledState = ''; } else {$disabledState = 'disabled';} ?>
-					{{ Form::submit('étudiant suivant', ['class' => 'btn btn-primary', 'name'=>'etudiantSuivant', $disabledState=>$disabledState]) }}
+				<?php $infoSup = ['class' => 'btn btn-primary col-xs-6 col-sm-3 col-md-2', 'name'=>'etudiantSuivant'];
+						if(!$flagEtudiantSuivant) {$infoSup['disabled'] = 'disabled';} ?>
+					{{ Form::submit('étudiant suivant', $infoSup) }}
 				
-				<?php if($flagQuestionPrecedente) {$disabledState = ''; } else {$disabledState = 'disabled';} ?>
-					{{ Form::submit('question précédente', ['class' => 'btn btn-primary', 'name'=>'questionPrecedente', $disabledState=>$disabledState]) }}
+				<?php $infoSup = ['class' => 'btn btn-primary col-xs-6 col-sm-3 col-md-2', 'name'=>'questionPrecedente'];
+						if(!$flagQuestionPrecedente) {$infoSup['disabled'] = 'disabled';} ?>
+					{{ Form::submit('question précédente',$infoSup) }}
 
-				<?php if($flagQuestionSuivante) {$disabledState = ''; } else {$disabledState = 'disabled';} ?>
-					{{ Form::submit('question suivante', ['class' => 'btn btn-primary', 'name'=>'questionSuivante', $disabledState=>$disabledState]) }}
+				<?php $infoSup = ['class' => 'btn btn-primary col-xs-6 col-sm-3 col-md-2', 'name'=>'questionSuivante'];
+						if(!$flagQuestionSuivante) {$infoSup['disabled'] = 'disabled';} ?>
+					{{ Form::submit('question suivante', $infoSup) }}
+					
+					{{ Form::submit('Terminer', ['class' => 'btn btn-primary col-xs-12  col-sm-3 col-md-2', 'name'=>'terminer']) }}
 				</div>
 			{{ Form::close() }}
 			
+			<div id="note-globale">
+				<div class='col->sm-12'><strong>Sommaire pour cet étudiant pour ce TP</strong></div>
+				@foreach($sommaireNotes as $i => $sommaireNote)
+					<div class="col-xs-1">{{ $i.')'.$sommaireNote['note'].'/'.$sommaireNote['sur']}}</div>
+				@endforeach
+			</div>
 			
 			<div id="autre-reponse">
 				<?php // la section permettant de voir les réponses des autres étudiants. 
 					  // Elle est remplie par un call Ajax ?>
 			</div>
+			
 			
 		</div>
 	</section>
@@ -59,7 +72,6 @@ function afficheAutreEtudiant(direction) {
 			timeout: 1000,
 			success: function(data){
 				document.getElementById('autre-reponse').innerHTML=data;
-				$( 'textarea' ).ckeditor(); //je sais pas pourquoi, mais le call doi
 				}
 		});		
 	}	
@@ -69,7 +81,6 @@ function changeAutreEtudiant(direction) {
 
 $(document).ready(function() {
 	afficheAutreEtudiant('suivant');
-	$( 'textarea' ).ckeditor();
 	
 });
 

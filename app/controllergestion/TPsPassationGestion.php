@@ -54,13 +54,19 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 	} else {
 		$pagePrecedente = null;
 	}
+	//réduit le set de questions pour avoir juste celles qui sont à afficher sur la page courante 
 	$questions = $lesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
 	
+	//trouve le numéro de la première question de la page courante. 
+	$premiereQuestion = 1;
+	for($i=1; $i < $pageCourante; $i++) {
+		$premiereQuestion += count($page[$i]);
+	}
 	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
 	Session::put('classeId', $classe_id);
 	Session::put('tpId', $tp_id);
 	Session::put('pageCourante', $pageCourante);
-	return  compact('questions','reponses','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante');
+	return  compact('questions','reponses','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
 }
 
 /**

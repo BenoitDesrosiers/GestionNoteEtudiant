@@ -15,8 +15,7 @@
 		@foreach($lignes as $question)
 			<tr>
 				<td><a href="{{ action('QuestionsController@show', [$question->id]) }}">{{ $question->nom }}</a></td>
-				<td>{{ Form::textarea('enonce', $question->enonce, ['class' => 'form-control ckeditor', 'disabled' => 'disabled', 'rows' => '1']) }}
-				 </td>
+				<td><div id="enonce">{{$question->enonce}}</div></td>
 				<td>{{ $question->sur }} </td>
 				<td><a href="{{ action('QuestionsController@edit', [$question->id]) }}" class="btn btn-info">Éditer</a></td>
 				<td>
@@ -27,6 +26,7 @@
 			</tr>
 		@endforeach
 		</tbody>
+		<script>ckeditor.inline('enonce')</script>
 	</table>
 </div>
 

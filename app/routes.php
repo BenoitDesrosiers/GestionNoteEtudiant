@@ -27,7 +27,8 @@ Route::group(['before'=>'auth'], function() {
 		Route::get('tpsCorriger/{tpid}/{classeid}',  ['as' => 'tps.corriger', 'uses' => 'TPsController@corriger']);
 		Route::put('tpsDoCorriger',  ['as' => 'tps.doCorriger', 'uses' => 'TPsController@doCorriger']);
 		Route::any('afficheReponseAutreEtudiant', ['as' => 'tps.afficheReponseAutreEtudiant', 'uses' => 'TPsController@afficheReponseAutreEtudiant']); //call Ajax
-		
+		Route::get('tpsTransmettreCorrection/{tpid}/{classeid}', ['as' => 'tps.transmettreCorrection', 'uses' => 'TPsController@transmettreCorrection']);
+		Route::get('tpsRetirerCorrection/{tpid}/{classeid}', ['as' => 'tps.retirerCorrection', 'uses' => 'TPsController@retirerCorrection']);
 		Route::get('tpsFormat/{id}', ['as' => 'tps.format', 'uses' => 'TPsController@format']);
 		Route::put('tpsDoFormat/{id}', ['as' => 'tps.doFormat', 'uses' => 'TPsController@doFormat']);
 		

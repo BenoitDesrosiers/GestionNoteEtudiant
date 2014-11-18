@@ -5,16 +5,34 @@
 	<title>Gestion des notes</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<!-- jquery -->
 <script src="https://code.jquery.com/jquery.js"></script>
+
+<!-- jquery ui -->
+<!--  script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script-->
+
+<!-- bootstrap -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="//cdn.ckeditor.com/4.4.5.1/standard/ckeditor.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.4.2/adapters/jquery.min.js"></script>
+
+<!-- ckeditor -->
+<script src="//cdn.ckeditor.com/4.4.5/full/ckeditor.js"></script>
+
+<!-- jquery ui for resizable -->
+<script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css"
+    href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
 
 {{ HTML::script('assets/js/script.js') }}
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+
+
 </head>
 <body>
 <header>
@@ -65,9 +83,9 @@
 @yield('content')
 </body>
 
-
+<script>
+$('.resizeDiv')
+    .resizable()
+</script>
 
 </html>
-<script>
-
-</script>

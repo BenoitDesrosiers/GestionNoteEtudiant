@@ -106,4 +106,24 @@ class TPsController extends BaseFilteredResourcesController
  		return View::make($this->base.'.reponseAutreEtudiant_subview', 
  				$this->gestion->afficheReponseAutreEtudiant(Input::get('direction'), $etudiantCourant_id, $classe_id, $tp_id, $question_id));
  	}
+ 	
+ 	
+ 	public function transmettreCorrection($tp_id, $classe_id) {
+ 		$return = $this->gestion->transmettreCorrection($tp_id, $classe_id);
+ 		if($return) {
+ 			return Redirect::route($this->base.'.index')->with('message_success', 'Les corrections sont transmises.');
+ 		} else {
+ 			return Redirect::route($this->base.'.index')->with('message_erreur', "Une erreur s'est produite. Les corrections ne sont pas transmises. Contacter le support");
+ 		}
+ 		
+ 	}
+ 	public function retirerCorrection($tp_id, $classe_id) {
+ 		$return = $this->gestion->retirerCorrection($tp_id, $classe_id);
+ 		if($return) {
+ 			return Redirect::route($this->base.'.index')->with('message_success', 'Les corrections ont été retirées.');
+ 		} else {
+ 			return Redirect::route($this->base.'.index')->with('message_erreur', "Une erreur s'est produite. Les corrections ne sont pas été retirées. Contacter le support");
+ 		}
+ 			
+ 	}
 }
