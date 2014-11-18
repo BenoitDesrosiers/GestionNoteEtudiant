@@ -18,7 +18,7 @@ Page: cette colonne indique si un changement de page sera fait après cette ques
 	<section class="section-padding">
 		<div class="jumbotron text-left">
 			<div class = 'col-sm-12'>
-				{{ Form::textarea('enonce', $instructions, ['class' => 'form-control', 'disabled' => 'disabled', 'rows' => 5]) }}
+				<div id="enonce" class="resizeDiv" "><strong>{{$instructions}}</strong></div>
 			</div>
 			{{ Form::open(['route'=> ['tps.doFormat', $tp->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'role'=>'form']) }}
 				<?php $i = 1;?>
@@ -50,10 +50,11 @@ Page: cette colonne indique si un changement de page sera fait après cette ques
 						<div class = 'col-sm-3'>
 							{{ Form::text('nomquestion',$question->nom, ['class' => "form-control",  'disabled' => 'disabled']) }} 	
 						</div>
+						
 						<div class = 'col-sm-6'>
-							<?php $rows = min(round(strlen($question->enonce)/80)+1,3)?>
-							{{ Form::textarea('enonce', $question->enonce, ['class' => 'form-control', 'disabled' => 'disabled', 'rows' => $rows]) }}
+							<div class="resizeDiv resizeDiv-height-2-rows" ">{{$question->enonce}}</div>
 						</div>
+						
 						<div class = 'col-sm-1'>
 							{{ Form::text('sur', $question->pivot->sur_local, ['class' => 'form-control',  'disabled' => 'disabled']) }}
 						</div>
