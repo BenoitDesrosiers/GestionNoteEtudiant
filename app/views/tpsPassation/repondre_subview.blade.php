@@ -12,7 +12,7 @@
 <div class="form-group">
 	{{ Form::label('reponse', 'Réponse', ['class' => "col-sm-12 "]) }} 	
 	<div class = 'col-sm-12'>
-		{{ Form::textarea('reponse['.$question->id.']', $reponses[$question->id], ['class' => 'form-control ckeditor', 'rows' => '3']) }}
+		{{ Form::textarea('reponse['.$question->id.']', $reponses[$question->id]->reponse, ['class' => 'form-control ckeditor', 'rows' => '3']) }}
 	</div>
 </div>
 <?php $i++; ?>

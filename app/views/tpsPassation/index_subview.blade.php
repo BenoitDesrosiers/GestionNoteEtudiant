@@ -10,6 +10,7 @@
 					<th class="text-right">Sur</th>
 					<th class="text-right" >% de la note finale</th>
 					<th> </th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,6 +36,9 @@
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
 						<td class="text-right">{{ $tp->pivot->poids_local }} </td>
 						<td><a href="{{ route('tpsPassation.repondre', [$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Répondre</a></td>
+						<td>@if($tp->pivot->corrige)
+								<a href="{{ route('tpsPassation.voirCorrection', [$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Correction</a></td>
+							@endif
 						<td>					
 												
 					</tr>

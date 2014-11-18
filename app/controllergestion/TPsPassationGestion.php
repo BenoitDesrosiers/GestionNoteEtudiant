@@ -26,10 +26,14 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
  	$etudiant = Auth::user(); 
 	$classe = Classe::findorfail($classe_id);//TODO catch exception (au pire, retourner une liste vide)
 	$tp = $classe->tps()->where('tp_id',"=", $tp_id)->first();
-	$lesQuestions = $tp->questions()->orderBy('ordre')->get();
+	$toutesLesQuestions = $tp->questions()->orderBy('ordre')->get();
+	$toutesLesRéponses =  Note::where('classe_id','=',$classe_id)
+					->where('tp_id','=',$tp_id)
+					->where('etudiant_id','=',$etudiant_id)
+					->get();
 	//batit la pagination des questions
 	$i = 1;
-	foreach($lesQuestions as $question) {
+	foreach($toutesLesQuestions as $question) {
 		$page[$i][] = $question->id;
 		if($question->pivot->breakafter == 1) { $i++; } 	
 	}
@@ -40,7 +44,7 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 					->whereIn('question_id',$page[$pageCourante])
 					->get();
 	foreach($lesReponses as $uneReponse) {
-		$reponses[$uneReponse->question_id] = $uneReponse->reponse;
+		$reponses[$uneReponse->question_id] = $uneReponse;
 	}
 	
 	//prépare les indicateurs pour la pagination
@@ -55,7 +59,7 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 		$pagePrecedente = null;
 	}
 	//réduit le set de questions pour avoir juste celles qui sont à afficher sur la page courante 
-	$questions = $lesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
+	$questions = $toutesLesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
 	
 	//trouve le numéro de la première question de la page courante. 
 	$premiereQuestion = 1;
@@ -66,7 +70,7 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 	Session::put('classeId', $classe_id);
 	Session::put('tpId', $tp_id);
 	Session::put('pageCourante', $pageCourante);
-	return  compact('questions','reponses','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
+	return  compact('toutesLesQuestions','questions','reponses','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
 }
 
 /**
@@ -115,6 +119,8 @@ public function doRepondre($reponses, $etudiant_id, $classe_id, $tp_id, $pageCou
 	}
 	return $return;
 }
+
+
 private function createFilters( $option0, $item=null, $displayOnlyLinked=null) {
 	if(isset($item) and isset($displayOnlyLinked) ) {
 		$lesClasses = $item->classes->sortby("sessionscholaire_id");//affiche seulement les classes associées à cet item.
@@ -170,8 +176,6 @@ protected function filter2($filterValue) {
 
 	return $lignes;
 }
-
-
 
 
 /**

@@ -45,7 +45,7 @@
 						<td>@if(!$tp->classes->isempty())<a href="{{ route('tps.distribuer',  [$tp->id]) }}" class="btn btn-info">Distribuer</a>@endif</td>						
 						<td>@if($tp->pivot->distribue) <a href="{{ route('tps.corriger',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Corriger</a>@endif</td>						
 						<td>@if($tp->pivot->distribue)
-								@if($tp->pivot->corrige == true) 
+								@if($tp->pivot->corrige) 
 									 <a href="{{ route('tps.retirerCorrection',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Retirer correction</a>						
 								@else 
 									 <a href="{{ route('tps.transmettreCorrection',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Transmettre</a>						
