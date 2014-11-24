@@ -46,7 +46,12 @@ class TPsController extends BaseFilteredResourcesController
  	}
  	
  	public function doFormat($id) {
- 		$return = $this->gestion->doFormat($id, Input::all());
+ 		$input = Input::all();
+ 		if(isset($input['ajoutQuestion'])) {
+ 			return Redirect::route('questions.createAndBackToTP', $id);
+ 		} else  {
+ 			$return = $this->gestion->doFormat($id, $input);
+ 		}
  		if($return === true ) {
  			return Redirect::route($this->base.'.index')->with('message_success', "Le format du TP a été mis à jour");
  		} else {

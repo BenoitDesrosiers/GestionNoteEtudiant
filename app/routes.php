@@ -44,6 +44,8 @@ Route::group(['before'=>'auth'], function() {
 		Route::put('tpsPassationVoirSuiteCorrection',  ['as' => 'tpsPassation.voirSuiteCorrection', 'uses' => 'TPsPassationController@voirSuiteCorrection']);
 		
 		/* Questions */
+		Route::get('createAndBackToTP/{tpId}', ['as' => 'questions.createAndBackToTP', 'uses' => 'QuestionsController@createAndBackToTP']);
+		Route::post('storeAndBackToTP/{tpId}', ['as' => 'questions.storeAndBackToTP', 'uses' => 'QuestionsController@storeAndBackToTP']);
 		Route::post('questionsPourTp', ['as' => 'questionsPourTp', 'uses' => 'QuestionsController@itemsFor2Filters' ]);     //pour l'appel AJAX
 		Route::resource('questions', 'QuestionsController');
 		

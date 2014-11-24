@@ -29,17 +29,6 @@ class BaseResourcesController extends BaseController
 		return View::make($this->base.'.create', $this->gestion->create());
 	}
 	
-	public function edit($id)
-	{
-		return View::make($this->base.'.edit', $this->gestion->edit($id));		
-	}
-	
-	
-	public function show($id)
-	{
-		return View::make($this->base.'.show', $this->gestion->show($id));
-	}	
-	
 	public function store()
 	{
 		$return = $this->gestion->store(Input::all());
@@ -47,7 +36,12 @@ class BaseResourcesController extends BaseController
 			return Redirect::route($this->base.'.index')->with('message_success', $this->message_store);
 		} else {
 			return Redirect::route($this->base.'.create')->withInput()->withErrors($return);
-		}	
+		}
+	}
+	
+	public function edit($id)
+	{
+		return View::make($this->base.'.edit', $this->gestion->edit($id));		
 	}
 	
 	
@@ -60,6 +54,7 @@ class BaseResourcesController extends BaseController
 			return Redirect::route($this->base.'.edit')->withInput()->withErrors($return);
 		}	
 	}
+	
 	
 	public function destroy($id)
 	{

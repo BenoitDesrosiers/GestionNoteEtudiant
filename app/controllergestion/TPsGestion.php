@@ -186,24 +186,28 @@ public function doDistribuer($id, $input){
 			foreach($classes as $classe) { //TODO mettre toute la création dans une transaction
 				Note::forClasse($classe->id)->forTP($tp->id)->delete(); //efface les notes déjà distribuées pour ce TP/Classe
 				$etudiants= $classe->etudiants;
-				$questions = $tp->questions;
+				$questions = $tp->questions()->orderBy('ordre')->get();
 				foreach($etudiants as $etudiant) {
+					$i = 1;
 					foreach($questions as $question) {
 						$note = new Note;
 						$note->classe_id = $classe->id;
 						$note->tp_id = $tp->id;
 						$note->question_id = $question->id;
 						$note->etudiant_id = $etudiant->id;
+						$note->ordre = $i++;
 						$note->save();
 					}
 				}
 				//distribue une copie au prof pour qu'il puisse l'essayer
+				$i=1;
 				foreach($questions as $question) {
 					$note = new Note;
 					$note->classe_id = $classe->id;
 					$note->tp_id = $tp->id;
 					$note->question_id = $question->id;
 					$note->etudiant_id = Auth::user()->id;
+					$note->ordre = $i++;
 					$note->save();
 				}
 				
@@ -291,22 +295,12 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
 					->where('question_id',$question->id)
 					->first();
 	
-	//batit le sommaire des notes pour ce TP pour cet étudiant. 
-	//Je dois aller chercher les notes une par une afin qu'elles soient dans le même ordre que les questions
-	$i = 1;
-	$totalEtudiant = 0;
-	$totalTP = 0;
-	foreach($questions as $questionNote) {
-		$noteQuestion = Note::where('classe_id','=',$classe->id)
-					->where('tp_id','=',$tp->id)
-					->where('etudiant_id','=',$etudiant->id)
-					->where('question_id','=', $questionNote->id)
-					->first();
-		$sommaireNotes[$i++] = ['note' => $noteQuestion->note, 'sur'=>$questionNote->pivot->sur_local];
-		$totalEtudiant+=$noteQuestion->note;
-		$totalTP+=$questionNote->pivot->sur_local;
-	};
-	$sommaireNotes['total']=['note'=>$totalEtudiant, 'sur'=>$totalTP];
+	//batit le sommaire des notes pour ce TP pour cet étudiant. 	
+	$sommaireNotes = Note::where('classe_id','=',$classe->id)
+				->where('tp_id','=',$tp->id)
+				->where('etudiant_id','=',$etudiant->id)
+				->orderBy("ordre")
+				->get();
 	
 	$flagEtudiantSuivant = ($offset_etudiant < $etudiants->count()-1);
 	$flagQuestionSuivante = ($offset_question < $questions->count()-1);
@@ -322,7 +316,7 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
 	return compact('tp', 'classe', 'etudiant','question','reponse', 
 						'flagEtudiantPrecedent', 'flagEtudiantSuivant', 'flagQuestionPrecedente', 'flagQuestionSuivante',
 						'offset_etudiant', 'offset_question',
-						'sommaireNotes');
+						'sommaireNotes', 'questions');
 }
 
 /**

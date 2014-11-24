@@ -2,8 +2,7 @@
 
 <div class="form-group">
 
-	<div class='col-sm-1'><strong>{{'(sur '.$question->pivot->sur_local.')'}}</strong></div>	
-	<div class='col-sm-9'><strong>{{'titre', $offset_question+1 . ") ".$question->nom}}</strong></div> 	
+	<div class='col-sm-12'><strong>{{$offset_question+1 . ") ".$question->nom}}</strong></div> 	
 	<div class = 'col-sm-12'>
 		<div id="enonce" class="resizeDiv resizeDiv-height-2-rows" ">{{$question->enonce}}</div>
 	</div>

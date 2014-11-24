@@ -20,13 +20,10 @@
 					{{ Form::submit('Terminer', ['class' => 'btn btn-primary', 'name'=>'terminer']) }}
 					@if($pagePrecedente <> null)
 						{{ Form::submit('page '.$pagePrecedente, ['class' => 'btn btn-primary  col-sm-offset-1', 'name'=>'precedent']) }}
-					
 					@endif
 					@if($pageSuivante <> null)
 						{{ Form::submit('page '.$pageSuivante, ['class' => 'btn btn-primary'.($pagePrecedente==null?" col-sm-offset-2":""), 'name'=>'suivant']) }}
 					@endif
-						
-					
 				</div>
 			{{ Form::close() }}
 		</div>

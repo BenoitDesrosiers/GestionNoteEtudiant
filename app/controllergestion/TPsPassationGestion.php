@@ -27,27 +27,22 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 	$classe = Classe::findorfail($classe_id);//TODO catch exception (au pire, retourner une liste vide)
 	$tp = $classe->tps()->where('tp_id',"=", $tp_id)->first();
 	$toutesLesQuestions = $tp->questions()->orderBy('ordre')->get();
-	$toutesLesRéponses =  Note::where('classe_id','=',$classe_id)
+	$toutesLesReponses =  Note::where('classe_id','=',$classe_id)
 					->where('tp_id','=',$tp_id)
 					->where('etudiant_id','=',$etudiant_id)
 					->get();
 	//batit la pagination des questions
 	$i = 1;
-	foreach($toutesLesQuestions as $question) {
-		$page[$i][] = $question->id;
-		if($question->pivot->breakafter == 1) { $i++; } 	
+	foreach($toutesLesReponses as $reponse) {
+		$page[$i][] = $reponse->id;
+		if($toutesLesQuestions->find($reponse->question_id)->pivot->breakafter) { $i++; } 	
 	}
 	//batit la liste des réponses déjà soumises par l'étudiant associées aux questions de la page affichée
-	$lesReponses = Note::where('classe_id','=',$classe_id)
-					->where('tp_id','=',$tp_id)
-					->where('etudiant_id','=',$etudiant_id)
-					->whereIn('question_id',$page[$pageCourante])
+	$reponsesPageCourante = Note::whereIn('id',$page[$pageCourante])
+					->orderBy("ordre")
 					->get();
-	foreach($lesReponses as $uneReponse) {
-		$reponses[$uneReponse->question_id] = $uneReponse;
-	}
 	
-	//prépare les indicateurs pour la pagination
+	//les indicateurs pour la pagination
 	if(!empty($page[$pageCourante+1])) {
 		$pageSuivante = $pageCourante+1;
 	} else {
@@ -58,19 +53,15 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 	} else {
 		$pagePrecedente = null;
 	}
-	//réduit le set de questions pour avoir juste celles qui sont à afficher sur la page courante 
-	$questions = $toutesLesQuestions->filter(function($item) use ($page, $pageCourante) { return in_array($item->id,$page[$pageCourante]);} );
 	
-	//trouve le numéro de la première question de la page courante. 
-	$premiereQuestion = 1;
-	for($i=1; $i < $pageCourante; $i++) {
-		$premiereQuestion += count($page[$i]);
-	}
+	//le numéro de la première question de la page courante. 
+	$premiereQuestion = $toutesLesReponses->find($page[$pageCourante][0])->ordre;
+	
 	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
 	Session::put('classeId', $classe_id);
 	Session::put('tpId', $tp_id);
 	Session::put('pageCourante', $pageCourante);
-	return  compact('toutesLesQuestions','questions','reponses','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
+	return  compact('toutesLesQuestions', 'toutesLesReponses','reponsesPageCourante','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
 }
 
 /**

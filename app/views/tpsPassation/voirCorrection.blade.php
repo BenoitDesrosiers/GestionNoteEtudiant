@@ -6,7 +6,7 @@
 		<div class="header-text">
 			<h1>{{{$etudiant->prenom}}} {{{$etudiant->nom}}}</h1>
 			<h2>{{{$classe->nom}}} / {{{$tp->nom}}}</h2>
-			<p>sur: {{$tp->questions()->sum('sur_local') }}/ &nbsp;&nbsp;vaut: {{{$tp->pivot->poids_local}}}% de la note finale</p>
+			<p>sur: {{$tp->questions()->sum('sur_local') }} / &nbsp;&nbsp;vaut: {{{$tp->pivot->poids_local}}}% de la note finale</p>
 		</div>
 	</div>
 </section>

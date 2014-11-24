@@ -36,7 +36,7 @@ Page: cette colonne indique si un changement de page sera fait après cette ques
 							{{ Form::text('enonceT', "Énoncé", ['class' => 'form-control', 'disabled' => 'disabled']) }}
 						</div>
 						<div class = 'col-sm-1'>
-							{{ Form::text('surT', "Sur", ['class' => 'form-control',  'disabled' => 'disabled']) }}
+							{{ Form::text('surT', $tp->questions()->sum('sur_local'), ['class' => 'form-control',  'disabled' => 'disabled']) }}
 						</div>
 					</div>
 				@foreach($questions as $question)
@@ -63,7 +63,10 @@ Page: cette colonne indique si un changement de page sera fait après cette ques
 			
 			
 				<div class="form-group">
-					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary']) }}
+					{{ Form::submit('Sauvegarder', ['class' => 'btn btn-primary', 'name' => 'sauvegarder']) }}
+				</div>
+				<div class="form-group">
+					{{ Form::submit('Créer une question', ['class' => 'btn btn-primary', 'name' => 'ajoutQuestion']) }}
 				</div>
 			{{ Form::close() }}
 		</div>

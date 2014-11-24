@@ -12,7 +12,7 @@
 <div class="container">
 	<section class="section-padding">
 		<div class="jumbotron text-left">			
-			{{ Form::open(['url'=> 'questions', 'class' => 'form-horizontal', 'role'=>'form']) }}
+			{{ Form::open(['route'=> $callBackRoute, 'class' => 'form-horizontal', 'role'=>'form']) }}
 				@include('questions.editForm')
 				<div class="form-group">
 					{{ Form::submit('Créer', ['class' => 'btn btn-primary'])}}

@@ -37,11 +37,19 @@ protected function filter2($filterValue) {
 
 
 public function index() {
-	return $this->displayView( 'Tous');
-	
+	return $this->displayView( 'Tous',Input::get('belongsToId')); //TODO ce Input devrait venir de BaseResourcesController, mais pour cela faut changer tout les gestionnaires pour changer leur interfacs
 }
-public function create() {
-	return $this->displayView('Aucun TP');
+
+/**
+ * Création d'un question
+ * 
+ * @param multitype $callBackRoute la route à prendre lors du submit. Permet d'utiliser la page de création sur un autre controlleur. 
+ * @return multitype:
+ */
+public function create($callBackRoute, $selectedValue) { //create recoit $selectedValue parce que le QuestionController overwrite son create. 
+	$parms = $this->displayView('Aucun TP', $selectedValue);	
+	$parms['callBackRoute'] = $callBackRoute;
+	return $parms;
 }
 
 
@@ -71,11 +79,11 @@ public function store($input) {
 }
 
 public function show($id){
-	return $this->displayView(null,$this->model->findOrFail($id),true);
+	return $this->displayView(null,Input::get('belongsToId'), $this->model->findOrFail($id),true); //TODO  Input doit venir du ctrl
 }
 
 public function edit($id){
-	return $this->displayView('Aucun TP', $this->model->findOrFail($id));
+	return $this->displayView('Aucun TP',Input::get('belongsToId'), $this->model->findOrFail($id));//TODO  Input doit venir du ctrl
 }
 
 public function update($id, $input){
@@ -108,7 +116,7 @@ public function destroy($id)
 		return true;			
 	}
 
-private function displayView( $option0, $item=null, $displayOnlyLinked=null) {
+private function displayView( $option0, $selectedValue, $item=null, $displayOnlyLinked=null) {
 		if(isset($item) and isset($displayOnlyLinked) ) {
 			$lesTPs = $item->tps;//affiche seulement les tps associées à cet item. (utile pour show)
 		} else {//sinon affiche tous.
@@ -118,7 +126,7 @@ private function displayView( $option0, $item=null, $displayOnlyLinked=null) {
 		if(isset($item)) { //si on a un item, on sélectionne seulement ce qui est associées
 			$belongsToSelectedIds =  $item->TPs->fetch('id')->toArray();
 		} else { //sinon, on sélectionne ce qui a été passée en paramêtre (si c'est bon, sinon, la première de la liste
-			$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'TP');
+			$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], $selectedValue, 'TP');
 		}
 		$filtre1 = createFiltreParClassePourTP($lesTPs, true);
 		$question = $item;

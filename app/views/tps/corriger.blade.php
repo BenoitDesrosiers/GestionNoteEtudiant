@@ -39,9 +39,16 @@
 			
 			<div id="note-globale">
 				<div class='col->sm-12'><strong>Sommaire pour cet étudiant pour ce TP</strong></div>
-				@foreach($sommaireNotes as $i => $sommaireNote)
-					<div class="col-xs-1">{{ $i.')'.$sommaireNote['note'].'/'.$sommaireNote['sur']}}</div>
+				<?php $total_TP = 0; $total_etudiant=0;?>
+				@foreach($sommaireNotes as $note)
+					<?php $sur_local =$questions->find($note->question_id)->pivot->sur_local;
+							$total_TP += $sur_local; 
+							$total_etudiant += $note->note;
+					?>
+					<div class="col-xs-1">{{ $note->ordre.') '.$note->note.'/'.$sur_local}}</div>
 				@endforeach
+					<div class="col-xs-1">{{ $note->ordre.') '.$total_etudiant.'/'.$total_TP}}</div>
+					
 			</div>
 			
 			<div id="autre-reponse">
