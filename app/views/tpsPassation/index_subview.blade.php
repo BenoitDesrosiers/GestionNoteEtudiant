@@ -35,7 +35,7 @@
 						<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->nom }}</a> </td>
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
 						<td class="text-right">{{ $tp->pivot->poids_local }} </td>
-						<td><a href="{{ route('tpsPassation.repondre', [$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Répondre</a></td>
+						<td>@if(!$tp->pivot->corrige)<a href="{{ route('tpsPassation.repondre', [$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Répondre</a>@endif</td>
 						<td>@if($tp->pivot->corrige)
 								<a href="{{ route('tpsPassation.voirCorrection', [$tp->pivot->classe_id, $tp->id]) }}" class="btn btn-info">Correction</a></td>
 							@endif

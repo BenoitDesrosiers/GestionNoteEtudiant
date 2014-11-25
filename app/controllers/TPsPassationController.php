@@ -28,7 +28,15 @@ class TPsPassationController extends BaseFilteredResourcesController
 	
 	public function repondre( $classe_id, $tp_id) {
 		//TODO: vérifie que les id sont bons. 
-		return View::make($this->base.'.repondre', $this->gestion->repondre( $classe_id, $tp_id, 1) );
+		$return =  $this->gestion->repondre( $classe_id, $tp_id, 1, true);
+		if ($return) {
+			return View::make($this->base.'.repondre',$return );
+		} else {
+			$classe = Classe::find($classe_id);
+			$tp = $classe->tps()->where('tp_id',"=", $tp_id)->first();
+			$etudiant = Auth::user();
+			return View::make($this->base.'.examenDejaPasse', compact('classe', 'tp', 'etudiant'));
+		}
 	}
  	
 	public function doRepondre() {
@@ -38,14 +46,14 @@ class TPsPassationController extends BaseFilteredResourcesController
 		$classe_id = Session::pull('classeId');
 		$tp_id = Session::pull('tpId');
 		$input = Input::all();
-		$return = $this->gestion->doRepondre(Input::get('reponse'), $etudiant_id, $classe_id, $tp_id, $pageCourante);
+		$return = $this->gestion->doRepondre(Input::get('reponse'), $etudiant_id, $classe_id, $tp_id, $pageCourante,true);
 		if($return) {
 			if(isset($input['sauvegarde'])) {
-				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante) ); 				
+				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante,true) ); 				
 			} elseif(isset($input['suivant'])){
-				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante+1) ); 
+				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante+1, true) ); 
 			} elseif(isset($input['precedent'])) {
-				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante-1) );
+				return View::make($this->base.'.repondre', $this->gestion->repondre($classe_id, $tp_id, $pageCourante-1, true) );
 			} else {
 				return Redirect::route($this->base.'.index')->with('message_success', 'Vos réponses sont enregistrées');
 			}
@@ -58,8 +66,11 @@ class TPsPassationController extends BaseFilteredResourcesController
 	public function voirCorrection( $classe_id, $tp_id) {
 		//TODO: vérifie que les id sont bons.
 		//voir les réponses utilise "repondre" car j'ai juste besoin d'aller chercher la bonne réponse, la note, et le commentaire
-		return View::make($this->base.'.voirCorrection', $this->gestion->repondre( $classe_id, $tp_id, 1) );
+		return View::make($this->base.'.voirCorrection', $this->gestion->repondre( $classe_id, $tp_id, 1, false) );
 	}
+	
+	
+	
 	public function voirSuiteCorrection() {
 		$pageCourante = Session::pull('pageCourante');
 		$etudiant_id = Auth::user()->id;
@@ -68,9 +79,9 @@ class TPsPassationController extends BaseFilteredResourcesController
 		$input = Input::all();
 
 		if(isset($input['suivant'])){
-			return View::make($this->base.'.voirCorrection', $this->gestion->repondre($classe_id, $tp_id, $pageCourante+1) );
+			return View::make($this->base.'.voirCorrection', $this->gestion->repondre($classe_id, $tp_id, $pageCourante+1, false) );
 		} elseif(isset($input['precedent'])) {
-			return View::make($this->base.'.voirCorrection', $this->gestion->repondre($classe_id, $tp_id, $pageCourante-1) );
+			return View::make($this->base.'.voirCorrection', $this->gestion->repondre($classe_id, $tp_id, $pageCourante-1, false) );
 		} else {
 			return Redirect::route($this->base.'.index');
 		}

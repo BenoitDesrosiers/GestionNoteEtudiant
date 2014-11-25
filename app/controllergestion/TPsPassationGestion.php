@@ -21,26 +21,34 @@ public function show($id){
 	return $this->createFilters(null,$this->model->findOrFail($id),true);	
 }
 
-public function repondre($classe_id, $tp_id, $pageCourante) {
-	$etudiant_id = Auth::user()->id;
+public function repondre($classe_id, $tp_id, $pageCourante, $flagCheckSiCorrige) {
  	$etudiant = Auth::user(); 
 	$classe = Classe::findorfail($classe_id);//TODO catch exception (au pire, retourner une liste vide)
 	$tp = $classe->tps()->where('tp_id',"=", $tp_id)->first();
+	if(!$flagCheckSiCorrige or !$tp->pivot->corrige) {
+		return $this->construitQuestionnaire($etudiant,$classe, $tp, $pageCourante);
+	} else {
+		return false;
+	}
+}
+
+
+protected function construitQuestionnaire($etudiant, $classe, $tp, $pageCourante) {
 	$toutesLesQuestions = $tp->questions()->orderBy('ordre')->get();
-	$toutesLesReponses =  Note::where('classe_id','=',$classe_id)
-					->where('tp_id','=',$tp_id)
-					->where('etudiant_id','=',$etudiant_id)
-					->get();
+	$toutesLesReponses =  Note::where('classe_id','=',$classe->id)
+								->where('tp_id','=',$tp->id)
+								->where('etudiant_id','=',$etudiant->id)
+								->get();
 	//batit la pagination des questions
 	$i = 1;
 	foreach($toutesLesReponses as $reponse) {
 		$page[$i][] = $reponse->id;
-		if($toutesLesQuestions->find($reponse->question_id)->pivot->breakafter) { $i++; } 	
+		if($toutesLesQuestions->find($reponse->question_id)->pivot->breakafter) { $i++; }
 	}
 	//batit la liste des réponses déjà soumises par l'étudiant associées aux questions de la page affichée
 	$reponsesPageCourante = Note::whereIn('id',$page[$pageCourante])
-					->orderBy("ordre")
-					->get();
+									->orderBy("ordre")
+									->get();
 	
 	//les indicateurs pour la pagination
 	if(!empty($page[$pageCourante+1])) {
@@ -54,15 +62,19 @@ public function repondre($classe_id, $tp_id, $pageCourante) {
 		$pagePrecedente = null;
 	}
 	
-	//le numéro de la première question de la page courante. 
+	//le numéro de la première question de la page courante.
 	$premiereQuestion = $toutesLesReponses->find($page[$pageCourante][0])->ordre;
 	
-	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre à d'autre questions.
-	Session::put('classeId', $classe_id);
-	Session::put('tpId', $tp_id);
+	//store les ids afin de pouvoir les récupérer au retour afin que l'étudiant ne puisse répondre ou voir le TP des autres.
+	Session::put('classeId', $classe->id);
+	Session::put('tpId', $tp->id);
 	Session::put('pageCourante', $pageCourante);
-	return  compact('toutesLesQuestions', 'toutesLesReponses','reponsesPageCourante','tp','classe','etudiant', 'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
+	return  compact('toutesLesQuestions', 'toutesLesReponses','reponsesPageCourante',
+					'tp','classe','etudiant', 
+					'pagePrecedente', 'pageCourante','pageSuivante', 'premiereQuestion');
 }
+
+
 
 /**
  * Sauvegarde les données présentement à l'écran 
