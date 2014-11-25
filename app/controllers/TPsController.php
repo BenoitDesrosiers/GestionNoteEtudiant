@@ -103,6 +103,12 @@ class TPsController extends BaseFilteredResourcesController
  		}
  	}
  	
+ 	
+ 	public function afficherResultats($tp_id, $classe_id) {
+ 		return View::make($this->base.'.afficherResultats', $this->gestion->resultats($tp_id, $classe_id));
+ 	}
+ 	
+ 	
  	public function afficheReponseAutreEtudiant(){
  		$etudiantCourant_id = Session::get('etudiantId');
  		$classe_id = Session::get('classeId');

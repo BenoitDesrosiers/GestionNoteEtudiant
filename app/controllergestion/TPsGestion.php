@@ -395,6 +395,34 @@ public function afficheReponseAutreEtudiant($direction, $etudiantCourant_id, $cl
 	return compact('nom', 'reponse','pointage', 'commentaire', 'flagBoutonEtudiantPrecedent', 'flagBoutonEtudiantSuivant');
 }
 
+public function resultats($tp_id, $classe_id) {
+	try{
+		$classe= Classe::findOrFail($classe_id);
+		$tp = $classe->tps()->where("tp_id",'=',$tp_id)->first();
+	} catch (Exception $e) {
+		throw new Exception("Paramêtres incorrects");
+	}
+	$etudiants = $classe->etudiants()->orderBy('id')->get();
+	$questions = $tp->questions()->orderBy('ordre')->get();
+	
+	$i=1;
+	foreach($etudiants as $etudiant) {
+		$resultats[$i]['nom']=$etudiant->prenom.' '.$etudiant->nom;
+		$notes = Note::where('classe_id','=',$classe->id)
+					->where('tp_id','=',$tp->id)
+					->where('etudiant_id', '=', $etudiant->id)
+					->orderBy("ordre")
+					->get();
+		foreach($notes as $note) {
+			$resultats[$i]['notes'][$note->ordre] = $note->note;
+		}
+		$i++;
+	}
+	return compact('tp', 'classe', 'etudiants', 'resultats','questions');
+}
+
+
+
 public function transmettreCorrection($tp_id, $classe_id) {
 	$return = true;
 	Try {

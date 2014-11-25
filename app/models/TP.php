@@ -33,7 +33,7 @@ class TP extends EloquentValidating
 	 * 
 	 */
 	
-	public function addQuestion($question) {
+	public function addQuestion($question) { //TODO si le TP est distribué, il ne faut pas permettre l'édition des questions. 
 		$this->questions()->attach($question->id,['sur_local'=>$question->sur]);// pour la création, je transfers les points associé à cette question directement
 		$questionsPourTP=$this->questions;
 		$maxordre=0;

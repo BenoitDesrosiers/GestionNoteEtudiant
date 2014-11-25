@@ -39,7 +39,7 @@ class Question extends EloquentValidating
 		if($this->save()) { //TODO mettre ca dans une transaction
 			foreach($tpIds as $tpId) {
 				if($tpId <> 0) {	
-					TP::find($tpId)->addQuestion($this);
+					TP::find($tpId)->addQuestion($this); 
 				}
 			}
 			return true;
