@@ -19,11 +19,24 @@
 <div class="form-group">
 	{{ Form::label('reponse', 'Réponse (sur '.$laQuestion->pivot->sur_local.')', ['class' => "col-sm-12 "]) }} 	
 	<div class = 'col-sm-12'>
-		{{ Form::textarea('reponse['.$laQuestion->id.']', $reponse->reponse, ['class' => 'form-control ckeditor', 'rows' => '3']) }}
+		{{ Form::textarea('reponse['.$laQuestion->id.']', $reponse->reponse, ['class' => 'form-control ckEditorBasic', 'rows' => '3']) }}
 	</div>
 </div>
 <div class ='col-sm-12' style="background-color: black; height: 10px;"></div>
 
 <?php $i++; ?>
 @endforeach
-
+<script>
+		CKEDITOR.replaceAll('ckEditorBasic',  {
+			// Define the toolbar groups as it is a more accessible solution.
+			toolbarGroups: [
+				{"name":"basicstyles","groups":["basicstyles"]},
+				{"name":"paragraph","groups":["list","blocks"]},
+				{"name":"document","groups":["mode"]},
+				{"name":"insert","groups":["insert"]},
+				{"name":"styles","groups":["styles"]},
+			],
+			// Remove the redundant buttons from toolbar groups defined above.
+			removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+		} );
+	</script>

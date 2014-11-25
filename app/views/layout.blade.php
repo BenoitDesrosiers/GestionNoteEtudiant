@@ -18,7 +18,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <!-- ckeditor -->
-<script src="//cdn.ckeditor.com/4.4.5/full/ckeditor.js"></script>
+<script src="//cdn.ckeditor.com/4.4.6/full/ckeditor.js"></script>
 
 <!-- jquery ui for resizable -->
 <script type="text/javascript"
