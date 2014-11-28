@@ -135,6 +135,14 @@ public function destroy($id){
 	return true;
 }
 
+/**
+ * Crée les variables utilisées pour créer l'entête de la view Index 
+ * 
+ * @param string $option0 le nom d'une option supplémentaire (tous, aucun...) qui est ajouté à l'index 0 du select
+ * @param TP $item le tp sélectionné dans le select précédent cet écran
+ * @param boolean $displayOnlyLinked flag indiquant si on doit afficher seulement les classes associés à $item
+ * @return multitype:
+ */
 private function createHeaderForView( $option0, $item=null, $displayOnlyLinked=null) {
 	if(isset($item) and isset($displayOnlyLinked) ) {
 		$lesClasses = $item->classes;//affiche seulement les classes associées à cet item. (utile pour show)
@@ -147,6 +155,7 @@ private function createHeaderForView( $option0, $item=null, $displayOnlyLinked=n
 	} else { //sinon, on sélectionne la classe qui a été passée en paramêtre (si elle est bonne, sinon, la première de la liste
 		$belongsToSelectedIds = checkLinkedId(array_keys($belongsToList)[0], Input::get('belongsToId'), 'Classe');
 	}
+	
 	$filtre1 = createFiltreParSessionPourClasses($lesClasses, true);
 	$tp = $item;	
 	return compact('tp', 'belongsToList', 'belongsToSelectedIds','filtre1');

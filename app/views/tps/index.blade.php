@@ -7,7 +7,7 @@
 					<div class="panel-heading">
 						<h1> Liste des travaux pratiques</h1>
 						{{ Form::open(['action'=> ['TPsController@create'], 'role' => 'form', 'method' => 'get', 'class' => 'form-inline']) }}
-							{{ Form::hidden('belongsToId', '1', array('id'=>'belongsToId')) }}
+							{{ Form::hidden('belongsToId',"1", array('id'=>'belongsToId')) }}
 							<div class="form-group">
 								<div >
 									{{ Form::submit('Créer un TP', ['class' => 'btn btn-primary'])}}	

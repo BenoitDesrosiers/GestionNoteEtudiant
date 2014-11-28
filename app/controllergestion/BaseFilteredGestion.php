@@ -56,7 +56,6 @@ public function itemsFor2Filters($filter1, $filter2) {
 		$lignes = $this->filter2($filter2);
 	}
 	$belongsToId = $filter1;
-	
 	return compact('lignes', 'belongsToId' );	
 }
 

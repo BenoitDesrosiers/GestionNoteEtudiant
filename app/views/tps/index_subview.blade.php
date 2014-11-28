@@ -43,9 +43,14 @@
 						<td><a href="{{ route('tps.format', [$tp->id]) }}" class="btn btn-info">Format</a></td>	
 											
 						<td>@if(!$tp->classes->isempty())<a href="{{ route('tps.distribuer',  [$tp->id]) }}" class="btn btn-info">Distribuer</a>@endif</td>						
-						<td>@if($tp->pivot->distribue) <a href="{{ route('tps.corriger',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Corriger</a>@endif</td>						
-						<td>@if($tp->pivot->distribue) <a href="{{ route('tps.afficherResultats',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Résultats</a>@endif</td>
-						<td>@if($tp->pivot->distribue)
+						<?php $tp_distribue = false;
+								if($tp->pivot){ //si le TP n'est pas associé à une classe, il n'y aura pas de pivot
+									$tp_distribue = $tp->pivot->distribue;
+								}
+						?>
+						<td>@if($tp_distribue) <a href="{{ route('tps.corriger',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Corriger</a>@endif</td>						
+						<td>@if($tp_distribue) <a href="{{ route('tps.afficherResultats',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Résultats</a>@endif</td>
+						<td>@if($tp_distribue)
 								@if($tp->pivot->corrige) 
 									 <a href="{{ route('tps.retirerCorrection',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">Retirer correction</a>						
 								@else 
