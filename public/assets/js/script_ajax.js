@@ -50,7 +50,8 @@ function afficheListeItems() {
 		timeout: 1000,
 		success: function(data){
 			document.getElementById('liste-items').innerHTML=data;
-			$( 'textarea' ).ckeditor();
+			 catchDataConfirm();
+				setResizableDiv();
 			}
 	});		
 }	

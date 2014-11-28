@@ -83,9 +83,6 @@
 @yield('content')
 </body>
 
-<script>
-$('.resizeDiv')
-    .resizable()
-</script>
+
 
 </html>

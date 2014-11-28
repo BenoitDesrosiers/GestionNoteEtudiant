@@ -5,12 +5,17 @@
  * utilisees pour confirmer lors de l'appuie sur un bouton "effacer"
  */
 $(function() {
-       catchDataConfirm();
+    catchDataConfirm();
+	setResizableDiv();
+
 });
+
 $(document).ajaxComplete(function(){
 	//refait l'association du bouton data-confirm après un reload ajax.
 	catchDataConfirm();
+	setResizableDiv();
 });
+
 function catchDataConfirm() {
 	
 	 // Confirm deleting resources
@@ -22,6 +27,14 @@ function catchDataConfirm() {
     });
 }
 
+
+	
+//rend les div de la classe .resizeDiv resizable, c.à.d. qu'une pogné est affichée en bas à droite, permettant de 
+//changer la taille de la div à l'écran	
+function setResizableDiv() {	
+	$('.resizeDiv')
+	.resizable()
+}
 
 
 /**
