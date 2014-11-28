@@ -135,6 +135,20 @@ public function destroy($id){
 	return true;
 }
 
+
+public function changerPoidsLocal($tp_id, $classe_id) {
+	$classe = Classe::findOrFail($classe_id);
+	$tp = $classe->tps()->where('tp_id', '=', $tp_id)->first();
+	return compact('tp', 'classe');
+}
+public function doChangerPoidsLocal($tp_id, $classe_id, $poids) {
+	$classe = Classe::findOrFail($classe_id);
+	$tp = $classe->tps()->where('tp_id', '=', $tp_id)->first();
+	$tp->classes()->updateExistingPivot($classe_id, ['poids_local'=>$poids]); //TODO valider que le poids est <100
+	return true;	
+}
+
+
 /**
  * Crée les variables utilisées pour créer l'entête de la view Index 
  * 

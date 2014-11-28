@@ -21,6 +21,21 @@ class TPsController extends BaseFilteredResourcesController
 		
 	}
 
+	
+	public function changerPoidsLocal($tp_id, $classe_id) {
+		return View::make($this->base.'.changerPoidsLocal', $this->gestion->changerPoidsLocal($tp_id, $classe_id));
+	}
+	
+	public function doChangerPoidsLocal($tp_id, $classe_id) {
+		$return = $this->gestion->doChangerPoidsLocal($tp_id, $classe_id, Input::get('poids_local'));
+		if($return=== true) {
+			return Redirect::route($this->base.'.index')->with('message_success', 'Le poids local a été changé');
+		} else {
+			return Redirect::route($this->base.'.changerPoidsLocal',$tp_id, $classe_id)->withInput()->withErrors($return);
+		}
+		
+	}
+	
 	/**
 	 * affiche les classes associées à ce TP et permet de distribuer ce TP pour les classes sélectionnées
 	 */

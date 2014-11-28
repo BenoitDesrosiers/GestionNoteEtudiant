@@ -32,7 +32,10 @@
 					
 						<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->nom }}</a> </td>
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
-						<td class="text-right">@if(!$tp->classes->isempty()) {{ $tp->pivot->poids_local }} @endif </td>
+						<td>@if(!$tp->classes->isempty()) <a href="{{ route('tps.changerPoidsLocal',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">{{$tp->pivot->poids_local}}</a>@endif</td>						
+						
+						
+						
 						<td><a href="{{ action('TPsController@edit', [$tp->id]) }}" class="btn btn-info">Éditer</a></td>
 						<td>
 						{{ Form::open(array('action' => array('TPsController@destroy', $tp->id), 'method' => 'delete', 'data-confirm' => 'Êtes-vous certain?')) }}

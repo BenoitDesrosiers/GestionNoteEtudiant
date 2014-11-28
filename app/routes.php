@@ -32,6 +32,8 @@ Route::group(['before'=>'auth'], function() {
 		Route::get('tpsRetirerCorrection/{tpid}/{classeid}', ['as' => 'tps.retirerCorrection', 'uses' => 'TPsController@retirerCorrection']);
 		Route::get('tpsFormat/{id}', ['as' => 'tps.format', 'uses' => 'TPsController@format']);
 		Route::put('tpsDoFormat/{id}', ['as' => 'tps.doFormat', 'uses' => 'TPsController@doFormat']);
+		Route::get('tpsChangerPoidsLocal/{tpid}/{classeid}', ['as' => 'tps.changerPoidsLocal', 'uses' => 'TPsController@changerPoidsLocal']);
+		Route::put('tpsDoChangerPoidsLocal/{tpid}/{classeid}', ['as' => 'tps.doChangerPoidsLocal', 'uses' => 'TPsController@doChangerPoidsLocal']);
 		
 		Route::any('tpsPourClasse', ['as' => 'tpsPourClasse', 'uses' => 'TPsController@itemsFor2Filters']);     //pour l'appel AJAX  
 		Route::resource('tps', 'TPsController');
