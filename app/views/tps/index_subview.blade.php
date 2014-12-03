@@ -32,7 +32,7 @@
 					
 						<td><a href="{{ action('TPsController@show', [$tp->id]) }}">{{ $tp->nom }}</a> </td>
 						<td class="text-right">{{ $tp->questions()->sum('sur_local')}} </td>
-						<td>@if(!$tp->classes->isempty()) <a href="{{ route('tps.changerPoidsLocal',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">{{$tp->pivot->poids_local}}</a>@endif</td>						
+						<td>@if(!$tp->classes->isempty()) <a href="{{ route('tps.changerPivotClasse',  [$tp->id, $tp->pivot->classe_id]) }}" class="btn btn-info">{{$tp->pivot->poids_local}}</a>@endif</td>						
 						
 						
 						

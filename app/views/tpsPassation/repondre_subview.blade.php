@@ -22,6 +22,13 @@
 		{{ Form::textarea('reponse['.$laQuestion->id.']', $reponse->reponse, ['class' => 'form-control ckEditorBasic', 'rows' => '3']) }}
 	</div>
 </div>
+
+@if($tp->pivot->commentaire_visible and $reponse->commentaire)
+	<div class='col-sm-12'><strong>Commentaires de correction</strong></div>
+		<div class = 'col-sm-12'>
+			<div class="resizeDiv" ">{{$reponse->commentaire?:"."}}</div>	
+		</div>
+@endif
 <div class ='col-sm-12' style="background-color: black; height: 10px;"></div>
 
 <?php $i++; ?>

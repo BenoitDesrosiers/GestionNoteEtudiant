@@ -22,16 +22,16 @@ class TPsController extends BaseFilteredResourcesController
 	}
 
 	
-	public function changerPoidsLocal($tp_id, $classe_id) {
-		return View::make($this->base.'.changerPoidsLocal', $this->gestion->changerPoidsLocal($tp_id, $classe_id));
+	public function changerPivotClasse($tp_id, $classe_id) {
+		return View::make($this->base.'.changerPivotClasse', $this->gestion->changerPivotClasse($tp_id, $classe_id));
 	}
 	
-	public function doChangerPoidsLocal($tp_id, $classe_id) {
-		$return = $this->gestion->doChangerPoidsLocal($tp_id, $classe_id, Input::get('poids_local'));
+	public function doChangerPivotClasse($tp_id, $classe_id) {
+		$return = $this->gestion->doChangerPivotClasse($tp_id, $classe_id, Input::get('poids_local'), Input::get('commentaire_visible'));
 		if($return=== true) {
 			return Redirect::route($this->base.'.index')->with('message_success', 'Le poids local a été changé');
 		} else {
-			return Redirect::route($this->base.'.changerPoidsLocal',$tp_id, $classe_id)->withInput()->withErrors($return);
+			return Redirect::route($this->base.'.changerPivotClasse',$tp_id, $classe_id)->withInput()->withErrors($return);
 		}
 		
 	}

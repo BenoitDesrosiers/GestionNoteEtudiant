@@ -136,15 +136,15 @@ public function destroy($id){
 }
 
 
-public function changerPoidsLocal($tp_id, $classe_id) {
+public function changerPivotClasse($tp_id, $classe_id) {
 	$classe = Classe::findOrFail($classe_id);
 	$tp = $classe->tps()->where('tp_id', '=', $tp_id)->first();
 	return compact('tp', 'classe');
 }
-public function doChangerPoidsLocal($tp_id, $classe_id, $poids) {
+public function doChangerPivotClasse($tp_id, $classe_id, $poids, $commentaire_visible) {
 	$classe = Classe::findOrFail($classe_id);
 	$tp = $classe->tps()->where('tp_id', '=', $tp_id)->first();
-	$tp->classes()->updateExistingPivot($classe_id, ['poids_local'=>$poids]); //TODO valider que le poids est <100
+	$tp->classes()->updateExistingPivot($classe_id, ['poids_local'=>$poids, 'commentaire_visible' => isset($commentaire_visible)?1:0]); //TODO valider que le poids est <100
 	return true;	
 }
 

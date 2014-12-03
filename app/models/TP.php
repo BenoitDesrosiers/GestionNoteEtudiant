@@ -15,7 +15,7 @@ class TP extends EloquentValidating
 	
 	// Un TP est associé à plusieurs classes
 	public function classes() {
-		return $this->belongsToMany('Classe', 'classes_tps', 'tp_id', 'classe_id')->withPivot('poids_local', 'corrige', 'distribue'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????);
+		return $this->belongsToMany('Classe', 'classes_tps', 'tp_id', 'classe_id')->withPivot('poids_local', 'corrige', 'distribue','commentaire_visible'); //encore ici, je suis obligé de spécifier tp_id, sinon, la clé est t_p_id ????);
 	}
 	
 	// Un TP est associé à plusieurs questions
