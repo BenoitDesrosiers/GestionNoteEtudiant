@@ -1,4 +1,3 @@
-<?php if(!isset($classe)) {$classe = new Classe;}?>
 
 <div class="form-group">
 	{{ Form::label('code', 'Code:', ['class' => "col-sm-2 control-label"]) }} 
@@ -23,7 +22,6 @@
 	<div class = 'col-sm-10'>
 		{{ Form::select('sessionscholaire_id', $sessionsList,$sessionSelected, array('id' => 'sessionscholaire_id', 'size' =>1, 'class' => 'form-control')) }}
 	
-		{{-- Form::text('sessionscholaire_id',$classe->session, ['class' => 'form-control']) --}}
 		{{ $errors->first('sessionscholaire_id') }}	
 	</div>
 	@else
@@ -32,6 +30,13 @@
 	</div>
 	@endif
 </div>
+<div class="form-group">
+	{{ Form::label('enseignant', 'Enseignant:', ['class' => "col-sm-2 control-label"]) }} 
+	<div class = 'col-sm-10'>
+		{{ Form::select('enseignant_id', $enseignantsList,$enseignantSelected, array('id' => 'enseignant_id', 'size' =>1, 'class' => 'form-control')) }}
+		</div>
+</div>
+
 
 <div class="form-group">
 	{{ Form::label('groupe', 'Groupe:', ['class' => "col-sm-2 control-label"]) }} 

@@ -17,7 +17,10 @@ public function index() {
 public function create() {
 	$sessionsList= Sessionscholaire::all()->lists( 'nom','id'); //TODO: y a-t-il moyen d'injecter Sessionscholaire?
 	$sessionSelected = Sessionscholaire::where("courant", 1)->pluck("id");
-	return compact('sessionsList', 'sessionSelected');
+	$enseignantsList = User::enseignant()->lists('nom', 'id');
+	$enseignantSelected =  Auth::user()->id;
+	$classe = new Classe;
+	return compact('classe', 'sessionsList', 'sessionSelected', 'enseignantsList','enseignantSelected');
 }
 
 public function store($input) {
@@ -39,7 +42,9 @@ public function edit($id){
 	$sessionsList= Sessionscholaire::all()->lists( 'nom','id');
 	$classe = $this->model->findOrFail($id);
 	$sessionSelected = $classe->sessionscholaire->id;
-	return compact('classe',"sessionsList", "sessionSelected");
+	$enseignantsList = User::enseignant()->lists('nom', 'id');
+	$enseignantSelected =  $classe->enseignant_id;
+	return compact('classe',"sessionsList", "sessionSelected", 'enseignantsList','enseignantSelected');
 }
 
 public function update($id, $input){
@@ -48,6 +53,7 @@ public function update($id, $input){
 	$classe->nom = $input['nom'];
 	$classe->groupe = $input['groupe'];
 	$classe->local = $input['local'];
+	$classe->enseignant_id = $input['enseignant_id'];
 	$sessionScholaire = Sessionscholaire::findOrFail($input['sessionscholaire_id']); //TODO catcher l'exception
 	
 	if($sessionScholaire->classes()->save($classe)) {
