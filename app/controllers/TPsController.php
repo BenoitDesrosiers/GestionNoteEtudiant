@@ -92,9 +92,10 @@ class TPsController extends BaseFilteredResourcesController
  		$question_id = Session::pull('questionId');
  		$offset_etudiant = Session::pull('offsetEtudiant');
  		$offset_question = Session::pull('offsetQuestion');
- 		$commentaire= Input::get('commentaire'); 	
+ 		$commentaire= Input::get('commentaire');
+ 		$commentaire_visible = (Input::get('commentaire_visible')) != null; 	
  		$pointage = Input::get('pointage');	
- 		$return = $this->gestion->doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaire, $pointage);
+ 		$return = $this->gestion->doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaire, $commentaire_visible, $pointage);
  		$input = Input::all();
  		if($return){
 	 		if(isset($input['terminer'])) {

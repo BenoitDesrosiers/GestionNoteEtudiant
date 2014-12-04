@@ -350,7 +350,7 @@ public function corriger($tp_id, $classe_id, $offset_etudiant, $offset_question)
  * @param unknown $questions_id
  * @param unknown $input
  */
-public function doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaire, $pointage) {
+public function doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $commentaire, $commentaire_visible, $pointage) {
 	$etudiant = User::findorfail($etudiant_id);
 	$classe = Classe::findorfail($classe_id);
 	$tp = TP::findorfail($tp_id);
@@ -362,6 +362,7 @@ public function doCorriger($etudiant_id, $classe_id, $tp_id, $question_id, $comm
 		->where('question_id',$question->id)
 		->first();
 	$reponse->commentaire = $commentaire;
+	$reponse->commentaire_visible = $commentaire_visible;
 	$reponse->note = $pointage;
 	if($reponse->save()) {
 		return true;
@@ -437,7 +438,7 @@ public function resultats($tp_id, $classe_id) {
 					->orderBy("ordre")
 					->get();
 		foreach($notes as $note) {
-			$resultats[$i]['notes'][$note->ordre] = $note->note;
+			$resultats[$i]['notes'][$note->ordre] = $note;
 		}
 		$i++;
 	}

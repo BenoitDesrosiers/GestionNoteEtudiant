@@ -23,7 +23,7 @@
 	</div>
 </div>
 
-@if($tp->pivot->commentaire_visible and $reponse->commentaire)
+@if(($tp->pivot->commentaire_visible or $reponse->commentaire_visible) and $reponse->commentaire)
 	<div class='col-sm-12'><strong>Commentaires de correction</strong></div>
 		<div class = 'col-sm-12'>
 			<div class="resizeDiv" ">{{$reponse->commentaire?:"."}}</div>	

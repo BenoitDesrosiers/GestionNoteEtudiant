@@ -37,10 +37,11 @@
 								  $total_etudiant = 0;?>
 							<td>{{{$resultat['nom']}}}</td>
 							@foreach($resultat['notes'] as $note)
-							<?php $total_etudiant += $note;	
-								  $total_par_question[$i++]+= $note;
+							<?php $total_etudiant += $note->note;	
+								  $total_par_question[$i++]+= $note->note;
+								  $couleur = $note->reponse == ""?"danger":"success";
 							?>
-							<td>{{{$note}}}</td>
+							<td  class={{$couleur}}>{{{$note->note}}}</td>
 							@endforeach
 							<?php $grand_total += $total_etudiant;?>
 							<td>{{$total_etudiant}}</td>

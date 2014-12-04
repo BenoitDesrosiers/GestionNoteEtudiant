@@ -44,10 +44,11 @@
 					<?php $sur_local =$questions->find($note->question_id)->pivot->sur_local;
 							$total_TP += $sur_local; 
 							$total_etudiant += $note->note;
+							$couleur = $note->reponse == ""?"label-danger":"label-success";
 					?>
-					<div class="col-xs-1">{{ $note->ordre.') '.$note->note.'/'.$sur_local}}</div>
+					<div class="col-xs-1"><span class="label {{$couleur}}">{{ $note->ordre.') '.$note->note.'/'.$sur_local}}</span></div>
 				@endforeach
-					<div class="col-xs-1">{{ $note->ordre.') '.$total_etudiant.'/'.$total_TP}}</div>
+					<div class="col-xs-1"><span class="label label-success">{{$total_etudiant.'/'.$total_TP}}</span></div>
 					
 			</div>
 			

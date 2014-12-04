@@ -35,7 +35,16 @@
 	
 </div>
 <div class="form-group">
-	<div class='col-sm-12'><strong>Commentaires de correction</strong></div>	
+	<div class ='col-sm-4'>
+		{{ Form::label('label_commentaire_visible', 'Afficher ce commentaire immédiatement', ['class' => "control-label"]) }} 
+	</div>
+	<div class = 'col-sm-1'>
+			{{Form::checkbox("commentaire_visible",$reponse->commentaire_visible,($reponse->commentaire_visible==0?'':'checked'))}}</td>
+	</div>
+</div>
+<div class="form-group">
+	<div class='col-sm-12'><strong>Commentaires de correction</strong></div>
+		
 	<div class = 'col-sm-12'>
 		{{ Form::textarea('commentaire', $reponse->commentaire, ['class' => 'form-control ckeditor', 'rows' => '4']) }}
 	</div>
