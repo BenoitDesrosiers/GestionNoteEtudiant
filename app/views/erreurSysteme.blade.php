@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-enlever test
+#enlever test
 	<meta charset="UTF-8">
 	<title>Gestion des notes</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
