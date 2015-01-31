@@ -272,15 +272,17 @@ public function format($id) {
 public function doFormat($id, $input) {
 	$tp = TP::findOrFail($id);
 	$ordres= $input['ordre'];
-	$breaks= $input['break'];
 	$questions = $tp->questions();
 	foreach($ordres as $id => $ordre) {
 		$questions->updateExistingPivot($id, ['ordre' => $ordre], false);
 	} 
-	foreach($breaks as $id => $value) {
-		$questions->updateExistingPivot($id, ['breakafter' => 1], false);
-	}
 	
+	if(isset($input['break'])) {
+		$breaks= $input['break']; 
+		foreach($breaks as $id => $value) {
+			$questions->updateExistingPivot($id, ['breakafter' => 1], false);
+		}
+	}
 	return true;
 }
 
