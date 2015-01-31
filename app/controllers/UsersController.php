@@ -34,7 +34,7 @@ class UsersController extends Controller
 
         if ($user->id) {
             if (Config::get('confide::signup_email')) {
-                Mail::queueOn(
+               /* Mail::queueOn(
                     Config::get('confide::email_queue'),
                     Config::get('confide::email_account_confirmation'),
                     compact('user'),
@@ -43,7 +43,7 @@ class UsersController extends Controller
                             ->to($user->email, $user->username)
                             ->subject(Lang::get('confide::confide.email.account_confirmation.subject'));
                     }
-                );
+                );*/  //pour l'instant j'envoie pas de courriel car j'ai pas de smtp
             }
 
             return Redirect::action('UsersController@login')

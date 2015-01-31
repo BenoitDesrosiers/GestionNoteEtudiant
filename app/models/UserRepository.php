@@ -32,6 +32,14 @@ class UserRepository
 
         // Generate a random confirmation code
         $user->confirmation_code     = md5(uniqid(mt_rand(), true));
+        
+        // ajout pour la gestion des étudiants et des profs. Ils sont des usagers avec des champs de plus, mais je ne vois pas comment sous-classer le signup sans le ré-écrire
+        
+        $user->type = array_get($input, 'type');
+        $user->nom = array_get($input, 'nom');
+        $user->prenom = array_get($input, 'prenom');
+        
+        
 
         // Save if valid. Password field will be hashed before save
         $this->save($user);
